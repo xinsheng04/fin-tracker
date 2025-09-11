@@ -8,6 +8,7 @@
   border-radius: 0.5rem;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.1s ease;
+  margin-right: 10px;
 }
 
 .button:hover {
