@@ -1,6 +1,8 @@
 .label { 
+  display: flex;
+  flex-direction: column;
   text-align: start;
-  gap:2.5rem;
+
 
 }
 
@@ -10,9 +12,9 @@
   font-weight: bold;
   text-shadow: white;
   border-radius: 0.125rem;
-  width: 100%;
+  width: 20rem;
   padding: 0.25rem;
-  border-width:2px;
+  border-width:1.3px;
   border-color: rgb(61, 61, 59);
   margin-bottom:1.75rem;
 }

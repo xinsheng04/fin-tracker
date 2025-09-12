@@ -4,3 +4,8 @@
   margin-left:2rem;
   gap:1.5rem;
 }
+
+.form{
+  display: flex;
+  flex-direction: column;
+}

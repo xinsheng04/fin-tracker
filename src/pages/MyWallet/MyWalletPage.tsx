@@ -7,6 +7,9 @@ import { addNewCard } from "../../store/myWallet";
 
 const MyWallet = () => {
   const [addCard, setAddCard] = useState<boolean>(false);
+  const [cardNumber,setCardNumber] = useState<number>();
+  const [bankName, setBankName]= useState<string>();
+  const [amount, setAmount] = useState<number>();
 
   function handleClickAddCard() {
     setAddCard(!addCard);
@@ -19,10 +22,12 @@ const MyWallet = () => {
       </div>
       <div>
         {addCard &&
-          <form action="">
+          <form className={styles.form} action="">
             <Input label="Card Number" name="card" type="number" required/>
             <Input label="Bank Name" name="bankName" type="text" required></Input>
             <Input label="Card Amount" name="amount" type="number" required></Input> 
+
+            <Button type="submit">Submit</Button>
           </form>
 
         }
