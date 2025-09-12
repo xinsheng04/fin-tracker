@@ -30,11 +30,6 @@ button.active {
   margin: 0;
 }
 
-.NavLink {
-  width: 100%;
-  height: 100%;
-}
-
 .sidebar li {
   padding: .5rem 2rem;
   border: 1px solid #c7c7c7;
