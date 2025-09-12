@@ -1,0 +1,50 @@
+.cashBalance{
+  background-color: #fff;
+  padding: 0.8rem;
+  border-radius: 0.2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 22rem;
+  font-family: Arial, sans-serif;
+}
+
+.header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title{
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.datePicker{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  border: 1px solid rgb(224, 224, 224);
+  border-radius: 1rem;
+  background-color: transparent;
+}
+
+.datePicker:hover{
+  background-color: #f0f0f0;
+}
+
+.datePicker img{
+  width: 1rem;
+  height: auto;
+}
+
+.datePicker p{
+  font-size: 1rem;
+}
+
+.balance{
+  font-size: 3rem;
+  font-weight: bold;
+  margin: .5rem 0;
+}

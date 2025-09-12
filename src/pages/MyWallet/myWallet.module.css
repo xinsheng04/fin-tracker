@@ -1,0 +1,17 @@
+.main{
+  display: flex;
+  flex-direction: column;
+  margin-left:2rem;
+  gap:1.5rem;
+}
+
+.form{
+  display: flex;
+  flex-direction: column;
+}
+
+.form > p { 
+  margin-top: -17px;
+  color:red;
+  
+}
