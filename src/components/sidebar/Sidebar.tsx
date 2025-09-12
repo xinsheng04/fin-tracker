@@ -1,12 +1,8 @@
 import React from 'react'; 
 import styles from './sidebar.module.css'
 import {NavLink} from 'react-router-dom';
-type SidebarProps ={
-  children : React.ReactNode;
-  onClick : ()=>string;
-}
 
-const Sidebar = () => {
+const Sidebar: React.FC = () => {
   return (
     <div className={styles.sidebar}>
       <div className={styles.logo}>
@@ -23,7 +19,9 @@ const Sidebar = () => {
         <li>
           <NavLink to="/Stats">Stats</NavLink>
         </li>
-        <li>Budgeting</li>
+        <li>
+          <NavLink to="/Budgeting">Budgeting</NavLink>
+        </li>
       </ul>
 
     </div>
