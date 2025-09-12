@@ -1,0 +1,18 @@
+.label { 
+  text-align: start;
+  gap:2.5rem;
+
+}
+
+.input{ 
+  margin-top: 0.25rem;
+  font-size:1rem;
+  font-weight: bold;
+  text-shadow: white;
+  border-radius: 0.125rem;
+  width: 100%;
+  padding: 0.25rem;
+  border-width:2px;
+  border-color: rgb(61, 61, 59);
+  margin-bottom:1.75rem;
+}
