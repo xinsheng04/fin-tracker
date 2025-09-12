@@ -1,32 +1,69 @@
-import React from 'react'; 
-import styles from './sidebar.module.css'
-import {NavLink} from 'react-router-dom';
+import React from 'react';
+import styles from './sidebar.module.css';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Sidebar: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const navigateTo = (path: string) => {
+    navigate(path);
+  };
+
   return (
     <div className={styles.sidebar}>
       <div className={styles.logo}>
-        <img src="src\assets\moneyLogo.png" alt="moneyLogo" />
+        <img src="src\\assets\\moneyLogo.png" alt="moneyLogo" />
         <h1>FinTracker</h1>
       </div>
-      <ul>
-        <li>
-          <NavLink to="/" end>Overview</NavLink>
-        </li>
-        <li>
-          <NavLink to="/MyWallet">My Wallet</NavLink>
-        </li>
-        <li>
-          <NavLink to="/Stats">Stats</NavLink>
-        </li>
-        <li>
-          <NavLink to="/Budgeting">Budgeting</NavLink>
-        </li>
-      </ul>
-
+      <nav>
+        <ul>
+          <li>
+            <button
+              className={location.pathname === "/" ? styles.active : ""}
+              onClick={() => navigateTo("/")}
+            >
+              Overview
+            </button>
+          </li>
+          <li>
+            <button
+              className={location.pathname === "/MyWallet" ? styles.active : ""}
+              onClick={() => navigateTo("/MyWallet")}
+            >
+              My Wallet
+            </button>
+          </li>
+          <li>
+            <button
+              className={location.pathname === "/Stats" ? styles.active : ""}
+              onClick={() => navigateTo("/Stats")}
+            >
+              Stats
+            </button>
+          </li>
+          <li>
+            <button
+              className={location.pathname === "/Budgeting" ? styles.active : ""}
+              onClick={() => navigateTo("/Budgeting")}
+            >
+              Budgeting
+            </button>
+          </li>
+        </ul>
+      </nav>
+      <nav>
+        <ul>
+          <li>
+            <button onClick={() => console.log("Logout")}>Logout</button>
+          </li>
+          <li>
+            <button>Dark Mode 🌙</button>
+          </li>
+        </ul>
+      </nav>
     </div>
+  );
+};
 
-  )
-}
-
-export default Sidebar
+export default Sidebar;
