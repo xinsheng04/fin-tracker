@@ -1,11 +1,10 @@
-import NavBar from "./components/Navbar";
-
+import Sidebar from "./components/sidebar/Sidebar";
 import { Outlet } from "react-router-dom";
 
 export default function RootLayout(){
   return (
     <div>
-      <NavBar />
+      <Sidebar />
       <Outlet />
     </div>
   );

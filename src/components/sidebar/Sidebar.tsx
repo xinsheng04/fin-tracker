@@ -2,15 +2,15 @@ import React from 'react';
 import styles from './sidebar.module.css'
 import { useNavigate } from "react-router";
 
-type SidebarProps ={
-  children : React.ReactNode;
-  onClick : ()=>string;
-}
+// type SidebarProps ={
+//   children : React.ReactNode;
+//   onClick : ()=>string;
+// }
 
-const Sidebar:React.FC<SidebarProps> = (props) => {
+const Sidebar:React.FC = () => {
   const navigate = useNavigate();
   return (
-    <>
+    <div className={styles.sidebar}>
       <div className={styles.logo}>
         <img src="src\assets\moneyLogo.png" alt="moneyLogo" />
         <h1>FinTracker</h1>
@@ -23,7 +23,7 @@ const Sidebar:React.FC<SidebarProps> = (props) => {
           <li><button onClick={() => navigate('/budgeting')}>Budgeting</button></li>
         </ul>
       </nav>
-    </>
+    </div>
 
   )
 }
