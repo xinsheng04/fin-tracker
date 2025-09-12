@@ -41,6 +41,10 @@ const MyWallet = () => {
     //if there are no errors. We will clear the seTErrro state
     setErrs({});
     console.log('Form successfully filled');
+    dispatch(addNewCard({
+      bankName: String(rawData.bankName), cardNo: Number(rawData.card), amount:Number(rawData.amount)
+    })
+  )
   }
 
 
