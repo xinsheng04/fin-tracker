@@ -1,4 +1,4 @@
-import './header.module.css'
+import styles from './header.module.css'
 type ProfileButtonProps ={
   username: String;
   profilePicUrl: String;
@@ -7,10 +7,10 @@ type ProfileButtonProps ={
 
 const ProfileButton: React.FC<ProfileButtonProps> = (props) => {
   return(
-    <div className="profile-button">
+    <div className={`${styles['profile-button']}`}>
       <img src={`${props.profilePicUrl}`} alt="Profile" />
-      <div className='profile-info'>
-        <p>{props.username}</p>
+      <div className={`${styles['profile-info']}`}>
+        <p><strong>{props.username}</strong></p>
         <p>{props.role}</p>
       </div>
     </div>
