@@ -10,7 +10,7 @@ const MyWallet = () => {
     setAddCard(!addCard);
   }
   return (
-    <>
+    <div>
       <h1>My Wallet</h1>
       <Button onClick={handleClickAddCard}>Add Card</Button>
       {addCard &&
@@ -19,7 +19,7 @@ const MyWallet = () => {
       </form>
       
       }
-    </>
+    </div>
 
   )
 }
