@@ -1,21 +1,27 @@
 import Header from "../../components/header/Header"
-import { useSelector } from "react-redux";
-const Overview = () => {
-  // BankAccount is an array
-  const bankAccount = useSelector((state:any)=>state.myWallet.bankAccounts)
-  console.log(bankAccount);
+import CashBalance from "../../components/cashBalance/CashBalance";
+import styles from "./OverviewPage.module.css";
+import Button from "../../components/button/Button";
+const Overview: React.FC = () => {
+  
   return (
-    <>
+    <div className={styles.container}>
       <Header />
-      {bankAccount.map((account:any, idx:number)=>{
-        return(
-        <ul key={idx}>
-          <li>Bank name :{account.bankName}</li>
-          <li>Card Number : {account.cardNo}</li>
-          <li>Amount : {account.amount}</li>
-        </ul>
-      )})}
-    </>
+      <div className={styles.balances}>
+        <CashBalance title="My Balance">
+          <div className={styles.balanceActions}>
+            <Button onClick={() => console.log("Add Income")}>
+              Transfer
+            </Button>
+            <Button onClick={() => console.log("Add Expense")}>
+              Received
+            </Button>
+          </div>
+        </CashBalance>
+        <CashBalance title="Monthly Income" />
+        <CashBalance title="Monthly Expenses" />
+      </div>
+    </div>
   );
 }
 

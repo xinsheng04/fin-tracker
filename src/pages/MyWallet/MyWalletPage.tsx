@@ -20,7 +20,7 @@ const MyWallet = () => {
     if (!data.card?.trim()) newErrs.card = "Bank card is required";
     if (!data.amount?.trim()) newErrs.amount = "Amount is required";
 
-    if (data.card && data.card.length > 16){
+    if (data.card && data.card.length !== 16){
       newErrs.cardLen = "Card number is invalid"
     }
     return newErrs;
