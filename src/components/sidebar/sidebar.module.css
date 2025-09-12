@@ -1,3 +1,9 @@
+.sidebar{
+  border:solid;
+  border-color:black;
+  
+}
+
 .logo { 
   display:flex; 
   flex-direction: row;
