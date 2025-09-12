@@ -2,7 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 // defining the share of the card 
 interface Card{ 
-  bankName:string
+  bankName: string
   cardNo : number
   amount: number
 }

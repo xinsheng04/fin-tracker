@@ -14,6 +14,7 @@
     padding: 0.25rem 2rem;
     align-items: center;
     border: 1px solid #ddd;
+    border-left: none;
     justify-content: space-between;
 }
 
