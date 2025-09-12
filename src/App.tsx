@@ -1,5 +1,5 @@
-import Button from './components/Button';
-import Sidebar from './components/Sidebar';
+import Button from './components/button/Button';
+import Sidebar from './components/sidebar/Sidebar';
 import {useState} from 'react'; 
 
 function App() {
