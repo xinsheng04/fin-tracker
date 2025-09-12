@@ -1,6 +1,14 @@
-const MyWallet = ()=>{
+import Button from "../../components/button/Button"
+
+
+const MyWallet = () => {
+ 
   return (
-    <p>My Wallet Page</p>
+    <>
+      <h1>My Wallet</h1>
+      <Button>Add Card</Button>
+    </>
+
   )
 }
 
