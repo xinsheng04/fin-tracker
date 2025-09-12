@@ -1,4 +1,4 @@
-import calendarLogo from '../../assets/calendar.svg';
+import calendarLogo from '../../assets/calendarLogo.png';
 import ProfileButton from './ProfileButton';
 export default function Header(){
 
