@@ -8,7 +8,7 @@ const Overview: React.FC = () => {
     <div className={styles.container}>
       <Header />
       <div className={styles.balances}>
-        <CashBalance title="My Balance">
+        <CashBalance title="My Balance" balance={true}>
           <div className={styles.balanceActions}>
             <Button onClick={() => console.log("Add Income")}>
               Transfer
@@ -18,8 +18,8 @@ const Overview: React.FC = () => {
             </Button>
           </div>
         </CashBalance>
-        <CashBalance title="Monthly Income" />
-        <CashBalance title="Monthly Expenses" />
+        <CashBalance title="Monthly Income" income={true}/>
+        <CashBalance title="Monthly Expenses" expense={true}/>
       </div>
     </div>
   );
