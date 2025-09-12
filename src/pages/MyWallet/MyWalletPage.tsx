@@ -20,7 +20,9 @@ const MyWallet = () => {
     if (!data.card?.trim()) newErrs.card = "Bank card is required";
     if (!data.amount?.trim()) newErrs.amount = "Amount is required";
 
-
+    if (data.card && data.card.length > 16){
+      newErrs.cardLen = "Card number is invalid"
+    }
     return newErrs;
   }
 
@@ -52,10 +54,13 @@ const MyWallet = () => {
       <div>
         {addCard &&
           <form className={styles.form} onSubmit={handleFormSubmission}>
-            <Input label="Card Number" name="card" type="number" required />
+            <Input label="Card Number" name="card" type="number" />
             {errs.card && <p>{errs.card}</p>}
-            <Input label="Bank Name" name="bankName" type="text" required></Input>
-            <Input label="Card Amount" name="amount" type="number" required></Input>
+            {errs.cardLen && <p>{errs.cardLen}</p>}
+            <Input label="Bank Name" name="bankName" type="text" ></Input>
+            {errs.bankName && <p>{errs.bankName}</p>}
+            <Input label="Card Amount" name="amount" type="number"></Input>
+            {errs.amount && <p>{errs.amount}</p>}
 
             <Button type="submit">Submit</Button>
           </form>
