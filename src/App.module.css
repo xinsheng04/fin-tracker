@@ -1,5 +1,5 @@
 .main { 
   display:flex ; 
   flex-direction: row;
-  max-height: auto;
+  height :100vh;
 }
