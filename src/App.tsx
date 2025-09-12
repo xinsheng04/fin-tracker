@@ -1,15 +1,8 @@
-import styles from './App.module.css'
-import Sidebar from './components/sidebar/Sidebar'
-import { Outlet } from 'react-router'
+import RootLayout from './routes/rootLayout';
 
 function App() {
   return (
-    <div className={styles.main}>
-      <Sidebar />
-      <div style={{ flex: 1 }}>
-        <Outlet />
-      </div>
-    </div>
+    <RootLayout/>
   )
 }
 
