@@ -1,36 +1,21 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import RootLayout from './rootLayout';
-import './App.css'
+import Button from './components/Button';
+import Sidebar from './components/Sidebar';
+import {useState} from 'react'; 
 
 function App() {
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <RootLayout />,
-      children: [
-        {
-          index: true,
-          element: <div>Home Page</div>
-        },
-        {
-          path: "mywallet",
-          element: <div>My Wallet Page</div>
-        },
-        {
-          path: "statistics",
-          element: <div>Statistics</div>
-        },
-        {
-          path: "budgeting",
-          element: <div>Budgeting Page</div>
-        }
-      ]
-    }
-  ])
+  const [count, setCount] = useState<number>(0)
+  function handleClick (){ 
+    return "hello World"
+  }
 
+  function handleDecrease(){ 
+    setCount(prev=>{
+      return prev-1;
+    })
+  }
   return (
     <>
-      <RouterProvider router={router} />
+    <Sidebar onClick={handleClick}>Finance Tracker</Sidebar>
     </>
   )
 }
