@@ -9,7 +9,7 @@ type ButtonProps = {
 function Button ({children,onClick, type ="button",...ButtonProps}:ButtonProps){
   
   return (
-    <button className={styles.button} onClick={onClick}>{children}</button>
+    <button className={styles.button} onClick={onClick} {...ButtonProps}>{children}</button>
   )
 }
 
