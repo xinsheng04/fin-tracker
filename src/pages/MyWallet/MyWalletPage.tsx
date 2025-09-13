@@ -6,12 +6,14 @@ import styles from './myWallet.module.css';
 import { useDispatch } from "react-redux";
 import { addNewCard } from "../../store/myWallet";
 import ShowCard from "./ShowCard";
+import { useSelector } from "react-redux";
 
 const MyWallet = () => {
   const dispatch = useDispatch();
   const [addCard, setAddCard] = useState<boolean>(false);
   const [errs, setErrs] = useState<Record<string, string>>({});
-
+  // array of cardNo 
+  const bankCardNumbers = useSelector((state: any) => state.myWallet.bankAccounts)
   // two way binding for card number input 
   const [cardNoErr, setCardNoErr] = useState<string>();
 
@@ -54,6 +56,13 @@ const MyWallet = () => {
     if (data.amount < 0) {
       newErrs.amountNeg = "Amount is negative";
     }
+    // if cardNo is the same 
+    for (let x of bankCardNumbers) {
+      if (x.cardNo === data.card) {
+        newErrs.sameCard = "Card number is already taken";
+      }
+    }
+
     return newErrs;
   }
 
@@ -77,7 +86,6 @@ const MyWallet = () => {
     })
     )
   }
-
   return (
     <>
       <div className={styles.main}>
@@ -96,9 +104,10 @@ const MyWallet = () => {
                 onChange={(e) => setCardNoErr(String(e.target.value))}
               />
               {errs.card && <p>{errs.card}</p>}
-              {cardNoErr && cardNoErr.length === 16 && !errs.cardLen && (
+              {cardNoErr && cardNoErr.length === 16 && !errs.cardLen && !errs.sameCard && (
                 <p style={{ color: "green" }}>Valid card!</p>
               )}
+              {errs.sameCard && <p style={{ color: "red" }}>{errs.sameCard}</p>}
               {errs.cardLen && <p>{errs.cardLen}</p>}
               <Dropdown
                 label="Bank Name"

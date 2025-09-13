@@ -10,6 +10,11 @@ export default function ShowCard() {
     'RHB': 'src/assets/bankCards/Rhb.png',
     'Hong Leong': 'src/assets/bankCards/hongLeong.png'
   }
+
+  // if user decides to delete a bankCard
+    function onDeleteBankCard(){ 
+    
+  }
   return (
     <div className={styles.placement}>
       {display.map((card: any) => {
