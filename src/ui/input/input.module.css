@@ -10,11 +10,18 @@
   margin-top: 0.25rem;
   font-size:1rem;
   font-weight: bold;
-  text-shadow: white;
-  border-radius: 0.125rem;
+  border-radius: 0.4rem;
   width: 20rem;
   padding: 0.25rem;
   border-width:1.3px;
-  border-color: rgb(61, 61, 59);
+  border-style:solid;
+  border-color: #2563eb;
   margin-bottom:1.75rem;
+}
+
+.input:focus{
+  border-width: 3px;
+  border-color: #110981;
+  background: #fff;
+  outline: none;
 }

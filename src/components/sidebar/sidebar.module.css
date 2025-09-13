@@ -4,9 +4,6 @@
   height:100vh;
 }
 
-button.active {
-  background-color: #888888;
-} 
 
 .logo { 
   display:flex; 
@@ -31,7 +28,7 @@ button.active {
 }
 
 .sidebar li {
-  padding: .5rem 2rem;
+  padding: 0;
   border: 1px solid #c7c7c7;
   border-right: none;
   margin: 0;
@@ -41,10 +38,18 @@ button.active {
 .sidebar button {
   background: none;
   border: none;
-  padding: 0;
+  padding: .5rem 2rem;
   font: inherit;
   cursor: pointer;
   outline: inherit;
   width: 100%;
   text-align: left;
 }
+
+.sidebar button:hover {
+  background-color: #f0f0f0;
+}
+
+.sidebar button.active {
+  background-color: #dddddd;
+} 

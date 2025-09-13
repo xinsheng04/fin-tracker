@@ -1,10 +1,10 @@
-import React from 'react';
-import styles from './sidebar.module.css';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React from "react";
+import styles from "./sidebar.module.css";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Sidebar: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  const location = useLocation(); // ✅ always up-to-date
 
   const navigateTo = (path: string) => {
     navigate(path);
@@ -13,7 +13,7 @@ const Sidebar: React.FC = () => {
   return (
     <div className={styles.sidebar}>
       <div className={styles.logo}>
-        <img src="src\\assets\\moneyLogo.png" alt="moneyLogo" />
+        <img src="src/assets/moneyLogo.png" alt="moneyLogo" />
         <h1>FinTracker</h1>
       </div>
       <nav>

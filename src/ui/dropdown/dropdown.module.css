@@ -1,0 +1,30 @@
+.label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  margin-bottom: 2rem;
+  color: #22223b;
+}
+
+.select {
+  margin-top: 0.25rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: 1.5px solid #2563eb;
+  border-radius: 0.375rem;
+  background: #f8fafc;
+  color: #22223b;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.select>option{
+  color: black;
+}
+
+.select:focus {
+  border-width: 3px;
+  border-color: #1d4ed8;
+  background: #fff;
+  outline:none;
+}

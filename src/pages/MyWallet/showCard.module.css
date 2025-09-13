@@ -1,0 +1,63 @@
+.placement {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 100vw;
+  max-height: clamp(250px, 50vh, 500px); /* Responsive max-height */
+  overflow-y: auto;
+  padding-bottom: 1rem;
+}
+
+.cardList {
+  list-style: none;
+  padding: 0.6rem;
+  margin: 1.5rem 0;
+  background: #e0effd;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cardImage {
+  width: 150px;
+  margin-bottom: 0.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.cardLabel {
+  font-weight: 600;
+  color: #2563eb;
+  margin-bottom: 0.25rem;
+}
+
+.cardValue {
+  color: #22223b;
+  margin-bottom: 0.5rem;
+}
+
+.deleteBtn {
+  background: #d90429;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.4rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 0.7rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.deleteBtn:hover,
+.deleteBtn:focus {
+  background: #a0031a;
+  outline: none;
+}
