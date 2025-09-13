@@ -1,6 +1,6 @@
 import Button from "../../components/button/Button"
 import Dropdown from "../../components/dropdown/Dropdown";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Input from "../../components/input/Input";
 import styles from './myWallet.module.css';
 import { useDispatch } from "react-redux";
@@ -12,9 +12,27 @@ const MyWallet = () => {
   const [addCard, setAddCard] = useState<boolean>(false);
   const [errs, setErrs] = useState<Record<string, string>>({});
 
+  // two way binding for card number input 
+  const [cardNoErr, setCardNoErr] = useState<number>();
+
   function handleClickAddCard() {
     setAddCard(!addCard);
   }
+
+  // Real-time validation for card number length
+  useEffect(() => {
+    if (cardNoErr !== undefined && cardNoErr !== null) {
+      const cardStr = String(cardNoErr);
+      if (cardStr.length > 0 && cardStr.length !== 16) {
+        setErrs(prev => ({ ...prev, cardLen: "Card number must be 16 digits" }));
+      } else {
+        setErrs(prev => {
+          const { cardLen, ...rest } = prev;
+          return rest;
+        });
+      }
+    }
+  }, [cardNoErr]);
 
   function validation(data: Record<string, any>) {
     const newErrs: Record<string, string> = {}
@@ -54,37 +72,38 @@ const MyWallet = () => {
   return (
     <>
       <div className={styles.main}>
-          <h1>My Wallet</h1>
-          <div>
-            <Button onClick={handleClickAddCard}>Add Card</Button>
-          </div>
-          <div>
-            {addCard &&
-              <form className={styles.form} onSubmit={handleFormSubmission}>
-                <Input label="Card Number" name="card" type="number" />
-                {errs.card && <p>{errs.card}</p>}
-                {errs.cardLen && <p>{errs.cardLen}</p>}
-                <Dropdown
-                  label="Bank Name"
-                  name="bankName"
-                  required
-                  options={[
-                    { value: "Maybank", label: "Maybank" },
-                    { value: "CIMB", label: "CIMB" },
-                    { value: "Public Bank", label: "Public Bank" },
-                    { value: "RHB", label: "RHB" },
-                    { value: "Hong Leong", label: "Hong Leong" },
-                  ]}
-                />
-                {errs.bankName && <p>{errs.bankName}</p>}
-                <Input label="Card Amount" name="amount" type="number"></Input>
-                {errs.amount && <p>{errs.amount}</p>}
+        <h1>My Wallet</h1>
+        <div>
+          <Button onClick={handleClickAddCard}>Add Card</Button>
+        </div>
+        <div>
+          {addCard &&
+            <form className={styles.form} onSubmit={handleFormSubmission}>
+              <Input label="Card Number" name="card" type="text" value={cardNoErr} onChange={(e) => setCardNoErr(Number(e.target.value))} />
+              {errs.card && <p>{errs.card}</p>}
+              {!errs.cardLen&& <p style={{ color: "green" }}>Valid card!</p>}
+              {errs.cardLen && <p>{errs.cardLen}</p>}
+              <Dropdown
+                label="Bank Name"
+                name="bankName"
+                required
+                options={[
+                  { value: "Maybank", label: "Maybank" },
+                  { value: "CIMB", label: "CIMB" },
+                  { value: "Public Bank", label: "Public Bank" },
+                  { value: "RHB", label: "RHB" },
+                  { value: "Hong Leong", label: "Hong Leong" },
+                ]}
+              />
+              {errs.bankName && <p>{errs.bankName}</p>}
+              <Input label="Card Amount" name="amount" type="number"></Input>
+              {errs.amount && <p>{errs.amount}</p>}
 
-                <Button type="submit">Submit</Button>
-              </form>
+              <Button type="submit">Submit</Button>
+            </form>
           }
         </div>
-        
+
 
         <ShowCard></ShowCard>
       </div>
