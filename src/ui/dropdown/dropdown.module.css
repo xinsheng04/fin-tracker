@@ -18,6 +18,10 @@
   transition: border-color 0.2s;
 }
 
+.select>option{
+  color: black;
+}
+
 .select:focus {
   border-width: 3px;
   border-color: #1d4ed8;

@@ -1,0 +1,28 @@
+.form label {
+  display: block; /* Ensures the label is on its own line */
+  font-size: 1rem; /* Adjust font size for readability */
+  font-weight: bold; /* Make the label stand out */
+  margin-bottom: 0.5rem; /* Add spacing between label and input */
+  color: #333; /* Neutral text color */
+}
+
+.form input {
+  width: 100%; /* Make the input take full width of the container */
+  padding: 0.75rem; /* Add padding for better usability */
+  font-size: 1rem; /* Match the font size with the label */
+  border: 1px solid #ccc; /* Subtle border for the input */
+  border-radius: 4px; /* Rounded corners for a modern look */
+  outline: none; /* Remove default focus outline */
+  transition: border-color 0.3s ease; /* Smooth transition for focus effect */
+}
+
+.form input:focus {
+  border-color: #007BFF; /* Highlight border on focus */
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2); /* Add a subtle focus ring */
+}
+
+.buttonGroup{
+  display: flex;
+  justify-content: flex-end;
+  gap: 2rem;
+}
