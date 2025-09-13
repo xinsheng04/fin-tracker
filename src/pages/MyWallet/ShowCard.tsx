@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { deleteCard } from '../../store/myWallet';
-import Button from '../../components/button/Button';
+import Button from "../../ui/button/Button"
 import styles from './showCard.module.css';
 export default function ShowCard() {
   // using dispatch 
