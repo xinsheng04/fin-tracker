@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './button.module.css'
 
 type ButtonProps = { 
+  className?:string;
   children : React.ReactNode;
   onClick ?: ()=>void
   type ?: "button"|"submit"|"reset";
