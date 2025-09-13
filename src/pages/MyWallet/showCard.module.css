@@ -1,0 +1,39 @@
+.placement{
+  display: flex;
+  flex-direction: row;
+  gap:1.4rem;
+  justify-content: flex-start;
+  width:60%;
+  overflow-x:auto;
+}
+
+.cardList {
+  list-style: none;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  background: #e0effd;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cardImage {
+  width: 150px;
+  margin-bottom: 0.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.cardLabel {
+  font-weight: 600;
+  color: #2563eb;
+  margin-bottom: 0.25rem;
+}
+
+.cardValue {
+  color: #22223b;
+  margin-bottom: 0.5rem;
+}

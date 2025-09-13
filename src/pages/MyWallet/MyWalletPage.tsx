@@ -52,41 +52,44 @@ const MyWallet = () => {
 
 
   return (
-    <div className={styles.main}>
-      <h1>My Wallet</h1>
-      <div>
-        <Button onClick={handleClickAddCard}>Add Card</Button>
+    <>
+      <div className={styles.main}>
+          <h1>My Wallet</h1>
+          <div>
+            <Button onClick={handleClickAddCard}>Add Card</Button>
+          </div>
+          <div>
+            {addCard &&
+              <form className={styles.form} onSubmit={handleFormSubmission}>
+                <Input label="Card Number" name="card" type="number" />
+                {errs.card && <p>{errs.card}</p>}
+                {errs.cardLen && <p>{errs.cardLen}</p>}
+                <Dropdown
+                  label="Bank Name"
+                  name="bankName"
+                  required
+                  options={[
+                    { value: "Maybank", label: "Maybank" },
+                    { value: "CIMB", label: "CIMB" },
+                    { value: "Public Bank", label: "Public Bank" },
+                    { value: "RHB", label: "RHB" },
+                    { value: "Hong Leong", label: "Hong Leong" },
+                  ]}
+                />
+                {errs.bankName && <p>{errs.bankName}</p>}
+                <Input label="Card Amount" name="amount" type="number"></Input>
+                {errs.amount && <p>{errs.amount}</p>}
+
+                <Button type="submit">Submit</Button>
+              </form>
+          }
+        </div>
+        
+
+        <ShowCard></ShowCard>
       </div>
-      <div>
-        {addCard &&
-          <form className={styles.form} onSubmit={handleFormSubmission}>
-            <Input label="Card Number" name="card" type="number" />
-            {errs.card && <p>{errs.card}</p>}
-            {errs.cardLen && <p>{errs.cardLen}</p>}
-            <Dropdown
-              label="Bank Name"
-              name="bankName"
-              required
-              options={[
-                { value: "Maybank", label: "Maybank" },
-                { value: "CIMB", label: "CIMB" },
-                { value: "Public Bank", label: "Public Bank" },
-                { value: "RHB", label: "RHB" },
-                { value: "Hong Leong", label: "Hong Leong" },
-              ]}
-            />
-            {errs.bankName && <p>{errs.bankName}</p>}
-            <Input label="Card Amount" name="amount" type="number"></Input>
-            {errs.amount && <p>{errs.amount}</p>}
 
-            <Button type="submit">Submit</Button>
-          </form>
-
-        }
-      </div>
-      <ShowCard></ShowCard>
-
-    </div>
+    </>
 
   )
 }
