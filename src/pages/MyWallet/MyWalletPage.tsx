@@ -13,7 +13,7 @@ const MyWallet = () => {
   const [errs, setErrs] = useState<Record<string, string>>({});
 
   // two way binding for card number input 
-  const [cardNoErr, setCardNoErr] = useState<number>();
+  const [cardNoErr, setCardNoErr] = useState<string>();
 
   function handleClickAddCard() {
     setAddCard(!addCard);
@@ -23,6 +23,13 @@ const MyWallet = () => {
   useEffect(() => {
     if (cardNoErr !== undefined && cardNoErr !== null) {
       const cardStr = String(cardNoErr);
+
+      // Check for non-digit characters
+      if (!/^\d*$/.test(cardStr)) {
+        setErrs(prev => ({ ...prev, cardLen: "Card number must contain only digits" }));
+        return;
+      }
+
       if (cardStr.length > 0 && cardStr.length !== 16) {
         setErrs(prev => ({ ...prev, cardLen: "Card number must be 16 digits" }));
       } else {
@@ -44,9 +51,10 @@ const MyWallet = () => {
       newErrs.cardLen = "Card number is invalid"
     }
     // if amount entered is negative 
-    if (data.amount <0 ){
-      newErrs.amountNeg ="Amount is negative";
+    if (data.amount < 0) {
+      newErrs.amountNeg = "Amount is negative";
     }
+
     return newErrs;
   }
 
@@ -66,7 +74,7 @@ const MyWallet = () => {
     setErrs({});
     console.log('Form successfully filled');
     dispatch(addNewCard({
-      bankName: String(rawData.bankName), cardNo: Number(rawData.card), amount: Number(rawData.amount)
+      bankName: String(rawData.bankName), cardNo: String(rawData.card), amount: Number(rawData.amount)
     })
     )
   }
@@ -83,9 +91,17 @@ const MyWallet = () => {
         <div>
           {addCard &&
             <form className={styles.form} onSubmit={handleFormSubmission}>
-              <Input label="Card Number" name="card" type="text" value={cardNoErr} onChange={(e) => setCardNoErr(Number(e.target.value))} />
+              <Input
+                label="Card Number"
+                name="card"
+                type="text"
+                value={cardNoErr}
+                onChange={(e) => setCardNoErr(String(e.target.value))}
+              />
               {errs.card && <p>{errs.card}</p>}
-              {!errs.cardLen&& <p style={{ color: "green" }}>Valid card!</p>}
+              {cardNoErr && cardNoErr.length === 16 && !errs.cardLen && (
+                <p style={{ color: "green" }}>Valid card!</p>
+              )}
               {errs.cardLen && <p>{errs.cardLen}</p>}
               <Dropdown
                 label="Bank Name"

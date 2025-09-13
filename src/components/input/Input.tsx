@@ -4,7 +4,7 @@ import styles from './input.module.css';
 
 type InputProps = React.InputHTMLAttributes<HTMLInputElement>& { 
   label:string;
-  value?:number;
+  value?:string;
   onChange?:(e:React.ChangeEvent<HTMLInputElement>)=>void;
 
 

@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 // defining the share of the card 
 interface Card{ 
   bankName: string
-  cardNo : number
+  cardNo : string
   amount: number
 }
 
@@ -23,7 +23,7 @@ const myWalletSlice = createSlice({
   initialState,
   reducers: {
     // Adding a card to the store 
-    addAmountToCard(state,action:PayloadAction<{cardNo:number; amount:number}>){ 
+    addAmountToCard(state,action:PayloadAction<{cardNo:string; amount:number}>){ 
       const {cardNo, amount}= action.payload;
       const card = state.bankAccounts.find((c)=> c.cardNo === cardNo)
         if(card){
@@ -37,7 +37,7 @@ const myWalletSlice = createSlice({
     },
     
     // Removing a Card 
-    deleteCard (state,action:PayloadAction<{cardNo:number}>){
+    deleteCard (state,action:PayloadAction<{cardNo:string}>){
       const {cardNo} = action.payload;
       state.bankAccounts= state.bankAccounts.filter(card=> card.cardNo !== cardNo);
     }
