@@ -19,6 +19,8 @@
 }
 
 .select:focus {
+  border-width: 3px;
   border-color: #1d4ed8;
   background: #fff;
+  outline:none;
 }
