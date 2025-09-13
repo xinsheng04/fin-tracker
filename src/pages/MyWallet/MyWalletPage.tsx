@@ -1,7 +1,7 @@
-import Button from "../../components/button/Button"
-import Dropdown from "../../components/dropdown/Dropdown";
+import Button from "../../ui/button/Button"
+import Dropdown from "../../ui/dropdown/Dropdown";
 import { useState, useEffect } from 'react';
-import Input from "../../components/input/Input";
+import Input from "../../ui/input/Input";
 import styles from './myWallet.module.css';
 import { useDispatch } from "react-redux";
 import { addNewCard } from "../../store/myWallet";

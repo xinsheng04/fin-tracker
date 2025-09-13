@@ -1,19 +1,24 @@
+import { useState } from "react";
 import Header from "../../components/header/Header"
 import CashBalance from "../../components/cashBalance/CashBalance";
+import TransactionForm from "../../components/transactionForm/transactionForm";
+import Button from "../../ui/button/Button";
+import Modal from "../../ui/modal/Modal";
+
 import styles from "./OverviewPage.module.css";
-import Button from "../../components/button/Button";
+
 const Overview: React.FC = () => {
-  
+  const [modalOpenType, setModalOpenType] = useState<"income" | "expense" | null>(null);
   return (
     <div className={styles.container}>
       <Header />
       <div className={styles.balances}>
         <CashBalance title="My Balance" balance={true}>
           <div className={styles.balanceActions}>
-            <Button onClick={() => console.log("Add Income")}>
+            <Button className={styles.buttons} onClick={() => setModalOpenType("expense")}>
               Transfer
             </Button>
-            <Button onClick={() => console.log("Add Expense")}>
+            <Button className={styles.buttons} onClick={() => setModalOpenType("income")}>
               Received
             </Button>
           </div>
@@ -21,6 +26,10 @@ const Overview: React.FC = () => {
         <CashBalance title="Monthly Income" income={true}/>
         <CashBalance title="Monthly Expenses" expense={true}/>
       </div>
+
+      <Modal isOpen={modalOpenType !== null} onClose={() => setModalOpenType(null)}>
+        {modalOpenType && <TransactionForm type={modalOpenType}/>}
+      </Modal>
     </div>
   );
 }

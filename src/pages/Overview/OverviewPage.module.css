@@ -13,7 +13,11 @@
 
 .balanceActions{
   display: flex;
-  gap: 5rem;
+  gap: 1rem;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-center;
+}
+
+.buttons{
+  width: 10rem;
 }
