@@ -43,6 +43,10 @@ const MyWallet = () => {
     if (data.card && data.card.length !== 16) {
       newErrs.cardLen = "Card number is invalid"
     }
+    // if amount entered is negative 
+    if (data.amount <0 ){
+      newErrs.amountNeg ="Amount is negative";
+    }
     return newErrs;
   }
 
@@ -98,6 +102,8 @@ const MyWallet = () => {
               {errs.bankName && <p>{errs.bankName}</p>}
               <Input label="Card Amount" name="amount" type="number"></Input>
               {errs.amount && <p>{errs.amount}</p>}
+              {errs.amountNeg && <p>{errs.amountNeg}</p>}
+
 
               <Button type="submit">Submit</Button>
             </form>
