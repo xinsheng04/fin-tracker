@@ -54,7 +54,6 @@ const MyWallet = () => {
     if (data.amount < 0) {
       newErrs.amountNeg = "Amount is negative";
     }
-
     return newErrs;
   }
 
@@ -78,8 +77,6 @@ const MyWallet = () => {
     })
     )
   }
-
-
 
   return (
     <>
@@ -120,18 +117,13 @@ const MyWallet = () => {
               {errs.amount && <p>{errs.amount}</p>}
               {errs.amountNeg && <p>{errs.amountNeg}</p>}
 
-
               <Button type="submit">Submit</Button>
             </form>
           }
         </div>
-
-
         <ShowCard></ShowCard>
       </div>
-
     </>
-
   )
 }
 
