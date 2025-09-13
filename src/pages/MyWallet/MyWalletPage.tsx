@@ -1,9 +1,11 @@
 import Button from "../../components/button/Button"
+import Dropdown from "../../components/dropdown/Dropdown";
 import { useState } from 'react';
 import Input from "../../components/input/Input";
 import styles from './myWallet.module.css';
 import { useDispatch } from "react-redux";
 import { addNewCard } from "../../store/myWallet";
+import ShowCard from "./ShowCard";
 
 const MyWallet = () => {
   const dispatch = useDispatch();
@@ -20,7 +22,7 @@ const MyWallet = () => {
     if (!data.card?.trim()) newErrs.card = "Bank card is required";
     if (!data.amount?.trim()) newErrs.amount = "Amount is required";
 
-    if (data.card && data.card.length !== 16){
+    if (data.card && data.card.length !== 16) {
       newErrs.cardLen = "Card number is invalid"
     }
     return newErrs;
@@ -42,9 +44,9 @@ const MyWallet = () => {
     setErrs({});
     console.log('Form successfully filled');
     dispatch(addNewCard({
-      bankName: String(rawData.bankName), cardNo: Number(rawData.card), amount:Number(rawData.amount)
+      bankName: String(rawData.bankName), cardNo: Number(rawData.card), amount: Number(rawData.amount)
     })
-  )
+    )
   }
 
 
@@ -61,7 +63,18 @@ const MyWallet = () => {
             <Input label="Card Number" name="card" type="number" />
             {errs.card && <p>{errs.card}</p>}
             {errs.cardLen && <p>{errs.cardLen}</p>}
-            <Input label="Bank Name" name="bankName" type="text" ></Input>
+            <Dropdown
+              label="Bank Name"
+              name="bankName"
+              required
+              options={[
+                { value: "Maybank", label: "Maybank" },
+                { value: "CIMB", label: "CIMB" },
+                { value: "Public Bank", label: "Public Bank" },
+                { value: "RHB", label: "RHB" },
+                { value: "Hong Leong", label: "Hong Leong" },
+              ]}
+            />
             {errs.bankName && <p>{errs.bankName}</p>}
             <Input label="Card Amount" name="amount" type="number"></Input>
             {errs.amount && <p>{errs.amount}</p>}
@@ -71,6 +84,7 @@ const MyWallet = () => {
 
         }
       </div>
+      <ShowCard></ShowCard>
 
     </div>
 
