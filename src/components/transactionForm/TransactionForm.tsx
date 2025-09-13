@@ -18,7 +18,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
     return <p>Please add a bank account first.</p>
   }
   function handleAddIncome(data: any){    
-    const card = bankAccounts.find((acc: any) => acc.cardNo === Number(data.bankCard));
+    const card = bankAccounts.find((acc: any) => acc.cardNo === data.bankCard);
     if(card){
       dispatch(addAmountToCard({cardNo: card.cardNo, amount: Number(data.amount)}));
     } else{
@@ -28,7 +28,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
   }
 
   function handleAddExpense(data: any){
-    const card = bankAccounts.find((acc: any) => acc.cardNo === Number(data.bankCard));
+    const card = bankAccounts.find((acc: any) => acc.cardNo === data.bankCard);
     if(card){
       dispatch(removeAmountFromCard({cardNo: card.cardNo, amount: Number(data.amount)}));
     } else{
