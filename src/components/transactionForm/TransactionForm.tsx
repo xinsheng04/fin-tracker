@@ -7,9 +7,10 @@ import { addAmountToCard, removeAmountFromCard } from "../../store/myWallet";
 
 type TransactionFormProps = {
   type: "income" | "expense";
+  closeForm: () => void;
 }
 
-const TransactionForm: React.FC<TransactionFormProps> = ({ type }) => {
+const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) => {
   const dispatch = useDispatch();
   const bankAccounts = useSelector((state: any) => state.myWallet.bankAccounts);
   const cardNos = bankAccounts.map((card: any) => ({label: `${card.bankName} : ${card.cardNo}`, value: card.cardNo}));
@@ -21,8 +22,9 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type }) => {
     if(card){
       dispatch(addAmountToCard({cardNo: card.cardNo, amount: Number(data.amount)}));
     } else{
-      console.error("Card not found");
+      console.error("Income registration error: Card not found");
     }
+    closeForm();
   }
 
   function handleAddExpense(data: any){
@@ -30,8 +32,9 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type }) => {
     if(card){
       dispatch(removeAmountFromCard({cardNo: card.cardNo, amount: Number(data.amount)}));
     } else{
-      console.error("Card not found");
+      console.error("Expense registration error: Card not found");
     }
+    closeForm();
   }
 
   return (

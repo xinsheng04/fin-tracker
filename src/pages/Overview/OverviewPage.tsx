@@ -9,6 +9,9 @@ import styles from "./OverviewPage.module.css";
 
 const Overview: React.FC = () => {
   const [modalOpenType, setModalOpenType] = useState<"income" | "expense" | null>(null);
+  function closeModal(){
+    setModalOpenType(null);
+  }
   return (
     <div className={styles.container}>
       <Header />
@@ -28,7 +31,7 @@ const Overview: React.FC = () => {
       </div>
 
       <Modal isOpen={modalOpenType !== null} onClose={() => setModalOpenType(null)}>
-        {modalOpenType && <TransactionForm type={modalOpenType}/>}
+        {modalOpenType && <TransactionForm type={modalOpenType} closeForm={closeModal}/>}
       </Modal>
     </div>
   );

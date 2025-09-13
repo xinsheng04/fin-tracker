@@ -8,11 +8,11 @@ type ButtonProps = {
   type ?: "button"|"submit"|"reset";
 }
 function Button ({children, className, onClick, type ="button", ...ButtonProps}:ButtonProps){
-
   return (
     <button 
     className={`${styles.button} ${className || ''}`} 
     onClick={onClick} 
+    type={type}
     {...ButtonProps}>
       {children}
     </button>
