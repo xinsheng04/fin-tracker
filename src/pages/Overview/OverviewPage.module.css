@@ -1,23 +1,50 @@
 .container {
+
   width: 100%;
+ 
 }
 
-.balances{
+.balances {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
   margin: 1rem 2.1rem 0 2.1rem;
   padding: 1rem;
+  border: 1px solid red;
 }
 
-.balanceActions{
+.balanceActions {
   display: flex;
   gap: 1rem;
   align-items: center;
   justify-content: flex-center;
 }
 
-.buttons{
+.buttons {
   width: 10rem;
+}
+
+.recentTransactions {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  margin: 1rem 2.1rem 0 2.1rem;
+  padding: 1rem;
+  border: 1px solid red;
+ 
+}
+
+.recentTransactions > div{
+  background-color: #fff;
+  padding: 0.8rem;
+  border-radius: 0.2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 22rem;
+  font-family: Arial, sans-serif;
 }
