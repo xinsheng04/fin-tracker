@@ -14,6 +14,7 @@ interface Wallet {
 }
 // Define Recent Transactions
 interface Transactions{
+  // will add date in the future
   bank:string; 
   amount:number;
   typeOfTransfer:string;
@@ -39,7 +40,7 @@ const dummyState: Wallet = {
 // creating the slice 
 const myWalletSlice = createSlice({
   name:'myWalletDetails',
-  initialState: initialState,
+  initialState: dummyState,
   reducers: {
     // Adding a card to the store 
     addAmountToCard(state,action:PayloadAction<{cardNo:string; amount:number}>){ 
@@ -71,7 +72,7 @@ const myWalletSlice = createSlice({
 
     // adding to recent transactions 
     addRecentTransaction(state,action:PayloadAction<Transactions>){
-      state.recentTransaction.push(action.payload);
+      state.recentTransaction.splice(0,0,action.payload);
     }
       
   },
