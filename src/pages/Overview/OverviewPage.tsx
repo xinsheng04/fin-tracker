@@ -58,20 +58,20 @@ const Overview: React.FC = () => {
             </ul>
             {recent.length === 0 && <p className={styles.noRecents}>No recent transactions</p>}
             {/* honestly could consider refactoring this into a table */}
-            {recent.length > 0 && recent.map((rec: any) => {
-              if(transactionDisplayType === "all" || transactionDisplayType === rec.typeOfTransfer){
-                return (
-                  <TransactionCard
-                    key={rec.cardNo}
-                    bank={rec.bank}
-                    cardNo={rec.cardNo}
-                    typeOfTransfer={rec.typeOfTransfer}
-                    amount={rec.amount}
-                  />
-                )
-              } else
-                return null;
-            })}
+              {recent.length > 0 && recent.map((rec: any, index: number) => {
+                if(transactionDisplayType === "all" || transactionDisplayType === rec.typeOfTransfer){
+                  return (
+                    <TransactionCard
+                      key={rec.cardNo + index}
+                      bank={rec.bank}
+                      cardNo={rec.cardNo}
+                      typeOfTransfer={rec.typeOfTransfer}
+                      amount={rec.amount}
+                    />
+                  )
+                } else
+                  return null;
+              })}
           </div>
         </div>
         <div className={styles.rightBox}>
