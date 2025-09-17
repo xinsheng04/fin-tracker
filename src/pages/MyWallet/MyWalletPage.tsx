@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { addNewCard } from "../../store/myWallet";
 import ShowCard from "./ShowCard";
 import { useSelector } from "react-redux";
+import Header from "../../components/header/Header";
 
 const MyWallet = () => {
   const dispatch = useDispatch();
@@ -89,7 +90,8 @@ const MyWallet = () => {
   return (
     <>
       <div className={styles.main}>
-        <h1>My Wallet</h1>
+      <Header overview={false} />
+      <div className={styles.display}>
         <div>
           <Button onClick={handleClickAddCard}>Add Card</Button>
         </div>
@@ -131,6 +133,7 @@ const MyWallet = () => {
           }
         </div>
         <ShowCard></ShowCard>
+      </div>
       </div>
     </>
   )

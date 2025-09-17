@@ -3,13 +3,20 @@ import profileExample from '../../assets/profileExample.png';
 import ProfileButton from './ProfileButton';
 import { useSelector } from 'react-redux';
 import styles from "./header.module.css"
-export default function Header(){
+
+// type header props
+type HeaderProps={
+  overview:boolean;
+
+}
+
+export default function Header({overview}:HeaderProps){
   const user = useSelector((state: any) => state.user);
   return(
     <div className={`${styles.header}`}>
       {/* upper header */}
       <div className={`${styles['header-upper']}`}>
-        <h1>Overview</h1>
+        {overview ?<h1>Overview</h1>: <h1>My Wallet</h1>}
         {/* profile button */}
         <ProfileButton 
           username={`${user?.fname || "John"} ${user?.lname || "Doe"}`}

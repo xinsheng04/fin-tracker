@@ -26,7 +26,7 @@ const Overview: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <Header />
+      <Header overview={true}/>
       <div className={styles.balances}>
         <CashBalance className={styles.balanceBox} title="My Balance" balance={true}>
           <div className={styles.balanceActions}>
