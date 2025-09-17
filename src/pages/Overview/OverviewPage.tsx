@@ -15,7 +15,7 @@ const Overview: React.FC = () => {
     setModalOpenType(null);
   }
   // going to output the recentTransaction arrays 
-  const recent = useSelector((state: any) => state.myWallet.recentTransaction)
+  const recent = useSelector((state: any) => state.transaction.recentTransaction)
   return (
     <div className={styles.container}>
       <Header title="Overview"/>
