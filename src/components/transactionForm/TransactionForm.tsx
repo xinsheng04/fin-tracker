@@ -14,6 +14,8 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
   const dispatch = useDispatch();
   const bankAccounts = useSelector((state: any) => state.myWallet.bankAccounts);
   const cardNos = bankAccounts.map((card: any) => ({ label: `${card.bankName} : ${card.cardNo}`, value: card.cardNo }));
+  // adding date 
+  let dateTime = new Date();
   if (bankAccounts.length === 0) {
     return <p>Please add a bank account first.</p>
   }
@@ -22,7 +24,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
     if (card) {
       dispatch(addAmountToCard({ cardNo: card.cardNo, amount: Number(data.amount) }));
       // this is to also dispatch the recentTransaction
-      dispatch(addRecentTransaction({ bank:card.bankName, typeOfTransfer:"income",cardNo: card.cardNo, amount: Number(data.amount), }))
+      dispatch(addRecentTransaction({ bank:card.bankName, typeOfTransfer:"income",cardNo: card.cardNo, amount: Number(data.amount),date: String(dateTime)}))
   } else {
     console.error("Income registration error: Card not found");
   }
@@ -37,7 +39,7 @@ function handleAddExpense(data: any) {
     dispatch(removeAmountFromCard({ cardNo: card.cardNo, amount: Number(data.amount) }));
 
     // adding the expense part for the recentTransaction
-    dispatch(addRecentTransaction({bank:card.bankName, typeOfTransfer:"expense", cardNo:card.cardNo, amount:Number(data.amount),}))
+    dispatch(addRecentTransaction({bank:card.bankName, typeOfTransfer:"expense", cardNo:card.cardNo, amount:Number(data.amount),date: String(dateTime)}))
   } else {
     console.error("Expense registration error: Card not found");
   }

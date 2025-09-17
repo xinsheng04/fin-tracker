@@ -23,7 +23,7 @@ const Overview: React.FC = () => {
         <CashBalance className={styles.balanceBox} title="My Balance" balance={true}>
           <div className={styles.balanceActions}>
             <Button className={styles.buttons} onClick={() => setModalOpenType("expense")}>
-              Transfer
+              Outgoing
             </Button>
             <Button className={styles.buttons} onClick={() => setModalOpenType("income")}>
               Received

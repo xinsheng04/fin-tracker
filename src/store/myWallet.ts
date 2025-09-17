@@ -19,6 +19,7 @@ interface Transactions{
   amount:number;
   typeOfTransfer:string;
   cardNo:string;
+  date:string;
 }
 
 // initial State 
