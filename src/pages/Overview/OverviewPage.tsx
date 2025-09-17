@@ -16,6 +16,14 @@ const Overview: React.FC = () => {
   }
   // going to output the recentTransaction arrays 
   const recent = useSelector((state: any) => state.myWallet.recentTransaction)
+  const incomeExists = recent.some((rec: any) => rec.typeOfTransfer === "income");
+  const expenseExists = recent.some((rec: any) => rec.typeOfTransfer === "expense");
+
+  let shouldRender = recent.length > 0 && 
+    (transactionDisplayType === "all" || 
+    (transactionDisplayType === "income" && incomeExists) || 
+    (transactionDisplayType === "expense" && expenseExists));
+
   return (
     <div className={styles.container}>
       <Header />
@@ -23,7 +31,7 @@ const Overview: React.FC = () => {
         <CashBalance className={styles.balanceBox} title="My Balance" balance={true}>
           <div className={styles.balanceActions}>
             <Button className={styles.buttons} onClick={() => setModalOpenType("expense")}>
-              Transfer
+              Outgoing
             </Button>
             <Button className={styles.buttons} onClick={() => setModalOpenType("income")}>
               Received
@@ -56,9 +64,13 @@ const Overview: React.FC = () => {
                 <p>Expenses</p>
               </li>
             </ul>
-            {recent.length === 0 && <p className={styles.noRecents}>No recent transactions</p>}
+            {!shouldRender && transactionDisplayType === "all" && <p className={styles.noRecents}>No recent transactions</p>}
+            {!shouldRender && transactionDisplayType === "income" && <p className={styles.noRecents}>No income transactions</p>}
+            {!shouldRender && transactionDisplayType === "expense" && <p className={styles.noRecents}>No expense transactions</p>}
             {/* honestly could consider refactoring this into a table */}
-              {recent.length > 0 && recent.map((rec: any, index: number) => {
+              {
+              shouldRender &&
+               recent.map((rec: any, index: number) => {
                 if(transactionDisplayType === "all" || transactionDisplayType === rec.typeOfTransfer){
                   return (
                     <TransactionCard
