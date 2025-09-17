@@ -19,6 +19,7 @@ interface CashBalanceProps {
 const CashBalance: React.FC<CashBalanceProps> = ({ title, children,income,expense,balance, className='' }) => {
   const bankAccount = useSelector((state: any) => state.myWallet.bankAccounts);
   const transactions = useSelector((state: any) => state.myWallet.recentTransaction);
+  // To be implemented in the future: get only transactions from last 30 days
   let accIncome = transactions.reduce((acc: number, transaction: any) => {
     if (transaction.typeOfTransfer === "income") {
       return acc + transaction.amount;

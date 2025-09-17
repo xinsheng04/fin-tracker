@@ -1,6 +1,6 @@
 .transactionItem {
   display: flex;
-  width: 100%;
+  width: 90%;
   justify-content: space-between;
   margin: 0;
   padding: 0.5rem;

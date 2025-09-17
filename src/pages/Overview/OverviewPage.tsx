@@ -68,23 +68,25 @@ const Overview: React.FC = () => {
             {!shouldRender && transactionDisplayType === "income" && <p className={styles.noRecents}>No income transactions</p>}
             {!shouldRender && transactionDisplayType === "expense" && <p className={styles.noRecents}>No expense transactions</p>}
             {/* honestly could consider refactoring this into a table */}
-              {
-              shouldRender &&
-               recent.map((rec: any, index: number) => {
-                if(transactionDisplayType === "all" || transactionDisplayType === rec.typeOfTransfer){
-                  return (
-                    <TransactionCard
-                      key={rec.cardNo + index}
-                      bank={rec.bank}
-                      cardNo={rec.cardNo}
-                      typeOfTransfer={rec.typeOfTransfer}
-                      amount={rec.amount}
-                      date={rec.date}
-                    />
-                  )
-                } else
-                  return null;
-              })}
+              <div className={styles.transactionList}>
+                {
+                shouldRender &&
+                 recent.map((rec: any, index: number) => {
+                  if(transactionDisplayType === "all" || transactionDisplayType === rec.typeOfTransfer){
+                    return (
+                      <TransactionCard
+                        key={rec.cardNo + index}
+                        bank={rec.bank}
+                        cardNo={rec.cardNo}
+                        typeOfTransfer={rec.typeOfTransfer}
+                        amount={rec.amount}
+                        date={rec.date}
+                      />
+                    )
+                  } else
+                    return null;
+                })}
+              </div>
           </div>
         </div>
         <div className={styles.rightBox}>

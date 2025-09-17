@@ -8,7 +8,7 @@ interface TransactionCardProps {
   date:string;
 }
 
-const TransactionCard: React.FC<TransactionCardProps> = ({ bank, cardNo, typeOfTransfer, amount,date }) => {
+const TransactionCard: React.FC<TransactionCardProps> = ({ bank, cardNo, typeOfTransfer, amount, date }) => {
   return (
     <div key={cardNo} className={styles.transactionItem}>
       <div className={styles.origin}>
