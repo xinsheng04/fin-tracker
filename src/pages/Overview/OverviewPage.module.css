@@ -53,6 +53,7 @@
 
 .recentTransactions {
   width: 100%; /* Match the width of the cash balance */
+  margin-bottom: 2rem;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -62,6 +63,9 @@
   border-radius: .5rem; /* Rounded corners */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
   padding: 1rem;
+  height: 30rem;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .recentTransactions h3 {

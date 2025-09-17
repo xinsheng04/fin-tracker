@@ -34,10 +34,13 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
 function handleAddExpense(data: any) {
   const card = bankAccounts.find((acc: any) => acc.cardNo === data.bankCard);
   if (card) {
-    dispatch(removeAmountFromCard({ cardNo: card.cardNo, amount: Number(data.amount) }));
-
-    // adding the expense part for the recentTransaction
-    dispatch(addRecentTransaction({bank:card.bankName, typeOfTransfer:"expense", cardNo:card.cardNo, amount:Number(data.amount),}))
+    if(card.balance >= Number(data.amount)){
+      dispatch(removeAmountFromCard({ cardNo: card.cardNo, amount: Number(data.amount) }));
+      // adding the expense part for the recentTransaction
+      dispatch(addRecentTransaction({bank:card.bankName, typeOfTransfer:"expense", cardNo:card.cardNo, amount:Number(data.amount),}))
+    } else{
+      alert("Insufficient balance on the selected card.");
+    }
   } else {
     console.error("Expense registration error: Card not found");
   }
