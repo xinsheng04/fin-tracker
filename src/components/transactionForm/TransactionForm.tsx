@@ -15,7 +15,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
   const bankAccounts = useSelector((state: any) => state.myWallet.bankAccounts);
   const cardNos = bankAccounts.map((card: any) => ({ label: `${card.bankName} : ${card.cardNo}`, value: card.cardNo }));
   // adding date 
-  let dateTime = new Date();
+  let dateTime = new Date().toISOString().slice(0,10);
   if (bankAccounts.length === 0) {
     return <p>Please add a bank account first.</p>
   }

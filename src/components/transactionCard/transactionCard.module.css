@@ -37,3 +37,13 @@
 .expense {
   color: red;
 }
+
+.date {
+  font-size: 1rem;
+  color: #888;
+  align-self: center;
+  margin: 0 1rem;
+  min-width: 6.5rem; /* keeps dates aligned if you have multiple cards */
+  text-align: center;
+  letter-spacing: 0.5px;
+}

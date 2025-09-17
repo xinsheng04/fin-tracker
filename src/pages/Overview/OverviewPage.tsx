@@ -79,6 +79,7 @@ const Overview: React.FC = () => {
                       cardNo={rec.cardNo}
                       typeOfTransfer={rec.typeOfTransfer}
                       amount={rec.amount}
+                      date={rec.date}
                     />
                   )
                 } else
