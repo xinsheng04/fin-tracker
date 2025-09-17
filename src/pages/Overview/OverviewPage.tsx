@@ -18,7 +18,7 @@ const Overview: React.FC = () => {
   const recent = useSelector((state: any) => state.myWallet.recentTransaction)
   return (
     <div className={styles.container}>
-      <Header overview={true}/>
+      <Header title="Overview"/>
       <div className={styles.balances}>
         <CashBalance className={styles.balanceBox} title="My Balance" balance={true}>
           <div className={styles.balanceActions}>
