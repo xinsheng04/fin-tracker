@@ -90,7 +90,7 @@ const MyWallet = () => {
   return (
     <>
       <div className={styles.main}>
-      <Header overview={false} />
+      <Header title="My Wallets" />
       <div className={styles.display}>
         <div>
           <Button onClick={handleClickAddCard}>Add Card</Button>

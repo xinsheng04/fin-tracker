@@ -1,7 +1,10 @@
+import styles from './StatsPage.module.css';
 const StatsPage: React.FC = () => {
   return (
     <div>
-      <h1>Stats Page</h1>
+
+      <div className={styles.pieChartSection}></div>
+      <div className={styles.graphSection}></div>
     </div>
   );
 }

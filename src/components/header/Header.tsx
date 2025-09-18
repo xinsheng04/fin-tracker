@@ -6,17 +6,16 @@ import styles from "./header.module.css"
 
 // type header props
 type HeaderProps={
-  overview:boolean;
-
+  title: String;
 }
 
-export default function Header({overview}:HeaderProps){
+export default function Header({title} :HeaderProps){
   const user = useSelector((state: any) => state.user);
   return(
     <div className={`${styles.header}`}>
       {/* upper header */}
       <div className={`${styles['header-upper']}`}>
-        {overview ?<h1>Overview</h1>: <h1>My Wallet</h1>}
+        <h1>{title}</h1>
         {/* profile button */}
         <ProfileButton 
           username={`${user?.fname || "John"} ${user?.lname || "Doe"}`}
