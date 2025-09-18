@@ -1,0 +1,69 @@
+/* Container for the transaction details */
+.transaction-details {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Header styling */
+.transaction-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+/* Detail rows */
+.transaction-header tr {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.transaction-header tr:last-child {
+  border-bottom: none;
+}
+
+/* Labels for details */
+.transaction-header th {
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Values for details */
+.transaction-header td {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.income {
+  color: green;
+}
+
+.expense {
+  color: red;
+}
+/* 
+Close button styling
+.close-button {
+  align-self: flex-end;
+  background-color: transparent;
+  border: none;
+  color: #888;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.close-button:hover {
+  color: #333;
+} */

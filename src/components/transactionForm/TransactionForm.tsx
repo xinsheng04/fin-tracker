@@ -34,8 +34,8 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
         cardNo: card.cardNo, 
         amount: Number(data.amount), 
         date: String(dateTime),
-        category: "Other",
-        comments: ""
+        category: data.category,
+        comments: data.comments
       }));
     } else {
       console.error("Income registration error: Card not found");
@@ -49,7 +49,6 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
     const card = bankAccounts.find((acc: any) => acc.cardNo === data.bankCard);
     if (card) {
       dispatch(removeAmountFromCard({ cardNo: card.cardNo, amount: Number(data.amount) }));
-
       // adding the expense part for the recentTransaction
       dispatch(addRecentTransaction({ 
         bank: card.bankName, 
@@ -57,8 +56,8 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
         cardNo: card.cardNo, 
         amount: Number(data.amount), 
         date: String(dateTime),
-        category: "Other",
-        comments: ""
+        category: data.category,
+        comments: data.comments
       }));
     } else {
       console.error("Expense registration error: Card not found");
