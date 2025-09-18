@@ -13,6 +13,8 @@ const StatsPage: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
+    
   );
 }
 
