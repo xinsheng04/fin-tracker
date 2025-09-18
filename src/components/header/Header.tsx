@@ -6,10 +6,11 @@ import styles from "./header.module.css"
 
 // type header props
 type HeaderProps={
-  title: String;
+  title:string;
+
 }
 
-export default function Header({title} :HeaderProps){
+export default function Header({title}:HeaderProps){
   const user = useSelector((state: any) => state.user);
   return(
     <div className={`${styles.header}`}>

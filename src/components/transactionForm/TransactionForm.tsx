@@ -3,7 +3,8 @@ import Form from "../../ui/form/Form";
 import Input from "../../ui/input/Input";
 import Dropdown from "../../ui/dropdown/Dropdown";
 import { useSelector, useDispatch } from "react-redux";
-import { addAmountToCard, removeAmountFromCard, addRecentTransaction } from "../../store/myWallet";
+import { addAmountToCard, removeAmountFromCard } from "../../store/myWallet";
+import { addRecentTransaction } from "../../store/transaction";
 
 type TransactionFormProps = {
   type: "income" | "expense";
@@ -15,7 +16,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
   const bankAccounts = useSelector((state: any) => state.myWallet.bankAccounts);
   const cardNos = bankAccounts.map((card: any) => ({ label: `${card.bankName} : ${card.cardNo}`, value: card.cardNo }));
   // adding date 
-  let dateTime = new Date().toISOString().slice(0,10);
+  let dateTime = new Date().toISOString().slice(0, 10);
   if (bankAccounts.length === 0) {
     return <p>Please add a bank account first.</p>
   }
@@ -25,40 +26,38 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
     if (card) {
       dispatch(addAmountToCard({ cardNo: card.cardNo, amount: Number(data.amount) }));
       // this is to also dispatch the recentTransaction
-      dispatch(addRecentTransaction({ bank:card.bankName, typeOfTransfer:"income",cardNo: card.cardNo, amount: Number(data.amount), date: String(dateTime)}))
-  } else {
-    console.error("Income registration error: Card not found");
-  }
-
-  closeForm();
-}
-
-function handleAddExpense(data: any) {
-  const card = bankAccounts.find((acc: any) => acc.cardNo === data.bankCard);
-  if (card) {
-    if(card.amount >= Number(data.amount)){
-      dispatch(removeAmountFromCard({ cardNo: card.cardNo, amount: Number(data.amount) }));
-      // adding the expense part for the recentTransaction
-      dispatch(addRecentTransaction({bank:card.bankName, typeOfTransfer:"expense", cardNo:card.cardNo, amount:Number(data.amount), date: String(dateTime)}))
-    } else{
-      alert("Insufficient balance on the selected card.");
+      dispatch(addRecentTransaction({ bank: card.bankName, typeOfTransfer: "income", cardNo: card.cardNo, amount: Number(data.amount), date: String(dateTime) }))
+    } else {
+      console.error("Income registration error: Card not found");
     }
-  } else {
-    console.error("Expense registration error: Card not found");
+
+
+    closeForm();
   }
+
+  function handleAddExpense(data: any) {
+    const card = bankAccounts.find((acc: any) => acc.cardNo === data.bankCard);
+    if (card) {
+      dispatch(removeAmountFromCard({ cardNo: card.cardNo, amount: Number(data.amount) }));
+
+      // adding the expense part for the recentTransaction
+      dispatch(addRecentTransaction({ bank: card.bankName, typeOfTransfer: "expense", cardNo: card.cardNo, amount: Number(data.amount), date: String(dateTime) }))
+    } else {
+      console.error("Expense registration error: Card not found");
+    }
 
   closeForm();
 }
 
-return (
-  <Form submit={type === "income" ? handleAddIncome : handleAddExpense}>
-    <h1>{type === "income" ? "Add Income" : "Add Expense"}</h1>
-    <div>
-      {/* extra spaces because I'm not updating the CSS for dropdown */}
-      <Dropdown label="Bank Card    " name="bankCard" options={cardNos} />
-      <Input label="Amount" name="amount" type="number" />
-    </div>
-  </Form>
-);
+  return (
+    <Form submit={type === "income" ? handleAddIncome : handleAddExpense}>
+      <h1>{type === "income" ? "Add Income" : "Add Expense"}</h1>
+      <div>
+        {/* extra spaces because I'm not updating the CSS for dropdown */}
+        <Dropdown label="Bank Card    " name="bankCard" options={cardNos} />
+        <Input label="Amount" name="amount" type="number" />
+      </div>
+    </Form>
+  );
 }
 export default TransactionForm;

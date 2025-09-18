@@ -10,23 +10,11 @@ interface Card{
 // Define wallet State 
 interface Wallet { 
   bankAccounts: Card[];
-  recentTransaction:Transactions[];
-}
-// Define Recent Transactions
-interface Transactions{
-  // will add date in the future
-  bank:string; 
-  amount:number;
-  typeOfTransfer:string;
-  cardNo:string;
-  date:string;
 }
 
 // initial State 
 const initialState : Wallet = { 
   bankAccounts:[],
-  recentTransaction:[]
-
 }
 
 // dummy data
@@ -35,7 +23,7 @@ const dummyState: Wallet = {
     { bankName: "Maybank", cardNo: "1234567890123456", amount: 15000 },
     { bankName: "CIMB", cardNo: "6543217890123456", amount: 5000 },
   ],
-  recentTransaction:[]
+
 }
 
 // creating the slice 
@@ -70,14 +58,9 @@ const myWalletSlice = createSlice({
       const {cardNo} = action.payload;
       state.bankAccounts= state.bankAccounts.filter(card=> card.cardNo !== cardNo);
     },
-
-    // adding to recent transactions 
-    addRecentTransaction(state,action:PayloadAction<Transactions>){
-      state.recentTransaction.splice(0,0,action.payload);
-    }
       
   },
 });
 
-export const{addAmountToCard,removeAmountFromCard, addNewCard,deleteCard,addRecentTransaction} = myWalletSlice.actions;
+export const{addAmountToCard,removeAmountFromCard, addNewCard,deleteCard} = myWalletSlice.actions;
 export default myWalletSlice.reducer;

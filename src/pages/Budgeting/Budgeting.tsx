@@ -1,7 +1,7 @@
 
 function Budgeting() {
   return (
-    <h3>Budgeting Page</h3>
+    <h1>Budgeting Page</h1>
   );
 }
 

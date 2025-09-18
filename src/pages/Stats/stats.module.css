@@ -1,0 +1,17 @@
+.main{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: start;
+  flex:1;
+}
+
+.right{
+
+}
+
+.left{
+  display: flex;
+  flex-direction: column;
+  border: 1px solid red;
+}
