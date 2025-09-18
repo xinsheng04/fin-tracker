@@ -10,14 +10,11 @@ interface Card{
 // Define wallet State 
 interface Wallet { 
   bankAccounts: Card[];
-
 }
 
 // initial State 
 const initialState : Wallet = { 
   bankAccounts:[],
-
-
 }
 
 // dummy data
@@ -61,11 +58,6 @@ const myWalletSlice = createSlice({
       const {cardNo} = action.payload;
       state.bankAccounts= state.bankAccounts.filter(card=> card.cardNo !== cardNo);
     },
-
-    // adding to recent transactions 
-    // addRecentTransaction(state,action:PayloadAction<Transactions>){
-    //   state.recentTransaction.splice(0,0,action.payload);
-    // }
       
   },
 });
