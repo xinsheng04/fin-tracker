@@ -12,9 +12,7 @@ const StatsPage: React.FC = () => {
           <div className={styles.graphSection}></div>
         </div>
       </div>
-    </div>
-    </>
-    
+    </div>    
   );
 }
 
