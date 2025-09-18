@@ -1,7 +1,7 @@
 import style from "./stats.module.css";
-
 const StatsPage: React.FC = () => {
   return (
+    <>
     <div className={style.main}>
       <div className={style.right}>right</div>
       <div className={style.left}/*left*/>
@@ -10,6 +10,8 @@ const StatsPage: React.FC = () => {
         <div>2</div>
       </div>
     </div>
+    </>
+    
   );
 }
 
