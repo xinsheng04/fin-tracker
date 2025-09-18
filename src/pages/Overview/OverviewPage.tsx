@@ -15,7 +15,7 @@ const Overview: React.FC = () => {
     setModalOpenType(null);
   }
   // going to output the recentTransaction arrays 
-  const recent = useSelector((state: any) => state.myWallet.recentTransaction)
+  const recent = useSelector((state: any) => state.transaction.recentTransaction)
   const incomeExists = recent.some((rec: any) => rec.typeOfTransfer === "income");
   const expenseExists = recent.some((rec: any) => rec.typeOfTransfer === "expense");
 

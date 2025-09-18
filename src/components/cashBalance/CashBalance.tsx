@@ -2,6 +2,7 @@ import styles from "./CashBalance.module.css";
 import calendarLogo from "../../assets/calendarLogo.png";
 import React from "react";
 import currencyFormatter from "../../util/currencyFormatter";
+import calcIncomeOrExpense from "../../util/calcIncomeOrExpense";
 import { useSelector } from "react-redux";
 
 
@@ -18,19 +19,10 @@ interface CashBalanceProps {
 
 const CashBalance: React.FC<CashBalanceProps> = ({ title, children,income,expense,balance, className='' }) => {
   const bankAccount = useSelector((state: any) => state.myWallet.bankAccounts);
-  const transactions = useSelector((state: any) => state.myWallet.recentTransaction);
+  const transactions = useSelector((state: any) => state.transaction.recentTransaction);
   // To be implemented in the future: get only transactions from last 30 days
-  let accIncome = transactions.reduce((acc: number, transaction: any) => {
-    if (transaction.typeOfTransfer === "income") {
-      return acc + transaction.amount;
-    }
-    return acc;
-  }, 0);
-  let accExpense = transactions.reduce((acc: number, transaction: any) =>  {
-    if (transaction.typeOfTransfer === "expense")
-      return acc + transaction.amount;
-    return acc;
-  }, 0);
+  const accIncome = calcIncomeOrExpense(transactions, "income");
+  const accExpense = calcIncomeOrExpense(transactions, "expense");
   let totalAmount = 0;
   for (let amount of bankAccount) {
     totalAmount += amount.amount;

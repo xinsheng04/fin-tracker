@@ -2,9 +2,11 @@ import type React from "react";
 import Form from "../../ui/form/Form";
 import Input from "../../ui/input/Input";
 import Dropdown from "../../ui/dropdown/Dropdown";
+import { incomeCat, expenseCat } from "../../util/transactionCategories";
 import { useSelector, useDispatch } from "react-redux";
 import { addAmountToCard, removeAmountFromCard } from "../../store/myWallet";
 import { addRecentTransaction } from "../../store/transaction";
+import styles from './TransactionForm.module.css';
 
 type TransactionFormProps = {
   type: "income" | "expense";
@@ -26,7 +28,15 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
     if (card) {
       dispatch(addAmountToCard({ cardNo: card.cardNo, amount: Number(data.amount) }));
       // this is to also dispatch the recentTransaction
-      dispatch(addRecentTransaction({ bank: card.bankName, typeOfTransfer: "income", cardNo: card.cardNo, amount: Number(data.amount), date: String(dateTime) }))
+      dispatch(addRecentTransaction({ 
+        bank: card.bankName, 
+        typeOfTransfer: "income", 
+        cardNo: card.cardNo, 
+        amount: Number(data.amount), 
+        date: String(dateTime),
+        category: "Other",
+        comments: ""
+      }));
     } else {
       console.error("Income registration error: Card not found");
     }
@@ -41,7 +51,15 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
       dispatch(removeAmountFromCard({ cardNo: card.cardNo, amount: Number(data.amount) }));
 
       // adding the expense part for the recentTransaction
-      dispatch(addRecentTransaction({ bank: card.bankName, typeOfTransfer: "expense", cardNo: card.cardNo, amount: Number(data.amount), date: String(dateTime) }))
+      dispatch(addRecentTransaction({ 
+        bank: card.bankName, 
+        typeOfTransfer: "expense", 
+        cardNo: card.cardNo, 
+        amount: Number(data.amount), 
+        date: String(dateTime),
+        category: "Other",
+        comments: ""
+      }));
     } else {
       console.error("Expense registration error: Card not found");
     }
@@ -52,10 +70,21 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
   return (
     <Form submit={type === "income" ? handleAddIncome : handleAddExpense}>
       <h1>{type === "income" ? "Add Income" : "Add Expense"}</h1>
-      <div>
+      <div className={styles.formGroup}>
         {/* extra spaces because I'm not updating the CSS for dropdown */}
-        <Dropdown label="Bank Card    " name="bankCard" options={cardNos} />
-        <Input label="Amount" name="amount" type="number" />
+        <div>
+          <p>1. Account involved</p>
+          <Dropdown label="Bank Card    " name="bankCard" options={cardNos} />
+        </div>
+        <div>
+          <p>2. Transaction amount</p>
+          <Input label="Amount" name="amount" type="number" />
+        </div>
+        <div>
+          <p>3. Purpose of transaction</p>
+          <Dropdown label="Category    " name="category" options={type === "income" ? incomeCat : expenseCat} />
+          <textarea className={styles.commentsBox} name="comments" placeholder="Additional comments (optional)" />
+        </div>
       </div>
     </Form>
   );

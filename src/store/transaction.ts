@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import type { Category } from '../util/transactionCategories';
 
 // Define Recent Transactions
 interface TransactionsType {
@@ -7,6 +8,8 @@ interface TransactionsType {
   bank: string;
   amount: number;
   typeOfTransfer: string;
+  category: Category;
+  comments: string;
   cardNo: string;
   date: string;
 }
@@ -32,5 +35,6 @@ const transactionSlice = createSlice({
   },
 });
 
+export type { TransactionsType };
 export const{addRecentTransaction} = transactionSlice.actions;
 export default transactionSlice.reducer;
