@@ -84,3 +84,44 @@ form input:focus {
 .spentValue {
   color: #ef4444; /* A distinct red color for spent amount */
 }
+
+.advise{
+   margin: 2.5rem auto 0 auto;
+  padding: 1rem 1.5rem;
+  border-radius: 0.75rem;
+  max-width: 980px;
+  width: 90%;
+  text-align: center;
+  font-weight: 500;
+  font-size: 1rem;
+  border: 1px solid;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Default/Info Style */
+.info {
+  background-color: #eff6ff; /* Light blue */
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+
+/* Good/Success Style */
+.good {
+  background-color: #f0fdf4; /* Light green */
+  color: #166534;
+  border-color: #bbf7d0;
+}
+
+/* Warning Style */
+.warning {
+  background-color: #fffbeb; /* Light yellow */
+  color: #b45309;
+  border-color: #fde68a;
+}
+
+/* Danger/Error Style */
+.danger {
+  background-color: #fef2f2; /* Light red */
+  color: #b91c1c;
+  border-color: #fecaca;
+}

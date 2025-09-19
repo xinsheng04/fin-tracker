@@ -26,8 +26,24 @@ function Budgeting() {
       .reduce((sum: number, t: any) => sum + t.amount, 0)
     : 0;
   const amountSpent = Math.max(spent, 0);
-  var amountPercentage = (amountSpent/budget.mainAmount)*100
-  amountPercentage = Number(amountPercentage.toFixed(2));
+  const amountPercentage = budget.mainAmount > 0 ? (amountSpent / budget.mainAmount) * 100 : 0;
+
+  // Add this logic for dynamic advice
+  let adviceMessage = "Set a budget to see your spending analysis.";
+  let adviceStyle = styles.info; // Default style
+
+  if (budget.mainAmount > 0) {
+    if (amountPercentage >= 100) {
+      adviceMessage = "You've exceeded your budget. Time to review your spending!";
+      adviceStyle = styles.danger;
+    } else if (amountPercentage >= 80) {
+      adviceMessage = "Warning: You're getting close to your budget limit.";
+      adviceStyle = styles.warning;
+    } else {
+      adviceMessage = "You're doing great! Your spending is well within your budget.";
+      adviceStyle = styles.good;
+    }
+  }
 
   function handleFormSubmission(event: any) {
     // to stop the page from rerendering
@@ -68,9 +84,13 @@ function Budgeting() {
         </div>
         <div className={styles.infoBox}>
           <span>Percentage Spent</span>
-          <strong className={styles.spentValue}>{amountPercentage}</strong>
+          {/* Added a '%' sign for clarity */}
+          <strong className={styles.spentValue}>{amountPercentage.toFixed(2)}%</strong>
         </div>
-        
+      </div>
+      {/* Update the advise div to use the dynamic variables */}
+      <div className={`${styles.advise} ${adviceStyle}`}>
+        {adviceMessage}
       </div>
     </div>
 
