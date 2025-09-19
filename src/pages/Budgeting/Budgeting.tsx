@@ -30,11 +30,11 @@ function Budgeting() {
       <Header title="Budget" />
       <div className={styles.divider}>
         <div className={styles.inputs}>
-          <Button onClick={handleClick}>Set Budget</Button>
+          <Button onClick={handleClick}>{budgetButton ? "Close Budget": "Set Budget"}</Button>
           {budgetButton &&
             <form onSubmit={handleFormSubmission}>
               <Input label="set budget" name="budget" />
-              <Button type="submit">set Amount</Button>
+              <Button type="submit">Set Amount</Button>
             </form>
           }
         </div>
