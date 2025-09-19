@@ -8,9 +8,10 @@
 .contentBox{
   display: grid;
   grid-template-columns: 3.5fr 6.5fr;
+  column-gap: 2rem;
   grid-template-rows: 1fr;
   width: auto;
-  padding: 0 0 0 1rem;
+  padding: 0 1rem;
   margin: 0;
 }
 

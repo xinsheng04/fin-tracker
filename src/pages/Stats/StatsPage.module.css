@@ -7,11 +7,80 @@
 .visuals{
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 20px;
+  gap: 1.2rem;
+  padding: 1.2rem;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .visuals > div{
   width: 100%;
-  border: 1px solid black;
 }
+
+.pieChartSection{
+  display: grid;
+  max-height: 30rem;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 3rem;
+  align-items: center;
+}
+
+.pieChartSection > div{
+  display: grid;
+  grid-template-rows: 1.5rem 1fr;
+  row-gap: 0.8rem;
+  border-radius: 0.2rem;
+  box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.pieChartSection p{
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.donutChart{
+  height: 18rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* .toggleButtons, .transChart{
+  border-radius: 0.2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toggleButtons{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: space-around;
+  gap: auto;
+  height: 2rem;
+}
+
+.toggleButtons div{
+  height: 100%;
+  cursor: pointer;
+  padding: 0 1rem;
+  border-radius: 0.2rem;
+  font-weight: light;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.active{
+  border-bottom: #007bff 3px solid;
+}
+
+.transChart {
+  height: 30rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chart{
+  height: auto;
+  width: auto;
+} */

@@ -2,7 +2,7 @@ import type React from 'react';
 import type {TransactionsType} from '../../store/transaction';
 import styles from './TransactionDetails.module.css';
 
-export const TransactionDetails: React.FC<TransactionsType> = (
+const TransactionDetails: React.FC<TransactionsType> = (
   {
     bank, 
     amount, 
@@ -47,3 +47,5 @@ export const TransactionDetails: React.FC<TransactionsType> = (
     </div>
   );
 }
+
+export default TransactionDetails;

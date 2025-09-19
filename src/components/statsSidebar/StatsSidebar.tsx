@@ -3,6 +3,12 @@ import styles from './StatsSidebar.module.css';
 import calcIncomeOrExpense from "../../util/calcIncomeOrExpense";
 const StatsSidebar: React.FC = () => {
   const transactions = useSelector((state: any) => state.transaction.recentTransaction);
+  const assetLiabilities = useSelector((state: any) => state.assetLiability.assetLiabilityItems);
+
+  const assets = assetLiabilities.filter((item: any) => item.type === 'asset');
+  const liabilities = assetLiabilities.filter((item: any) => item.type === 'liability');
+  const assetSum = assets.reduce((acc: number, item: any) => acc + item.value, 0);
+  const liabilitySum = liabilities.reduce((acc: number, item: any) => acc + item.value, 0);
   const income = calcIncomeOrExpense(transactions, "income");
   const expense = calcIncomeOrExpense(transactions, "expense");
   const savingsRate = income !== 0 ? ((income - expense) / income * 100) : 0;
@@ -37,11 +43,11 @@ const StatsSidebar: React.FC = () => {
             </tr>
             <tr>
               <th>Net worth</th>
-              <td>0000</td>
+              <td>{assetSum - liabilitySum}</td>
             </tr>
             <tr>
               <th>Debt-to-income ratio</th>
-              <td>0000</td>
+              <td>{liabilitySum !== 0 ? (liabilitySum / income * 100).toFixed(2) : 0}%</td>
             </tr>
           </tbody>
         </table>

@@ -3,7 +3,7 @@ import Header from "../../components/header/Header";
 import styles from "./budgeting.module.css";
 import { useState } from 'react';
 import Button from "../../ui/button/Button";
-import BudgetDonut from "../../ui/graph/BudgetDonut";
+import BudgetDonut from "../../components/budgetDonut/BudgetDonut";
 import { useDispatch } from "react-redux";
 import { setBudget } from "../../store/budgeting";
 function Budgeting() {
