@@ -2,12 +2,14 @@ import styles from "./CashBalance.module.css";
 import calendarLogo from "../../assets/calendarLogo.png";
 import React from "react";
 import currencyFormatter from "../../util/currencyFormatter";
+import calcIncomeOrExpense from "../../util/calcIncomeOrExpense";
 import { useSelector } from "react-redux";
 
 
 interface CashBalanceProps {
   title: string;
   children?: React.ReactNode;
+  className?: string;
   income?: boolean;
   expense?:boolean;
   balance?:boolean
@@ -15,9 +17,12 @@ interface CashBalanceProps {
   getDisplayAmount?: (key: string) => void;
 }
 
-const CashBalance: React.FC<CashBalanceProps> = ({ title, children,income,expense,balance }) => {
-  // 5000 is just a placeholder
+const CashBalance: React.FC<CashBalanceProps> = ({ title, children,income,expense,balance, className='' }) => {
   const bankAccount = useSelector((state: any) => state.myWallet.bankAccounts);
+  const transactions = useSelector((state: any) => state.transaction.recentTransaction);
+  // To be implemented in the future: get only transactions from last 30 days
+  const accIncome = calcIncomeOrExpense(transactions, "income");
+  const accExpense = calcIncomeOrExpense(transactions, "expense");
   let totalAmount = 0;
   for (let amount of bankAccount) {
     totalAmount += amount.amount;
@@ -25,7 +30,7 @@ const CashBalance: React.FC<CashBalanceProps> = ({ title, children,income,expens
   // Set balance to be used with the button down below
   // will be implemented in the future
   return (
-    <div className={styles.cashBalance}>
+    <div className={`${styles.cashBalance} ${className}`}>
       {/* mini header */}
       <div className={styles.header}>
         <h3 className={styles.title}>{title}</h3>
@@ -36,10 +41,8 @@ const CashBalance: React.FC<CashBalanceProps> = ({ title, children,income,expens
       </div>
       {/* amount statement */}
       {balance &&<h1 className={styles.balance}>{currencyFormatter(totalAmount)}</h1>}
-      {income &&<h1 className={styles.balance}>{currencyFormatter(2000)}</h1>}
-      {expense &&<h1 className={styles.balance}>{currencyFormatter(totalAmount*0.4)}</h1>}
-
-       
+      {income &&<h1 className={styles.balance}>{currencyFormatter(accIncome)}</h1>}
+      {expense &&<h1 className={styles.balance}>{currencyFormatter(accExpense)}</h1>}
       {children}
     </div>
   )

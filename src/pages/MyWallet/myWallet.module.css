@@ -1,7 +1,9 @@
+
 .main{
   display: flex;
   flex-direction: column;
-  margin-left:2rem;
+  overflow: auto;
+  width:100%;
   gap:1rem;
   align-items: flex-start;
 }
@@ -16,4 +18,8 @@
   margin-top: -17px;
   color:red;
   
+}
+
+.display{
+  margin-left:2rem;
 }

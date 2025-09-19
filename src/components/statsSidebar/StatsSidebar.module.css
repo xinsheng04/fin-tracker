@@ -1,0 +1,91 @@
+.metricSection {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background-color: #f9fafb; /* light neutral background */
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  font-family: 'Inter', sans-serif;
+  color: #1f2937; /* dark gray */
+}
+
+/* Common section styles */
+/* .summary,
+.indicators,
+.trends {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  border: 1px solid #e5e7eb;
+  transition: box-shadow 0.2s ease;
+} */
+
+/* .summary:hover,
+.indicators:hover,
+.trends:hover {
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+} */
+
+.summary p,
+.indicators p,
+.trends p {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  color: #111827;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.4rem;
+}
+
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+tr{
+  display: grid;
+  grid-template-columns: 6fr 4fr;
+}
+
+th {
+  text-align: left;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #4b5563;
+  padding: 0.4rem 0.6rem;
+}
+
+td {
+  text-align: right;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #111827;
+  padding: 0.4rem 0.6rem;
+}
+
+/* Row striping for readability */
+tbody tr:nth-child(odd) {
+  background-color: #f9fafb;
+  border-radius: 6px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+  .metricSection {
+    padding: 1rem;
+  }
+
+  th, td {
+    font-size: 0.85rem;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .summary p,
+  .indicators p,
+  .trends p {
+    font-size: 0.9rem;
+  }
+}

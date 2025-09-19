@@ -9,7 +9,7 @@ interface Card{
 
 // Define wallet State 
 interface Wallet { 
-  bankAccounts: Card[]
+  bankAccounts: Card[];
 }
 
 // initial State 
@@ -23,6 +23,7 @@ const dummyState: Wallet = {
     { bankName: "Maybank", cardNo: "1234567890123456", amount: 15000 },
     { bankName: "CIMB", cardNo: "6543217890123456", amount: 5000 },
   ],
+
 }
 
 // creating the slice 
@@ -56,7 +57,7 @@ const myWalletSlice = createSlice({
     deleteCard (state,action:PayloadAction<{cardNo:string}>){
       const {cardNo} = action.payload;
       state.bankAccounts= state.bankAccounts.filter(card=> card.cardNo !== cardNo);
-    }
+    },
       
   },
 });

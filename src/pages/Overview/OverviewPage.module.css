@@ -1,23 +1,54 @@
 .container {
   width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
 }
 
-.balances{
+.contentBox{
+  display: grid;
+  grid-template-columns: 3.5fr 6.5fr;
+  column-gap: 2rem;
+  grid-template-rows: 1fr;
+  width: auto;
+  padding: 0 1rem;
+  margin: 0;
+}
+
+.leftBox, .rightBox{
+  max-width: 100%;
+  /* border: 1px solid red; */
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.balanceBox{
+  width: 22rem;
+  height: 12rem;
+  padding: auto;
+}
+
+.balances {
+  margin: 2rem 1rem;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
   justify-content: space-between;
-  margin: 1rem 2.1rem 0 2.1rem;
-  padding: 1rem;
+  /* border: 1px solid red; */
 }
 
-.balanceActions{
+
+.balanceActions {
   display: flex;
   gap: 1rem;
   align-items: center;
-  justify-content: flex-center;
+  justify-content: center;
 }
 
-.buttons{
+.buttons {
   width: 10rem;
 }
+
