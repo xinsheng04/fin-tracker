@@ -65,7 +65,7 @@ const initialState: TransactionsState = {
 
 const transactionSlice = createSlice({
   name: 'recentTransactionDetails',
-  initialState: dummyState,
+  initialState: initialState,
   reducers: {
     // adding to recent transactions 
     addRecentTransaction(state, action: PayloadAction<TransactionsType>) {
