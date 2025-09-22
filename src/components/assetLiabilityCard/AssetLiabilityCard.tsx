@@ -1,23 +1,20 @@
-import type { AssetLiabilityKeyValueType } from "../../store/assetLiability";
+import { useSelector } from "react-redux";
 import styles from "./AssetLiabilityCard.module.css";
 
 interface AssetLiabilityDetailsProps{
-  id: number;
-  item: string;
-  value: number;
-  description: string;
-  date: string;
-  type: "asset" | "liability";
-  category: "current" | "fixed";
-  viewDetailsOnClick: (item: AssetLiabilityKeyValueType) => void;
+  id: string;
+  viewDetailsOnClick: (openType: string, itemID: string) => void;
 }
 
 const AssetLiabilityCard: React.FC<AssetLiabilityDetailsProps> = (
-  { id, item, value, description, date, type, category, viewDetailsOnClick }
+  { id, viewDetailsOnClick }
 ) => {
+  const {item, value, description, date, type} = useSelector((state: any) => state.assetLiability.assetLiabilityItems)
+  .find((al: any) => al.id === id);
+
   return (
     <div className={styles.main}>
-      <div className={styles.itemCard} onClick={() => viewDetailsOnClick({ id, item, value, description, date, type, category })}>
+      <div className={styles.itemCard} onClick={() => viewDetailsOnClick("details-assets-liabilities", id)}>
         <div className={styles.item}>
           <strong>{item}</strong>
           <p className={styles.description}>{description}</p>

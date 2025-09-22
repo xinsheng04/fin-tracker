@@ -1,20 +1,17 @@
 import styles from './transactionCard.module.css';
+import { useSelector } from 'react-redux';
 
 interface TransactionCardProps {
-  bank: string;
-  cardNo: string;
-  typeOfTransfer: string;
-  amount: number;
-  date:string;
-  category: string;
-  comments: string;
-  viewDetailsOnClick: (transaction: any) => void;
+id: string;
+  viewDetailsOnClick: (openType: string, id: string) => void;
 }
 
-const TransactionCard: React.FC<TransactionCardProps> = ({ bank, cardNo, typeOfTransfer, amount, date, category, comments, viewDetailsOnClick }) => {
+const TransactionCard: React.FC<TransactionCardProps> = ({ id, viewDetailsOnClick }) => {
+  const { bank, cardNo, typeOfTransfer, amount, date } = useSelector((state: any) => state.transaction.recentTransaction)
+  .find((tr: any) => tr.id === id);
   return (
     <div className={styles.main}>
-      <div key={cardNo} className={styles.transactionItem} onClick={() => viewDetailsOnClick({ bank, cardNo, typeOfTransfer, amount, date, category, comments })}>
+      <div key={cardNo} className={styles.transactionItem} onClick={() => viewDetailsOnClick("details-transactions", id)}>
         <div className={styles.origin}>
           <strong>{bank}</strong>
           <p className={styles.cardNumber}>{cardNo}</p>

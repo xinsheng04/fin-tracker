@@ -4,7 +4,7 @@ import TransactionCard from "../transactionCard/TransactionCard";
 import styles from "./RecentTransactions.module.css"
 
 type RecentTransactionsProps = {
-  viewDetailsOnClick: (transaction: any) => void;
+  viewDetailsOnClick: (openType: string, id: string) => void;
 }
 
 const RecentTransactions: React.FC<RecentTransactionsProps> = ({ viewDetailsOnClick }) => {
@@ -52,14 +52,8 @@ const RecentTransactions: React.FC<RecentTransactionsProps> = ({ viewDetailsOnCl
               return (
                 <TransactionCard
                   viewDetailsOnClick={viewDetailsOnClick}
-                  key={rec.cardNo + index}
-                  bank={rec.bank}
-                  cardNo={rec.cardNo}
-                  typeOfTransfer={rec.typeOfTransfer}
-                  amount={rec.amount}
-                  category={rec.category}
-                  comments={rec.comments}
-                  date={rec.date}
+                  key={rec.id}
+                  id={rec.id}
                 />
               )
             } else

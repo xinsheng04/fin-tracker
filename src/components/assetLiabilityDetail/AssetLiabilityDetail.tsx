@@ -1,17 +1,21 @@
 import type React from 'react';
-import type { AssetLiabilityKeyValueType } from '../../store/assetLiability';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { removeItem } from '../../store/assetLiability';
+import Button from '../../ui/button/Button';
 import styles from './AssetLiabilityDetail.module.css';
 
-const AssetLiabilityDetail: React.FC<AssetLiabilityKeyValueType> = ({
-  id,
-  item,
-  value,
-  description,
-  date,
-  type,
-  category,
+const AssetLiabilityDetail: React.FC<{ id: string, onClose: () => void }> = ({
+  id, onClose
 }) => {
+  const dispatch = useDispatch();
+  const { item, value, description, date, type, category } = useSelector((state: any) => state.assetLiability.assetLiabilityItems)
+  .find((al: any) => al.id === id);
   const assetOrLiability = type === "asset" ? "Asset" : "Liability";
+  function deleteItem() {
+    onClose();
+    dispatch(removeItem({ id }));
+  }
   return(
     <div className={styles.details}>
       <h3 className={styles.header}>{assetOrLiability} Details</h3>
@@ -43,6 +47,7 @@ const AssetLiabilityDetail: React.FC<AssetLiabilityKeyValueType> = ({
           </tr>
         </tbody>
       </table>
+      <Button onClick={()=>deleteItem()}>Remove {assetOrLiability}</Button>
     </div>
   )
 }

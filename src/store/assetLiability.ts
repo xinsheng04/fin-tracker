@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { generateAssetLiabilityID } from "../util/genID";
 
 interface AssetLiabilityKeyValue {
-  id: number;
+  id: string;
   item: string;
   value: number;
   description: string;
@@ -11,6 +12,8 @@ interface AssetLiabilityKeyValue {
   category: "current" | "fixed";
 }
 
+type AssetLiabilityValue = Omit<AssetLiabilityKeyValue, 'id'>;
+
 interface AssetLiabilityType {
   assetLiabilityItems: AssetLiabilityKeyValue[];
 }
@@ -18,7 +21,7 @@ interface AssetLiabilityType {
 const dummyState: AssetLiabilityType = {
   assetLiabilityItems: [
     {
-      id: 1,
+      id: "ASLI1",
       item: "Cash",
       value: 5000,
       description: "Cash in hand",
@@ -27,7 +30,7 @@ const dummyState: AssetLiabilityType = {
       category: "current",
     },
     {
-      id: 2,
+      id: "ASLI2",
       item: "Car Loan",
       value: 15000,
       description: "Loan for car purchase",
@@ -36,7 +39,7 @@ const dummyState: AssetLiabilityType = {
       category: "fixed",
     },
     {
-      id: 3,
+      id: "ASLI3",
       item: "Savings Account",
       value: 20000,
       description: "Bank savings",
@@ -45,7 +48,7 @@ const dummyState: AssetLiabilityType = {
       category: "current",
     },
     {
-      id: 4,
+      id: "ASLI4",
       item: "Mortgage",
       value: 100000,
       description: "Home mortgage",
@@ -60,21 +63,17 @@ const initialState: AssetLiabilityType = {
   assetLiabilityItems: [],
 }
 
-function generateNextID(): number {
-  return Math.max(0, ...initialState.assetLiabilityItems.map(item => item.id)) + 1;
-}
-
 const assetLiabilitySlice = createSlice({
   name: 'assetLiability',
   initialState: dummyState,
   reducers: {
     // pass the entire new item without id
-    addItem(state, action: PayloadAction<AssetLiabilityKeyValue>) {
-      const newItem = { ...action.payload, id: generateNextID() };
+    addItem(state, action: PayloadAction<AssetLiabilityValue>) {
+      const newItem = { id: generateAssetLiabilityID(), ...action.payload };
       state.assetLiabilityItems.push(newItem);
     },
     // pass the id
-    removeItem(state, action: PayloadAction<{ id: number }>) {
+    removeItem(state, action: PayloadAction<{ id: string }>) {
       const { id } = action.payload;
       state.assetLiabilityItems = state.assetLiabilityItems.filter(i => i.id !== id);
     },

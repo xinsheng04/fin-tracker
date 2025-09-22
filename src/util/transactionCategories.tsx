@@ -17,6 +17,7 @@ const expenseCat = [
   "Tax",
   "Utilities",
   "Rent/Mortgage",
+  "Purchase of Assets",
   "Transportation",
   "Healthcare",
   "Entertainment",

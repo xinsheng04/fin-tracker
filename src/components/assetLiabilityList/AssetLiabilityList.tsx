@@ -5,7 +5,7 @@ import AssetLiabilityCard from "../assetLiabilityCard/AssetLiabilityCard";
 import styles from "./AssetLiabilityList.module.css";
 
 interface AssetLiabilityListProps{
-  viewDetailsOnClick: (id: AssetLiabilityKeyValueType) => void;
+  viewDetailsOnClick: (openType: string, id: string) => void;
 }
 
 const AssetLiabilityList: React.FC<AssetLiabilityListProps> = ({ viewDetailsOnClick }) => {
@@ -71,13 +71,7 @@ const AssetLiabilityList: React.FC<AssetLiabilityListProps> = ({ viewDetailsOnCl
             return (
               <AssetLiabilityCard
                 key={item.id}
-                item={item.item}
                 id={item.id}
-                value={item.value}
-                description={item.description}
-                date={item.date}
-                type={item.type}
-                category={item.category}
                 viewDetailsOnClick={viewDetailsOnClick}
               />
             );

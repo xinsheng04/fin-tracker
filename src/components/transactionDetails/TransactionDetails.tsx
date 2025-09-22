@@ -1,23 +1,23 @@
 import type React from 'react';
-import type {TransactionsType} from '../../store/transaction';
 import styles from './TransactionDetails.module.css';
+import { useSelector } from 'react-redux';
 
-const TransactionDetails: React.FC<TransactionsType> = (
+const TransactionDetails: React.FC<{id: string}> = (
   {
-    bank, 
-    amount, 
-    typeOfTransfer, 
-    category, 
-    date, 
-    cardNo, 
-    comments
+    id
   }
 ) => {
+  const { bank, amount, typeOfTransfer, category, date, cardNo, comments } = useSelector((state: any) => state.transaction.recentTransaction)
+  .find((tr: any) => tr.id === id);
   return (
     <div className={styles.transactionDetails}>
       <h1 className={styles.transactionHeader}>Transaction Details</h1>
       <table>
         <tbody>
+          <tr>
+            <th>Transaction ID</th>
+            <td>{id}</td>
+          </tr>
           <tr>
             <th>Bank</th>
             <td>{bank}</td>

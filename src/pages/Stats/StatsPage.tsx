@@ -3,6 +3,13 @@ import StatsSidebar from '../../components/statsSidebar/StatsSidebar';
 import Header from '../../components/header/Header';
 import DonutChart from '../../ui/graph/DonutChart';
 import { useSelector } from 'react-redux';
+import type React from 'react';
+
+const EmptyChartText: React.FC<{ item: string }> = ({ item }) => {
+  return(
+    <p className={styles.emptyChartText}>There are no {item} transactions to display.</p>
+  )
+}
 
 const StatsPage: React.FC = () => {
   const transactions = useSelector((state: any) => state.transaction.recentTransaction);
@@ -22,19 +29,25 @@ const StatsPage: React.FC = () => {
             <div>
               <p>Income</p>
               <div className={styles.donutChart}>
+                {income.length === 0 && <EmptyChartText item="income" />}
+                {income.length > 0 &&
                 <DonutChart
                   className={styles.chart}
                   labelData={incomeLabelData}
                   />
+                }
               </div>
             </div>
             <div>
               <p>Expenses</p>
               <div className={styles.donutChart}>
+                {expenses.length === 0 && <EmptyChartText item="expense" />}
+                {expenses.length > 0 &&
                 <DonutChart
                   className={styles.chart}
                   labelData={expenseLabelData}
                 />
+                }
               </div>
             </div>
           </div>
