@@ -80,7 +80,7 @@ function Budgeting() {
         </div>
         <div className={styles.infoBox}>
           <span>Amount Spent</span>
-          <strong className={styles.spentValue}>${amountSpent}</strong>
+          <strong className={styles.spentValue}>${amountSpent > 10**11 ? amountSpent.toExponential(2): amountSpent.toLocaleString()}</strong>
         </div>
         <div className={styles.infoBox}>
           <span>Percentage Spent</span>
