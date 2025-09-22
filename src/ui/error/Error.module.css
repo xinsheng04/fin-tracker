@@ -1,0 +1,48 @@
+.errorDialog {
+  border: none;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.2), 0 8px 10px -6px rgb(0 0 0 / 0.2);
+  max-width: 450px;
+  width: 90%;
+  background: #fff;
+  color: #1e293b;
+  animation: slide-in 0.3s ease-out forwards;
+}
+
+/* This styles the dark background behind the modal */
+.errorDialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(1px);
+}
+
+.errorDialog h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #b91c1c; /* A strong red for the error title */
+}
+
+.errorDialog p {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #475569;
+  margin-bottom: 0;
+}
+
+.actions {
+  margin-top: 1.5rem;
+  text-align: right;
+}
+
+/* A subtle animation for when the modal appears */
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-210px);
+  }
+}
