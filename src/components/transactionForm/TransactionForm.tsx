@@ -26,6 +26,8 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
     return <p>Please add a bank account first.</p>
   }
 
+
+
   function handleAddIncome(data: any) {
     const card = bankAccounts.find((acc: any) => acc.cardNo === data.bankCard);
     if (card) {
@@ -48,9 +50,16 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
     closeForm();
   }
 
+
   function handleAddExpense(data: any) {
     const card = bankAccounts.find((acc: any) => acc.cardNo === data.bankCard);
     if (card) {
+      // checking if data.amount exceeds the card amount 
+      const cardAmount = card.amount;
+      if (Number(data.amount)> cardAmount){
+        alert('insufficient funds. This transaction is DENIED!');
+        return;
+      }
       dispatch(removeAmountFromCard({ cardNo: card.cardNo, amount: Number(data.amount) }));
       // adding the expense part for the recentTransaction
       dispatch(addRecentTransaction({

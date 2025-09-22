@@ -1,14 +1,14 @@
-.main{
-  width:100%;
-  display:flex;
+.main {
+  width: 100%;
+  display: flex;
   flex-direction: column;
 }
 
-.divider{
-  display:flex;
+.divider {
+  display: flex;
   flex-direction: row;
   justify-content: space-around;
-  margin-top:2rem;
+  margin-top: 2rem;
 }
 
 .inputs {
@@ -64,6 +64,7 @@ form input:focus {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+
 }
 
 .infoBox span {
@@ -82,11 +83,12 @@ form input:focus {
 }
 
 .spentValue {
-  color: #ef4444; /* A distinct red color for spent amount */
+  color: #ef4444;
+  /* A distinct red color for spent amount */
 }
 
-.advise{
-   margin: 2.5rem auto 0 auto;
+.advise {
+  margin: 2.5rem auto 0 auto;
   padding: 1rem 1.5rem;
   border-radius: 0.75rem;
   max-width: 980px;
@@ -100,28 +102,32 @@ form input:focus {
 
 /* Default/Info Style */
 .info {
-  background-color: #eff6ff; /* Light blue */
+  background-color: #eff6ff;
+  /* Light blue */
   color: #1d4ed8;
   border-color: #bfdbfe;
 }
 
 /* Good/Success Style */
 .good {
-  background-color: #f0fdf4; /* Light green */
+  background-color: #f0fdf4;
+  /* Light green */
   color: #166534;
   border-color: #bbf7d0;
 }
 
 /* Warning Style */
 .warning {
-  background-color: #fffbeb; /* Light yellow */
+  background-color: #fffbeb;
+  /* Light yellow */
   color: #b45309;
   border-color: #fde68a;
 }
 
 /* Danger/Error Style */
 .danger {
-  background-color: #fef2f2; /* Light red */
+  background-color: #fef2f2;
+  /* Light red */
   color: #b91c1c;
   border-color: #fecaca;
 }
