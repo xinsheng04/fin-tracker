@@ -29,6 +29,8 @@ const Overview: React.FC = () => {
     setModalOpenType("details-assets-liabilities");
     setSelectedAssetLiability(item);
   }
+  // checking if the user has millions or billions 
+  
 
   return (
     <div className={styles.container}>
