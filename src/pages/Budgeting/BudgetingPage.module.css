@@ -1,0 +1,82 @@
+.main{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.budgets{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.budgetCard{
+  max-width: 320px;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  text-align: center;
+  cursor: pointer;
+}
+
+.budgetCard h3 {
+  margin-bottom: 0.5rem;
+  color: #000000;
+}
+
+.budgetCard:hover {
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.subtext {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.subtext span {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.budgetContent > div{
+  display: grid;
+  grid-template-columns: 35% 65%;
+  gap: 1.5rem;
+}
+
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+tr{
+  display: grid;
+  grid-template-columns: 6fr 4fr;
+}
+
+th {
+  text-align: left;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #4b5563;
+  padding: 0.4rem 0.6rem;
+}
+
+td {
+  text-align: right;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #111827;
+  padding: 0.4rem 0.6rem;
+}
+
+/* Row striping for readability */
+tbody tr:nth-child(odd) {
+  background-color: #f9fafb;
+  border-radius: 6px;
+}

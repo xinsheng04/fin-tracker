@@ -3,17 +3,17 @@ import React from 'react';
 import styles from './input.module.css';
 
 type InputProps = React.InputHTMLAttributes<HTMLInputElement>& { 
-  label:string;
+  className?: string;
+  label?: string;
   value?:string;
+  type?: string;
   onChange?:(e:React.ChangeEvent<HTMLInputElement>)=>void;
-
-
 }
-function Input({label, ...inputProps}:InputProps) {
+function Input({className, label, type, value="", ...inputProps}:InputProps) {
   return (
-    <label className={styles.label}>
-      {label}
-      <input className={styles.input} type="number" {...inputProps} />
+    <label className={`${styles.label} ${className || ""}`}>
+      {label && label}
+      <input className={styles.input} type={type || "number"} defaultValue={value} {...inputProps} />
     </label>
   )
 }

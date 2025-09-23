@@ -1,10 +1,13 @@
 import { useSelector } from "react-redux";
 import styles from './StatsSidebar.module.css';
 import calcIncomeOrExpense from "../../util/calcIncomeOrExpense";
+import formatCurrency from "../../util/currencyFormatter";
 const StatsSidebar: React.FC = () => {
   const transactions = useSelector((state: any) => state.transaction.recentTransaction);
   const assetLiabilities = useSelector((state: any) => state.assetLiability.assetLiabilityItems);
-
+  const bankAccount = useSelector((state: any) => state.myWallet.bankAccounts);
+  
+  const totalCashBalance = bankAccount.reduce((acc: number, item: any) => acc + item.amount, 0);
   const assets = assetLiabilities.filter((item: any) => item.type === 'asset');
   const liabilities = assetLiabilities.filter((item: any) => item.type === 'liability');
   const assetSum = assets.reduce((acc: number, item: any) => acc + item.value, 0);
@@ -21,13 +24,13 @@ const StatsSidebar: React.FC = () => {
             <tr>
               <th>Net income</th>
               <td>
-                {income}
+                {formatCurrency(income)}
               </td>
             </tr>
             <tr>
               <th>Net expenses</th>
               <td>
-                {expense}
+                {formatCurrency(expense)}
               </td>
             </tr>
           </tbody>
@@ -43,11 +46,11 @@ const StatsSidebar: React.FC = () => {
             </tr>
             <tr>
               <th>Net worth</th>
-              <td>{assetSum - liabilitySum}</td>
+              <td>{formatCurrency(assetSum + totalCashBalance - liabilitySum)}</td>
             </tr>
             <tr>
               <th>Debt-to-income ratio</th>
-              <td>{liabilitySum !== 0 ? (liabilitySum / income * 100).toFixed(2) : 0}%</td>
+              <td>{liabilitySum !== 0 && income !== 0 ? (liabilitySum / income * 100).toFixed(2) : 0}%</td>
             </tr>
           </tbody>
         </table>

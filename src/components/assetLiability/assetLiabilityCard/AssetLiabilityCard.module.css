@@ -1,0 +1,63 @@
+.main{
+  cursor: pointer;
+  width: 100%;
+}
+
+.main:hover {
+  background-color: #f3f4f6;
+}
+
+.itemCard {
+  display: grid;
+  grid-template-columns: 40% 30% 20%;
+  width: 97%;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0.5rem;
+}
+
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  align-items: flex-start;
+  /* max-width: 100%;
+  overflow: hidden; */
+}
+
+.item>strong {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #333;
+}
+
+.item>p {
+  font-style: italic;
+  font-weight: lighter;
+}
+
+.asset,
+.liability {
+  font-size: 1.5rem;
+  text-align: end;
+  align-self: center;
+}
+
+.asset {
+  color: green;
+}
+
+.liability {
+  color: red;
+}
+
+.date {
+  font-size: 1rem;
+  color: #888;
+  align-self: center;
+  margin: 0 1rem;
+  min-width: 6.5rem; /* keeps dates aligned if you have multiple cards */
+  text-align: center;
+  letter-spacing: 0.5px;
+}

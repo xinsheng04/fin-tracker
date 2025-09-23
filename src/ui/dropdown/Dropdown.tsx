@@ -3,18 +3,20 @@ import styles from './dropdown.module.css';
 type DropdownOption = string | { value: string; label: string };
 
 type DropdownProps = {
-  children?: React.ReactNode;
+  className?: string;
   label: string;
   name: string;
+  value?: string;
   options: DropdownOption[];
+  onChange?:(e:React.ChangeEvent<HTMLSelectElement>)=>void;
   required?: boolean;
 };
 
-function Dropdown({ label, options, ...props }: DropdownProps) {
+function Dropdown({ className, label, name, options, value, onChange, required }: DropdownProps) {
   return (
-    <label className={styles.label}>
+    <label className={`${styles.label} ${className || ""}`}>
       {label}
-      <select className={styles.select} {...props}>
+      <select className={styles.select} name={name} value={value && value} onChange={onChange} required={required}>
         <option value="">--Select---</option>
         {options.map((opt, index) => {
           if (typeof opt === 'string') {

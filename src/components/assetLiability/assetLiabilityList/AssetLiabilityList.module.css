@@ -1,0 +1,89 @@
+.main{
+  width: 100%; /* Match the width of the cash balance */
+  margin-bottom: 2rem;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  background-color: #f9f9f9; /* Light background for contrast */
+  border-radius: .5rem; /* Rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  padding: 1rem;
+  max-height: 25rem;
+}
+
+.header{
+  align-self: flex-start;
+  width: 100%;
+  padding: 0.5rem;
+  margin: 0;
+  font-size: 1.3rem; /* Adjust font size for better alignment */
+  margin-bottom: 0.75rem; /* Reduce spacing below the title */
+  font-family: Arial, sans-serif;
+  color: #007BFF; /* Highlight title in blue */
+  text-align: center; /* Center-align the title */
+}
+
+.main ul {
+  list-style: none; /* Remove default list styling */
+}
+
+.main ul:last-child {
+  border-bottom: none; /* Remove divider for the last transaction */
+}
+
+.noItems {
+  font-style: italic;
+  text-align: center;
+  color: #666;
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+}
+
+.filters{
+  display: grid;
+  grid-template-rows: auto auto;
+  padding: 0;
+  width: inherit;
+  margin: 0 0 1rem 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.filters ul{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0 5rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filters p,
+.filters p:hover {
+  background: none;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.filters p {
+  color: #000000;
+  font-size: 1.1rem;
+}
+
+.filters p:hover {
+  color: #00c8ff;
+  font-weight: bolder;
+  text-decoration: underline;
+}
+
+.filters .active{
+  font-weight: bold;
+  color: #3898ff;
+}
+
+.list{
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+}

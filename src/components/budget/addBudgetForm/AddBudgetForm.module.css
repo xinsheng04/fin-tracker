@@ -1,0 +1,29 @@
+.expenseItem{
+  display: grid;
+  grid-template-columns: 30% 1fr 10%;
+  width: 100%;
+  align-items: top;
+  gap: 10px;
+  margin-bottom: 10px;
+  justify-content: space-between;
+  align-items: bottom;
+}
+
+.enteredAmount input{
+  width: 95%;
+  height: 1.5rem;
+}
+
+.expenseItem button{
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.expenseTable thead tr{
+  display: grid;
+  grid-template-columns: 30% 1fr;
+  gap: 10px;
+}

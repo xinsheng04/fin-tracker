@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { Category } from '../util/transactionCategories';
+import { generateTransactionID } from '../util/genID';
 
 // Define Recent Transactions
 interface TransactionsType {
-  // will add date in the future
+  id: string;
   bank: string;
   amount: number;
   typeOfTransfer: "income" | "expense";
@@ -14,6 +15,9 @@ interface TransactionsType {
   date: string;
 }
 
+// Utility type to exclude the id field
+type AddTransactionPayload<T> = Omit<T, 'id'>;
+
 interface TransactionsState {
   recentTransaction: TransactionsType[];
 }
@@ -21,6 +25,7 @@ interface TransactionsState {
 const dummyState: TransactionsState = {
   recentTransaction: [
     {
+      id: "TSCN1",
       bank: "Maybank",
       amount: 200,
       typeOfTransfer: "income",
@@ -30,6 +35,7 @@ const dummyState: TransactionsState = {
       date: "2025-09-01",
     },
     {
+      id: "TSCN2",
       bank: "CIMB",
       amount: 50,
       typeOfTransfer: "expense",
@@ -39,6 +45,7 @@ const dummyState: TransactionsState = {
       date: "2025-09-02",
     },
     {
+      id: "TSCN3",
       bank: "Maybank",
       amount: 100,
       typeOfTransfer: "expense",
@@ -48,6 +55,7 @@ const dummyState: TransactionsState = {
       date: "2025-09-03",
     },
     {
+      id: "TSCN4",
       bank: "CIMB",
       amount: 300,
       typeOfTransfer: "income",
@@ -63,13 +71,15 @@ const initialState: TransactionsState = {
   recentTransaction: []
 };
 
+
 const transactionSlice = createSlice({
   name: 'recentTransactionDetails',
   initialState: dummyState,
   reducers: {
     // adding to recent transactions 
-    addRecentTransaction(state, action: PayloadAction<TransactionsType>) {
-      state.recentTransaction.splice(0, 0, action.payload);
+    addRecentTransaction(state, action: PayloadAction<AddTransactionPayload<TransactionsType>>) {
+      const newTransaction = { id: generateTransactionID(), ...action.payload };
+      state.recentTransaction.splice(0, 0, newTransaction);
     }
   },
 });

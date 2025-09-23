@@ -20,8 +20,8 @@ const Sidebar: React.FC = () => {
         <ul>
           <li>
             <button
-              className={location.pathname === "/" ? styles.active : ""}
-              onClick={() => navigateTo("/")}
+              className={location.pathname === "/Overview" ? styles.active : ""}
+              onClick={() => navigateTo("/Overview")}
             >
               Overview
             </button>
@@ -55,7 +55,7 @@ const Sidebar: React.FC = () => {
       <nav>
         <ul>
           <li>
-            <button onClick={() => console.log("Logout")}>Logout</button>
+            <button onClick={() => navigateTo("/")}>Logout</button>
           </li>
           <li>
             <button>Dark Mode 🌙</button>

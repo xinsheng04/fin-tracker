@@ -52,3 +52,19 @@
   width: 10rem;
 }
 
+.asLi{
+  margin-top: 1.2rem;
+  margin-left: 0.3rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.asLi span {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.asLi span:hover {
+  color: #000;
+}
+

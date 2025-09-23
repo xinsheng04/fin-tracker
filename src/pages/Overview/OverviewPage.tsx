@@ -1,34 +1,29 @@
 import { useState } from "react";
 import Header from "../../components/header/Header"
 import CashBalance from "../../components/cashBalance/CashBalance";
-import TransactionForm from "../../components/transactionForm/TransactionForm";
-import RecentTransactions from "../../components/recentTransactions/RecentTransactions";
-import TransactionDetails from "../../components/transactionDetails/TransactionDetails";
-import type { TransactionsType } from "../../store/transaction";
-import AssetLiabilityList from "../../components/assetLiabilityList/AssetLiabilityList";
-import AssetLiabilityDetail from "../../components/assetLiabilityDetail/AssetLiabilityDetail";
-import type { AssetLiabilityKeyValueType } from "../../store/assetLiability";
+import TransactionForm from "../../components/transaction/transactionForm/TransactionForm";
+import RecentTransactions from "../../components/transaction/recentTransactions/RecentTransactions";
+import TransactionDetails from "../../components/transaction/transactionDetails/TransactionDetails";
+import AssetLiabilityForm from "../../components/assetLiability/assetLiabilityForm/AssetLiabilityForm";
+import AssetLiabilityList from "../../components/assetLiability/assetLiabilityList/AssetLiabilityList";
+import AssetLiabilityDetail from "../../components/assetLiability/assetLiabilityDetail/AssetLiabilityDetail";
 import Button from "../../ui/button/Button";
 import Modal from "../../ui/modal/Modal";
 import styles from "./OverviewPage.module.css";
 
 const Overview: React.FC = () => {
-  const [modalOpenType, setModalOpenType] = useState<"income" | "expense" | "details-transactions" | "details-assets-liabilities" | null>(null);
-  const [selectedTransaction, setSelectedTransaction] = useState<TransactionsType| null>(null);
-  const [selectedAssetLiability, setSelectedAssetLiability] = useState<AssetLiabilityKeyValueType | null>(null);
+  const [modalOpenType, setModalOpenType] = useState<"income" | "expense" | "asset-liability" | "details-transactions" | "details-assets-liabilities" | null>(null);
+  const [selected, setSelected] = useState<string | null>(null);
   function closeModal() {
     setModalOpenType(null);
   }
 
-  function openTransactionDetailsModal(transaction: TransactionsType) {
-    setModalOpenType("details-transactions");
-    setSelectedTransaction(transaction);
+  function openDetailsModal(openType: string, id: string){
+    setModalOpenType(openType as "details-transactions" | "details-assets-liabilities");
+    setSelected(id);
   }
-
-  function openAssetLiabilityDetailsModal(item: AssetLiabilityKeyValueType) {
-    setModalOpenType("details-assets-liabilities");
-    setSelectedAssetLiability(item);
-  }
+  // checking if the user has millions or billions 
+  
 
   return (
     <div className={styles.container}>
@@ -43,40 +38,37 @@ const Overview: React.FC = () => {
               Received
             </Button>
           </div>
+          <p className={styles.asLi}>Or, you can&nbsp;
+            <span onClick={() => setModalOpenType("asset-liability")}>
+              add a new asset or liability
+            </span>
+          </p>
         </CashBalance>
         <CashBalance className={styles.balanceBox} title="Monthly Income" income={true} />
         <CashBalance className={styles.balanceBox} title="Monthly Expenses" expense={true} />
       </div>
       <div className={styles.contentBox}>
         <div className={styles.leftBox}>
-          <RecentTransactions viewDetailsOnClick={openTransactionDetailsModal} />
+          <RecentTransactions viewDetailsOnClick={openDetailsModal} />
         </div>
         <div className={styles.rightBox}>
-          <AssetLiabilityList viewDetailsOnClick={openAssetLiabilityDetailsModal} />
+          <AssetLiabilityList viewDetailsOnClick={openDetailsModal} />
         </div>
       </div>
-      <Modal isOpen={modalOpenType !== null} onClose={() => setModalOpenType(null)}>
-        {(modalOpenType==="income" || modalOpenType==="expense") && <TransactionForm type={modalOpenType} closeForm={closeModal} />}
-        {modalOpenType==="details-transactions" && selectedTransaction &&
+      <Modal isOpen={modalOpenType !== null} onClose={closeModal}>
+        {(modalOpenType==="income" || modalOpenType==="expense") && 
+        <TransactionForm type={modalOpenType} closeForm={closeModal} />}
+        {modalOpenType==="asset-liability" && 
+        <AssetLiabilityForm closeForm={closeModal} />}
+        {modalOpenType==="details-transactions" && selected &&
           <TransactionDetails
-            bank={selectedTransaction.bank}
-            amount={selectedTransaction.amount}
-            typeOfTransfer={selectedTransaction.typeOfTransfer}
-            category={selectedTransaction.category}
-            date={selectedTransaction.date}
-            cardNo={selectedTransaction.cardNo}
-            comments={selectedTransaction.comments}
+            id={selected}
           />
         }
-        {modalOpenType==="details-assets-liabilities" && selectedAssetLiability &&
+        {modalOpenType==="details-assets-liabilities" && selected &&
           <AssetLiabilityDetail
-            id={selectedAssetLiability.id}
-            item={selectedAssetLiability.item}
-            value={selectedAssetLiability.value}
-            description={selectedAssetLiability.description}
-            date={selectedAssetLiability.date}
-            type={selectedAssetLiability.type}
-            category={selectedAssetLiability.category}
+            id={selected}
+            onClose={closeModal}
           />
         }
       </Modal>
