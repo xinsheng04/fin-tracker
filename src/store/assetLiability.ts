@@ -56,6 +56,15 @@ const dummyState: AssetLiabilityType = {
       type: "liability",
       category: "fixed",
     },
+    {
+      id: "ASLI5",
+      item: "Home",
+      value: 500000,
+      description: "Primary residence",
+      date: "2025-06-30",
+      type: "asset",
+      category: "fixed",
+    }
   ],
 };
 

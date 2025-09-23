@@ -1,5 +1,5 @@
 let transactionIDCounter = 0;
-let assetLiabilityIDCounter = 4;
+let assetLiabilityIDCounter = 5;
 
 export function generateTransactionID(): string {
   transactionIDCounter += 1;

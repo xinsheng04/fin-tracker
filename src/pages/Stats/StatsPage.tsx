@@ -14,10 +14,24 @@ const EmptyChartText: React.FC<{ item: string }> = ({ item }) => {
 const StatsPage: React.FC = () => {
   const transactions = useSelector((state: any) => state.transaction.recentTransaction);
 
+  function groupByCategory(data: any[]): { label: string; value: number }[] {
+    const aggregatedData = data.reduce((acc: Record<string, number>, curr: any) => {
+      const { category, amount } = curr;
+      if (!acc[category]){
+        acc[category] = 0;
+      }
+      acc[category] += Number(amount);
+      return acc;
+    }, {} as Record<string, number>);
+
+    const ans = Object.entries(aggregatedData).map(([category, amount]) => ({ label: category, value: Number(amount) }));
+    return ans;
+  }
+
   const income = transactions.filter((t: any) => t.typeOfTransfer === 'income');
-  const incomeLabelData = income.map((t: any) => ({ label: t.category, value: t.amount }));
+  const incomeLabelData = groupByCategory(income);
   const expenses = transactions.filter((t: any) => t.typeOfTransfer === 'expense');
-  const expenseLabelData = expenses.map((t: any) => ({ label: t.category, value: t.amount }));
+  const expenseLabelData = groupByCategory(expenses);
 
   return (
     <div>
