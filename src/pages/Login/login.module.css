@@ -46,3 +46,12 @@
   padding: 0.75rem;
   font-size: 1rem;
 }
+
+.sentence {
+  text-align: center;
+  padding-top: 1.2rem;
+}
+.sentence > a {
+  color:blue;
+  text-decoration: none;
+}

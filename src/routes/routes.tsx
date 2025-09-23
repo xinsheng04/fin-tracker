@@ -5,12 +5,19 @@ import Overview from '../pages/Overview/OverviewPage';
 import StatsPage from '../pages/Stats/StatsPage';
 import Login from '../pages/Login/Login';
 import Budgeting from '../pages/Budgeting/Budgeting';
+import Register from '../pages/Register/Register';
+
 
 const router = createBrowserRouter([
   {
     // This is a standalone page
     path:'/',
     element:<Login/>,
+    
+  },
+  {
+    path:'/Register',
+    element:<Register/>
   },
   {
     path:'/',

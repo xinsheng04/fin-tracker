@@ -7,12 +7,11 @@ type FormProps = {
   children: React.ReactNode;
   className?:React.ReactNode;
   buttonName?:string;
-  Register?:boolean;
-  
 }
 
-const Form: React.FC<FormProps> = ({ submit, children,buttonName,Register }) => {
+const Form: React.FC<FormProps> = ({ submit, children,buttonName }) => {
   const formRef = useRef<HTMLFormElement>(null);
+
 
   function handleSubmit(event: any){
     event.preventDefault();
@@ -26,14 +25,17 @@ const Form: React.FC<FormProps> = ({ submit, children,buttonName,Register }) => 
   }
 
   return (
-    <form ref={formRef} className={styles.form} onSubmit={handleSubmit}>
+    <>
+     <form ref={formRef} className={styles.form} onSubmit={handleSubmit}>
       {children}
       <div className={styles.buttonGroup}>
         <Button className={styles.button} type="button" onClick={handleReset}>Reset</Button>
         <Button className={styles.button} type="submit">{buttonName ||"submit"}</Button>
-        {Register &&<Button className={styles.button} >Register</Button>}
       </div>
     </form>
+    </>
+   
+
   )
 }
 
