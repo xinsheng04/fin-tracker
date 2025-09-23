@@ -13,7 +13,7 @@
 /* This styles the dark background behind the modal */
 .errorDialog::backdrop {
   background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(1px);
+  backdrop-filter: blur(4px);
 }
 
 .errorDialog h2 {
@@ -39,7 +39,7 @@
 @keyframes slide-in {
   from {
     opacity: 0;
-    transform: translateY(-100px);
+    transform: translateY(100px);
   }
   to {
     opacity: 1;

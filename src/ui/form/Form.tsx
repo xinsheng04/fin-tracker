@@ -5,9 +5,11 @@ import { useRef } from "react";
 type FormProps = {
   submit: (data: any) => void;
   children: React.ReactNode;
+  className?:React.ReactNode;
+  buttonName?:string;
 }
 
-const Form: React.FC<FormProps> = ({ submit, children }) => {
+const Form: React.FC<FormProps> = ({ submit, children,buttonName }) => {
   const formRef = useRef<HTMLFormElement>(null);
 
   function handleSubmit(event: any){
@@ -26,7 +28,7 @@ const Form: React.FC<FormProps> = ({ submit, children }) => {
       {children}
       <div className={styles.buttonGroup}>
         <Button className={styles.button} type="button" onClick={handleReset}>Reset</Button>
-        <Button className={styles.button} type="submit">Submit</Button>
+        <Button className={styles.button} type="submit">{buttonName}</Button>
       </div>
     </form>
   )
