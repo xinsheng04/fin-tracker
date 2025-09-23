@@ -23,10 +23,13 @@ const CashBalance: React.FC<CashBalanceProps> = ({ title, children,income,expens
   // To be implemented in the future: get only transactions from last 30 days
   const accIncome = calcIncomeOrExpense(transactions, "income");
   const accExpense = calcIncomeOrExpense(transactions, "expense");
+ 
   let totalAmount = 0;
   for (let amount of bankAccount) {
     totalAmount += amount.amount;
   }
+ 
+  
   // Set balance to be used with the button down below
   // will be implemented in the future
   return (

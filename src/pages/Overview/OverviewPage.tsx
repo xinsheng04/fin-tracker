@@ -22,6 +22,8 @@ const Overview: React.FC = () => {
     setModalOpenType(openType as "details-transactions" | "details-assets-liabilities");
     setSelected(id);
   }
+  // checking if the user has millions or billions 
+  
 
   return (
     <div className={styles.container}>
