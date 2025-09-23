@@ -1,12 +1,12 @@
 import { useState } from "react";
 import Header from "../../components/header/Header"
 import CashBalance from "../../components/cashBalance/CashBalance";
-import TransactionForm from "../../components/transactionForm/TransactionForm";
-import RecentTransactions from "../../components/recentTransactions/RecentTransactions";
-import TransactionDetails from "../../components/transactionDetails/TransactionDetails";
-import AssetLiabilityForm from "../../components/assetLiabilityForm/AssetLiabilityForm";
-import AssetLiabilityList from "../../components/assetLiabilityList/AssetLiabilityList";
-import AssetLiabilityDetail from "../../components/assetLiabilityDetail/AssetLiabilityDetail";
+import TransactionForm from "../../components/transaction/transactionForm/TransactionForm";
+import RecentTransactions from "../../components/transaction/recentTransactions/RecentTransactions";
+import TransactionDetails from "../../components/transaction/transactionDetails/TransactionDetails";
+import AssetLiabilityForm from "../../components/assetLiability/assetLiabilityForm/AssetLiabilityForm";
+import AssetLiabilityList from "../../components/assetLiability/assetLiabilityList/AssetLiabilityList";
+import AssetLiabilityDetail from "../../components/assetLiability/assetLiabilityDetail/AssetLiabilityDetail";
 import Button from "../../ui/button/Button";
 import Modal from "../../ui/modal/Modal";
 import styles from "./OverviewPage.module.css";
@@ -53,7 +53,7 @@ const Overview: React.FC = () => {
           <AssetLiabilityList viewDetailsOnClick={openDetailsModal} />
         </div>
       </div>
-      <Modal isOpen={modalOpenType !== null} onClose={() => setModalOpenType(null)}>
+      <Modal isOpen={modalOpenType !== null} onClose={closeModal}>
         {(modalOpenType==="income" || modalOpenType==="expense") && 
         <TransactionForm type={modalOpenType} closeForm={closeModal} />}
         {modalOpenType==="asset-liability" && 

@@ -1,16 +1,16 @@
 import type React from "react";
-import Form from "../../ui/form/Form";
-import Input from "../../ui/input/Input";
-import Dropdown from "../../ui/dropdown/Dropdown";
+import Form from "../../../ui/form/Form";
+import Input from "../../../ui/input/Input";
+import Dropdown from "../../../ui/dropdown/Dropdown";
 import { useState } from "react";
-import { RemainingAmountDisplay } from "../remainingAmount/RemainingAmountDisplay";
-import { incomeCat, expenseCat } from "../../util/transactionCategories";
+import { RemainingAmountDisplay } from "../../remainingAmount/RemainingAmountDisplay";
+import { incomeCat, expenseCat } from "../../../util/transactionCategories";
 import { useSelector, useDispatch } from "react-redux";
-import { addAmountToCard, removeAmountFromCard } from "../../store/myWallet";
-import { addRecentTransaction } from "../../store/transaction";
+import { addAmountToCard, removeAmountFromCard } from "../../../store/myWallet";
+import { addRecentTransaction } from "../../../store/transaction";
 import styles from './TransactionForm.module.css';
-import { deductFromRemaining } from "../../store/budgeting";
-import Error from "../../ui/error/Error";
+// import { deductFromRemaining } from "../../../store/budgeting";
+import Error from "../../../ui/error/Error";
 
 type TransactionFormProps = {
   type: "income" | "expense";
@@ -48,7 +48,6 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
       console.error("Income registration error: Card not found");
     }
 
-
     closeForm();
   }
 
@@ -77,8 +76,8 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
         comments: data.comments
       }));
 
-      // Tells the budget store to update the remaining amount immediately
-      dispatch(deductFromRemaining(Number(data.amount)))
+      // // Tells the budget store to update the remaining amount immediately
+      // dispatch(deductFromRemaining(Number(data.amount)))
 
     } else {
       console.error("Expense registration error: Card not found");

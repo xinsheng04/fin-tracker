@@ -58,6 +58,10 @@
     padding: 0.4rem 0.7rem;
 }
 
+.profile-button:hover{
+    background-color: #e7e7e7;
+}
+
 .profile-button img{
     border-radius: 50%;
     width: 2.2rem;

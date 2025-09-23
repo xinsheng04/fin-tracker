@@ -1,12 +1,12 @@
 import React from "react";
-import Form from "../../ui/form/Form";
-import Input from "../../ui/input/Input";
-import Dropdown from "../../ui/dropdown/Dropdown";
+import Form from "../../../ui/form/Form";
+import Input from "../../../ui/input/Input";
+import Dropdown from "../../../ui/dropdown/Dropdown";
 import { useSelector, useDispatch } from "react-redux";
 // import { addRecentTransaction } from "../../store/transaction";
 // import { removeAmountFromCard } from "../../store/myWallet";
 // import { deductFromRemaining } from "../../store/budgeting";
-import { addItem } from "../../store/assetLiability";
+import { addItem } from "../../../store/assetLiability";
 import styles from './assetLiability.module.css';
 
 interface AssetLiabilityFormProps {

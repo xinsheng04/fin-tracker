@@ -1,8 +1,8 @@
 import type React from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { removeItem } from '../../store/assetLiability';
-import Button from '../../ui/button/Button';
+import { removeItem } from '../../../store/assetLiability';
+import Button from '../../../ui/button/Button';
 import styles from './AssetLiabilityDetail.module.css';
 
 const AssetLiabilityDetail: React.FC<{ id: string, onClose: () => void }> = ({

@@ -2,11 +2,12 @@
   display: flex;
   flex-direction: column;
   font-weight: 500;
-  margin-bottom: 2rem;
+  /* margin-bottom: 2rem; */
   color: #22223b;
 }
 
 .select {
+  cursor: pointer;
   margin-top: 0.25rem;
   padding: 0.5rem 1rem;
   font-size: 1rem;
@@ -16,6 +17,8 @@
   color: #22223b;
   outline: none;
   transition: border-color 0.2s;
+  text-align: left;
+  height: 2rem;
 }
 
 .select>option{

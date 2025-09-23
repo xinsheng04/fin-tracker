@@ -1,4 +1,4 @@
-.main{
+.recentTransactions {
   width: 100%; /* Match the width of the cash balance */
   margin-bottom: 2rem;
   height: auto;
@@ -10,10 +10,17 @@
   border-radius: .5rem; /* Rounded corners */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
   padding: 1rem;
-  height: 30rem;
+  max-height: 25rem;
 }
 
-.header{
+.transactionList{
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.recentTransactions h3 {
   align-self: flex-start;
   width: 100%;
   padding: 0.5rem;
@@ -25,15 +32,19 @@
   text-align: center; /* Center-align the title */
 }
 
-.main ul {
+.recentTransactions ul {
   list-style: none; /* Remove default list styling */
+  padding: 0;
+  width: inherit;
+  margin: 0 0 1rem 0; /* Add spacing between transactions */
+  border-bottom: 1px solid #ddd; /* Divider between transactions */
 }
 
-.main ul:last-child {
+.recentTransactions ul:last-child {
   border-bottom: none; /* Remove divider for the last transaction */
 }
 
-.noItems {
+.noRecents {
   font-style: italic;
   text-align: center;
   color: #666;
@@ -41,49 +52,35 @@
   margin-top: 0.5rem;
 }
 
-.filters{
-  display: grid;
-  grid-template-rows: auto auto;
-  padding: 0;
-  width: inherit;
-  margin: 0 0 1rem 0;
-  border-bottom: 1px solid #ddd;
-}
-
-.filters ul{
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+.transactionTypes {
+  display: flex;
   margin: 0 5rem;
   align-items: center;
   justify-content: space-between;
 }
 
-.filters p,
-.filters p:hover {
+.transactionTypes p,
+.transactionTypes p:hover {
   background: none;
   border: none;
   padding: 0.5rem 1rem;
   cursor: pointer;
 }
 
-.filters p {
+.transactionTypes p {
   color: #000000;
   font-size: 1.1rem;
 }
 
-.filters p:hover {
+.transactionTypes p:hover {
   color: #00c8ff;
   font-weight: bolder;
   text-decoration: underline;
+  /* transition: color 0.3s ease; */
 }
 
-.filters .active{
+/* Indirect targeting of the button */
+.active p{
   font-weight: bold;
   color: #3898ff;
-}
-
-.list{
-  width: 100%;
-  height: 100%;
-  overflow-y: scroll;
 }

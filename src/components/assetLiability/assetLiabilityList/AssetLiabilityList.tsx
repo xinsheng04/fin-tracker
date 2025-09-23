@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { useState } from "react";
-import type { AssetLiabilityKeyValueType } from "../../store/assetLiability";
+import type { AssetLiabilityKeyValueType } from "../../../store/assetLiability";
 import AssetLiabilityCard from "../assetLiabilityCard/AssetLiabilityCard";
 import styles from "./AssetLiabilityList.module.css";
 
