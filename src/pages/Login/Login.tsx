@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router"
-import Button from "../../ui/button/Button"
 import Form from "../../ui/form/Form";
 import Input from "../../ui/input/Input";
 import styles from './login.module.css';
@@ -14,7 +13,7 @@ export default function Login({ }) {
   return (
     <div className={styles.container}>
       <div className={styles.loginBox}>
-        <h1 className={styles.title}>Welcome Back</h1>
+        <h1 className={styles.title}>💸 FinTracker</h1>
         {/* The Form component needs an onSubmit handler */}
         <Form submit={handleLogin} className={styles.form} buttonName="Login">
           <Input label="Username" name="username" type="text" required />
