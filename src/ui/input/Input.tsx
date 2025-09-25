@@ -13,7 +13,7 @@ function Input({className, label, type, value="", ...inputProps}:InputProps) {
   return (
     <label className={`${styles.label} ${className || ""}`}>
       {label && label}
-      <input className={styles.input} type={type || "number"} defaultValue={value} {...inputProps} />
+      <input className={styles.input} type={type || "text"} defaultValue={value} {...inputProps} />
     </label>
   )
 }
