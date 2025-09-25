@@ -9,7 +9,7 @@ const AssetLiabilityDetail: React.FC<{ id: string, onClose: () => void }> = ({
   id, onClose
 }) => {
   const dispatch = useDispatch();
-  const { item, value, description, date, type, category } = useSelector((state: any) => state.assetLiability.assetLiabilityItems)
+  const { title, value, description, date, type, category } = useSelector((state: any) => state.assetLiability.assetLiabilityItems)
   .find((al: any) => al.id === id);
   const assetOrLiability = type === "asset" ? "Asset" : "Liability";
   function deleteItem() {
@@ -23,7 +23,7 @@ const AssetLiabilityDetail: React.FC<{ id: string, onClose: () => void }> = ({
         <tbody>
           <tr>
             <th>{assetOrLiability}: </th>
-            <td>{item}</td>
+            <td>{title}</td>
           </tr>
           <tr>
             <th>ID: </th>

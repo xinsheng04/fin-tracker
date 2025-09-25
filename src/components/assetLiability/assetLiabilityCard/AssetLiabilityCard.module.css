@@ -17,7 +17,7 @@
 }
 
 
-.item {
+.title {
   display: flex;
   flex-direction: column;
   gap: .3rem;
@@ -26,13 +26,13 @@
   overflow: hidden; */
 }
 
-.item>strong {
+.title>strong {
   font-size: 1.2rem;
   font-weight: 800;
   color: #333;
 }
 
-.item>p {
+.title>p {
   font-style: italic;
   font-weight: lighter;
 }

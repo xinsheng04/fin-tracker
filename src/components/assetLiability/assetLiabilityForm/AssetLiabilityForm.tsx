@@ -23,7 +23,7 @@ const AssetLiabilityForm: React.FC<AssetLiabilityFormProps> = ({ closeForm }) =>
 
   function submitHandler(data: any){
     dispatch(addItem({
-      item: data.item,
+      title: data.title,
       value: Number(data.value),
       description: data.description,
       date: String(dateTime),
@@ -44,7 +44,7 @@ const AssetLiabilityForm: React.FC<AssetLiabilityFormProps> = ({ closeForm }) =>
         </div>
         <div className={styles.details}>
           <p>2. Name of Asset/Liability</p>
-          <Input label="Name" name="item" type="text"/>
+          <Input label="Name" name="title" type="text"/>
 
           <p>3. Monetary value</p>
           <Input label="Value" name="value" type="number" min="0" step="0.01"/>
