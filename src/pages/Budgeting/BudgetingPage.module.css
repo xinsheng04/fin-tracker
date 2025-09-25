@@ -2,19 +2,32 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+}
+
+.budgetOverview > h3{
+  margin: 1.5rem 0;
+  padding: 0 0 0 1rem;
+  font-size: 1.5rem;
+  color: #111827;
+}
+
+.budgetOverview{
+  width: 100%;
+  padding: 0 0 1.2rem 1rem;
+  border-bottom: 3px solid #ddd;
 }
 
 .budgets{
+  margin: 0 0 1.5rem 0;
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
-  margin-bottom: 1.5rem;
 }
 
 .budgetCard{
-  max-width: 320px;
-  padding: 1.5rem;
+  /* max-width: 320px; */
+  padding: 1.1rem 1rem;
   background-color: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 0.75rem;
@@ -24,7 +37,7 @@
 }
 
 .budgetCard h3 {
-  margin-bottom: 0.5rem;
+  margin: 0;
   color: #000000;
 }
 
@@ -33,6 +46,7 @@
 }
 
 .subtext {
+  margin: 0 0 0 1rem;
   font-size: 0.9rem;
   color: #555;
 }
@@ -42,7 +56,17 @@
   cursor: pointer;
 }
 
-.budgetContent > div{
+.budgetContent{
+  padding: 0 0 0 1rem;
+  width: 100%;
+}
+
+.budgetContent > h2{
+  padding: 0 0 0 1rem;
+}
+
+.budgetDetails{
+  width: 100%;
   display: grid;
   grid-template-columns: 35% 65%;
   gap: 1.5rem;
@@ -52,6 +76,11 @@
 table {
   width: 100%;
   border-collapse: collapse;
+}
+
+thead tr{
+  display: flex;
+  justify-content: space-between;
 }
 
 tr{
@@ -79,4 +108,35 @@ td {
 tbody tr:nth-child(odd) {
   background-color: #f9fafb;
   border-radius: 6px;
+}
+
+.categoryList{
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.budgetButtons{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.budgetButtons button{
+  width: 45%;
+}
+
+.rightBox{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.overLimit{
+  color: red;
+} 
+
+.normal{
+  color: rgb(0, 255, 0);
 }

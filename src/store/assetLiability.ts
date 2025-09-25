@@ -4,7 +4,7 @@ import { generateAssetLiabilityID } from "../util/genID";
 
 interface AssetLiabilityKeyValue {
   id: string;
-  item: string;
+  title: string;
   value: number;
   description: string;
   date: string;
@@ -22,7 +22,7 @@ const dummyState: AssetLiabilityType = {
   assetLiabilityItems: [
     {
       id: "ASLI1",
-      item: "Cash",
+      title: "Cash",
       value: 5000,
       description: "Cash in hand",
       date: "2025-09-01",
@@ -31,7 +31,7 @@ const dummyState: AssetLiabilityType = {
     },
     {
       id: "ASLI2",
-      item: "Car Loan",
+      title: "Car Loan",
       value: 15000,
       description: "Loan for car purchase",
       date: "2025-08-15",
@@ -40,7 +40,7 @@ const dummyState: AssetLiabilityType = {
     },
     {
       id: "ASLI3",
-      item: "Savings Account",
+      title: "Savings Account",
       value: 20000,
       description: "Bank savings",
       date: "2025-09-10",
@@ -49,7 +49,7 @@ const dummyState: AssetLiabilityType = {
     },
     {
       id: "ASLI4",
-      item: "Mortgage",
+      title: "Mortgage",
       value: 100000,
       description: "Home mortgage",
       date: "2025-07-20",
@@ -58,7 +58,7 @@ const dummyState: AssetLiabilityType = {
     },
     {
       id: "ASLI5",
-      item: "Home",
+      title: "Home",
       value: 500000,
       description: "Primary residence",
       date: "2025-06-30",
@@ -76,7 +76,7 @@ const assetLiabilitySlice = createSlice({
   name: 'assetLiability',
   initialState: dummyState,
   reducers: {
-    // pass the entire new item without id
+    // pass the entire new title without id
     addItem(state, action: PayloadAction<AssetLiabilityValue>) {
       const newItem = { id: generateAssetLiabilityID(), ...action.payload };
       state.assetLiabilityItems.push(newItem);
@@ -86,7 +86,7 @@ const assetLiabilitySlice = createSlice({
       const { id } = action.payload;
       state.assetLiabilityItems = state.assetLiabilityItems.filter(i => i.id !== id);
     },
-    // pass the entire new updated item
+    // pass the entire new updated title
     updateItem(state, action: PayloadAction<AssetLiabilityKeyValue>) {
       const updatedItem = action.payload;
       const index = state.assetLiabilityItems.findIndex(i => i.id === updatedItem.id);

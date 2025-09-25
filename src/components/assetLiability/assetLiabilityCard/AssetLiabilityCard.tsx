@@ -9,14 +9,14 @@ interface AssetLiabilityDetailsProps{
 const AssetLiabilityCard: React.FC<AssetLiabilityDetailsProps> = (
   { id, viewDetailsOnClick }
 ) => {
-  const {item, value, description, date, type} = useSelector((state: any) => state.assetLiability.assetLiabilityItems)
+  const {title, value, description, date, type} = useSelector((state: any) => state.assetLiability.assetLiabilityItems)
   .find((al: any) => al.id === id);
 
   return (
     <div className={styles.main}>
       <div className={styles.itemCard} onClick={() => viewDetailsOnClick("details-assets-liabilities", id)}>
-        <div className={styles.item}>
-          <strong>{item}</strong>
+        <div className={styles.title}>
+          <strong>{title}</strong>
           <p className={styles.description}>{description}</p>
         </div>
         <p className={styles.date}>{date}</p>
