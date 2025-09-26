@@ -7,6 +7,7 @@ app.use(cors());
 
 app.use("/api",userRoutes);
 
+//app.use("budgetPage", {route})
 app.listen(5000, () => {
   console.log('server started on port 5000');
 });
