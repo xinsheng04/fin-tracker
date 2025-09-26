@@ -5,12 +5,12 @@ import { useEffect, useState } from 'react';
 
 // Define proper TypeScript interface for your API data
 interface ApiData {
-  users: string[];
+  users: string;
   // Add other properties your API returns
 }
 
 export default function RootLayout() {
-  const [backend, setBackend] = useState<ApiData | null>(null);
+  const [backend, setBackend] = useState<String | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -19,26 +19,18 @@ export default function RootLayout() {
         const res = await fetch("http://localhost:5000/api/login");
         if (!res.ok) throw new Error(`status ${res.status}`);
         const data: ApiData = await res.json();
-        setBackend(data);
+        setBackend(String(data));
       } catch (err) {
         // reveal the error instead of silently staying on "loading.."
         console.error("fetch /api failed:", err);
-        setBackend({ users: [] }); // fallback so UI updates; optionally manage an error state
+        setBackend(String(err) ); // fallback so UI updates; optionally manage an error state
       }
     })();
   }, []);
 
   return (
     <div className={styles.main}>
-      {backend?.users ? (
-        backend.users.map((user, i) => (
-          <ul key={i}>
-            <li>{user}</li>
-          </ul>
-        ))
-      ) : (
-        <p>loading..</p>
-      )}
+      <p>{backend}</p>
 
       <Sidebar />
       <Outlet />
