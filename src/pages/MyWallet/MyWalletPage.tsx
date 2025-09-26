@@ -115,6 +115,7 @@ const MyWallet = () => {
                 label="Bank Name"
                 name="bankName"
                 required
+                
                 options={[
                   { value: "Maybank", label: "Maybank" },
                   { value: "CIMB", label: "CIMB" },

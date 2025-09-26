@@ -3,13 +3,14 @@ import {createPortal} from "react-dom";
 import Button from "../button/Button";
 import styles from './Error.module.css'
 type ErrorProps = {
+  isError:boolean
   title :string;
   isOpen?: boolean;
   onClose ?: ()=>void;
   children: React.ReactNode;
 }
 
-export default function Error ({ title,isOpen,onClose, children}:ErrorProps){
+export default function Error ({ title,isOpen,onClose, children,isError}:ErrorProps){
   const errorRef = useRef<HTMLDialogElement>(null);
   
   const handleCancel = (event:Event)=> { 
@@ -43,7 +44,7 @@ export default function Error ({ title,isOpen,onClose, children}:ErrorProps){
 
   return createPortal(
     <dialog ref={errorRef} className={styles.errorDialog} >
-      <h2>{title}</h2>
+      <h2 className={isError ? styles.errorTitle : styles.successTitle}>{title}</h2>
       <p>{children}</p>
       <div className={styles.actions}>
         <Button onClick={onClose}>Ok!</Button>
