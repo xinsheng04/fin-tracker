@@ -1,6 +1,7 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import type { budgetObject } from "../../store/budgeting";
+import { resetBudgetProgress } from "../../store/budgeting";
 import AddBudgetForm from "../../components/budget/addBudgetForm/AddBudgetForm";
 import Modal from "../../ui/modal/Modal";
 // import BudgetDonut from "../../components/budget/budgetDonut/BudgetDonut";
@@ -11,20 +12,25 @@ import Button from "../../ui/button/Button";
 import type React from "react";
 
 const BudgetingPage: React.FC = () => {
+  const dispatch = useDispatch();
   const budgets = useSelector((state: any) => state.budgeting.budgets);
-  const expenses = useSelector((state: any) => state.transaction.recentTransaction.filter((t: any) => t.typeOfTransfer === "expense"));
-  const [selectedBudget, setSelectedBudget] = useState<budgetObject | null>(budgets.length > 0 ? budgets[0] : null);
+  const expensesList = useSelector((state: any) => state.transaction.recentTransaction);
+  const expenses = expensesList.filter((t: any) => t.typeOfTransfer === "expense");
+  const [selectedBudgetId, setSelectedBudgetId] = useState<string | null>(budgets.length > 0 ? budgets[0].id : "");
   const [modalOpenType, setModalOpenType] = useState<"add" | "edit" | null>(null);
-
+  
+  const selectedBudget = budgets.find((b: budgetObject) => b.id === selectedBudgetId) || null;
   let progressList: { spent: number; limit: number; title: string }[] = [];
 
   if (selectedBudget?.categoryAndAmount) {
     // Populate progressList with categories and their limits
-    progressList = selectedBudget.categoryAndAmount.map(({ category, amount }) => ({
-      title: category,
-      limit: amount,
-      spent: 0,
-    }));
+    progressList = selectedBudget.categoryAndAmount.map(
+      ({ category, amount }: { category: string; amount: number }) => ({
+        title: category,
+        limit: amount,
+        spent: 0,
+      })
+    );
 
     // Add "Others" category
     progressList.push({
@@ -33,8 +39,17 @@ const BudgetingPage: React.FC = () => {
       spent: 0,
     });
 
+    const dateFrom = new Date(selectedBudget.trackDateFrom);
+
+    // Filter expenses based on the budget's trackDateFrom
+    const startFrom = expenses.findIndex((expense: any) => {
+      const expenseDate = new Date(expense.date);
+      return expenseDate >= dateFrom;
+    });
+    const expensesToConsider = startFrom !== -1 ? expenses.slice(startFrom) : [];
+
     // Update spent values
-    progressList = expenses.reduce((
+    progressList = expensesToConsider.reduce((
       acc: { title: string; limit: number; spent: number }[],
       { category, amount }: { category: string; amount: number }
     ) => {
@@ -48,10 +63,17 @@ const BudgetingPage: React.FC = () => {
     }, progressList);
   }
 
-
   function handleSelectBudget(budgetId: string) {
     const budget = budgets.find((b: budgetObject) => b.id === budgetId);
-    setSelectedBudget(budget || null);
+    setSelectedBudgetId(budget.id);
+  }
+
+  function handleResetBudgetProgress() {
+    if (selectedBudgetId) {
+      const todayDate = new Date().toISOString().split('T')[0]; // Format as 'YYYY-MM-DD'
+      dispatch(resetBudgetProgress({ budgetId: selectedBudgetId, newTrackDateFrom: todayDate }));
+
+    }
   }
 
   return (
@@ -97,7 +119,7 @@ const BudgetingPage: React.FC = () => {
                 </tbody>
               </table>
               <div className={styles.budgetButtons}>
-                <Button>Reset Progress</Button>
+                <Button onClick={handleResetBudgetProgress}>Reset Progress</Button>
                 <Button>Edit this budget</Button>
                 <Button>Delete this budget</Button>
               </div>
