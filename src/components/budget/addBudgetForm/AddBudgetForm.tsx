@@ -18,7 +18,7 @@ const BudgetItem: React.FC<{
   onRemove: (id: number) => void;
 }> = ({ category, value, id, onChange, onRemove }) => {
   return (
-    <div className={styles.expenseItem}>
+    <tr className={styles.expenseItem}>
       <Dropdown
         className={styles.chosenCategory}
         label=""
@@ -36,7 +36,7 @@ const BudgetItem: React.FC<{
         onChange={(e) => onChange(id, "amount", Number(e.target.value))}
       />
       <button type="button" onClick={() => onRemove(id)}>&#10006;</button>
-    </div>
+    </tr>
   );
 };
 

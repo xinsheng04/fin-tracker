@@ -7,10 +7,16 @@ import type { Category } from "../util/transactionCategories";
 interface budgetObject {
   id: string;
   title: string;
+  trackDateFrom: string;
   categoryAndAmount: { category: Category; amount: number }[] | null;
 }
 
-type PayloadActionWithoutId = Omit<budgetObject, 'id'>;
+type PayloadActionWithoutId = Omit<budgetObject, 'id' | 'trackDateFrom'>;
+
+type ResetBudgetProgressObject = {
+  budgetId: string;
+  newTrackDateFrom: string;
+}
 
 interface budgetState {
   budgets: budgetObject[];
@@ -25,6 +31,7 @@ const dummyState: budgetState = {
     {
       id: "BDGT1",
       title: "My first Budget",
+      trackDateFrom: "2023-01-01",
       categoryAndAmount: [
         { category: "Food & Dining", amount: 200 },
         { category: "Transportation", amount: 100 },
@@ -33,6 +40,7 @@ const dummyState: budgetState = {
     {
       id: "BDGT2",
       title: "My second Budget",
+      trackDateFrom: "2023-02-01",
       categoryAndAmount: [
         { category: "Shopping", amount: 300 },
         { category: "Entertainment", amount: 150 },
@@ -47,20 +55,29 @@ const budgetSlice = createSlice({
   reducers: {
     // add to the expenses
     addBudget(state, action: PayloadAction<PayloadActionWithoutId>) {
-      const newBudgetItem: budgetObject = {id: generateBudgetID(), ...action.payload};
+      const newBudgetItem: budgetObject = { id: generateBudgetID(), trackDateFrom: "1970-01-01", ...action.payload };
       state.budgets.push(newBudgetItem);
     },
-    editBudget(state, action: PayloadAction<budgetObject>){
-      state.budgets = state.budgets.map(budget => 
+    editBudget(state, action: PayloadAction<budgetObject>) {
+      state.budgets = state.budgets.map(budget =>
         budget.id === action.payload.id ? action.payload : budget
       );
     },
-    deleteBudget(state, action: PayloadAction<string>){
+    resetBudgetProgress(state, action: PayloadAction<ResetBudgetProgressObject>) {
+      const { budgetId, newTrackDateFrom } = action.payload;
+      const budgetIdx = state.budgets.findIndex(b => b.id === budgetId);
+      if (budgetIdx !== -1) {
+        state.budgets = state.budgets.map(b =>
+          b.id === budgetId ? { ...b, trackDateFrom: newTrackDateFrom } : b
+        );
+      }
+    },
+    deleteBudget(state, action: PayloadAction<string>) {
       state.budgets = state.budgets.filter(budget => budget.id !== action.payload);
     }
   },
 });
 
 export type { budgetObject };
-export const { addBudget, editBudget, deleteBudget } = budgetSlice.actions;
+export const { addBudget, editBudget, deleteBudget, resetBudgetProgress } = budgetSlice.actions;
 export default budgetSlice.reducer;
