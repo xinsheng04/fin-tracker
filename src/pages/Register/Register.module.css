@@ -1,0 +1,46 @@
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height:100vh;
+  
+}
+
+.center {
+  
+  background-color: #f9f8f4;
+  padding: 2.5rem;
+
+  gap:1.5rem;
+  border-radius: 14px;
+  width:100%;
+  max-width: 400px;
+}
+
+.form{
+  display:flex;
+  flex-direction: column;
+  gap:1.5rem;
+}
+
+.background{ 
+  position: absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index: -1;
+}
+
+.sentence {
+  text-align: center;
+  padding-top: 1.2rem;
+}
+.sentence > a {
+  color:#3a9583;
+  text-decoration: none;
+}
+
+Form > p{
+  padding-bottom: 0.8rem;
+  color:red;
+}

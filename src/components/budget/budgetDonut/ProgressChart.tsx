@@ -1,21 +1,22 @@
 import React from "react";
+import { useMemo } from "react";
 import { Doughnut } from "react-chartjs-2";
 import "./ProgressChart.module.css";
 
-interface ProgressChartProps{
+interface ProgressChartProps {
   progressList: { spent: number; limit: number, title: string }[];
 }
 
 const ProgressChart: React.FC<ProgressChartProps> = ({ progressList }) => {
   const renderData = progressList.reduce((acc: number[], progress) => {
     const { spent, limit } = progress;
-    if(limit==0){
+    if (limit == 0) {
       acc.push(spent);
       acc.push(0);
-    } else if(spent > limit){
+    } else if (spent > limit) {
       acc.push(spent);
       acc.push(0);
-    } else{
+    } else {
       acc.push(spent);
       acc.push(limit - spent);
     }
@@ -61,6 +62,7 @@ const ProgressChart: React.FC<ProgressChartProps> = ({ progressList }) => {
 
   const options = {
     plugins: {
+      textCenter: { spent, limit },
       tooltip: {
         callbacks: {
           label: function (tooltipItem: any) {
@@ -75,33 +77,29 @@ const ProgressChart: React.FC<ProgressChartProps> = ({ progressList }) => {
     },
   };
 
-  const plugin = {
+  const plugin = useMemo(() => ({
     id: "textCenter",
     beforeDraw: (chart: any) => {
-      const { width, height, ctx } = chart;
-
+      const { width, height, ctx, config } = chart;
+      const { spent, limit } = config.options.plugins.textCenter;
       ctx.save();
 
-      // Calculate font size dynamically based on chart height
-      const fontSize = Math.min(height / 6, 20); // Limit max font size to 20px
+      const fontSize = Math.min(height / 6, 20);
       ctx.font = `${fontSize}px Arial`;
       ctx.textBaseline = "middle";
       ctx.textAlign = "center";
 
-      // Text to display
       const text = `${spent}/${limit}`;
-
-      // Position text in the center
       const textX = width / 2;
       const textY = height / 2;
 
-      // Set text color and draw
       ctx.fillStyle = "#000000";
       ctx.fillText(text, textX, textY);
 
       ctx.restore();
     },
-  };
+  }), [spent, limit]);
+
 
   return (
     <div className="progress-chart-container">

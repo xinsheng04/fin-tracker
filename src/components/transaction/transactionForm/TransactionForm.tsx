@@ -90,6 +90,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
     <>
       {error && (
         <Error
+          isError={true}
           isOpen={!!error}
           title={error.title}
           onClose={() => setError(null)} // This function will close the modal
