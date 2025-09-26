@@ -39,3 +39,8 @@
   color:#3a9583;
   text-decoration: none;
 }
+
+Form > p{
+  padding-bottom: 0.8rem;
+  color:red;
+}
