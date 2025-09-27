@@ -82,7 +82,7 @@ const tableAsli = `
     email varchar(50) NOT NULL, 
     title varchar(50) NOT NULL, 
     value int NOT NULL,
-    description varchat(50),
+    description varchar(50),
     recentDate DATE, 
     type Varchar(50) NOT NULL,
     PRIMARY KEY (AsLiId),
@@ -94,16 +94,13 @@ export async function initDB() {
   try {
     const connection = await mysql.createConnection(connectionConfig);
     await connection.query(schema);
-    await connection.query(`CREATE DATABASE IF NOT EXISTS \`${config.db.database}\`;`);
     await connection.query(`USE \`${config.db.database}\`;`);
     await connection.query(tableUsers);
     await connection.query(tableCard);
     await connection.query(tableBudgeting);
     await connection.query(tableBudgetItem);
     await connection.query(tableTransaction);
-
-
-
+    await connection.query(tableAsli);
     console.log("Database ensured:", config.db.database);
     await connection.end();
   } catch (err) {
