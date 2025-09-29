@@ -13,9 +13,39 @@ pool.getConnection((err, connection) => {
   connection.release();
 })
 
-export default function loginUser(req, res) {
+export default function test(req, res) {
   res.json({ "users": ["userOne", "userTwo"] });
 };
+
+export async function login(req, res) {
+  const { email, password } = req.body;
+  // base case 
+  if (!email || !password) { 
+    return res.status(400).json({message:'missing credentials'})
+  }
+
+  try {
+    const [row] = await pool.query(
+      'SELECT * from users WHERE email=? ',
+      [email]
+    )
+    if (row.length===0 ){
+      return res.status(401).json({message:'Account does not exists'});
+    }
+    const account = row[0];
+    const passwordMatch = password === account.password;
+
+    if (!passwordMatch){
+      return res.status(401).json({message:'invalid password'})
+    }
+    return res.status(200).json({message: 'login succesful!'})
+  }
+  catch (err) {
+    console.err(err);
+    return res.status(500).json({message:'Database Errors'})
+  }
+
+}
 
 export async function regUser(req, res) {
   try {
@@ -33,13 +63,13 @@ export async function regUser(req, res) {
       'INSERT INTO users (fname, lname, email,password) VALUES (?,?,?,?)',
       [fname, lname, email, password]
     );
-   res.status(201).json({message:"User registered successfully"})
-  }catch (err){
-    if (err.code ==='ER_DUP_ENTRY'){
-      return res.status(409).json({message :"Email already exists"})
+    res.status(201).json({ message: "User registered successfully" })
+  } catch (err) {
+    if (err.code === 'ER_DUP_ENTRY') {
+      return res.status(409).json({ message: "Email already exists" })
     }
     console.error(err);
-    res.status(500).json({message:'Server error'})
+    res.status(500).json({ message: 'Server error' })
   }
 
 }
