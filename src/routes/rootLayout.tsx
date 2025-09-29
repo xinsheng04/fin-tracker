@@ -18,7 +18,7 @@ export default function RootLayout() {
   //   (async () => {
   //     try {
   //       // use full backend URL while debugging (or keep "/api" if you have a Vite proxy)
-  //       const res = await fetch("http://localhost:5000/api/login");
+  //       const res = await fetch("http://localhost:5000/api/test");
   //       if (!res.ok) throw new Error(`status ${res.status}`);
   //       const data: ApiData = await res.json();
   //       setBackend(data);
