@@ -55,7 +55,12 @@ const budgetSlice = createSlice({
   reducers: {
     // add to the expenses
     addBudget(state, action: PayloadAction<PayloadActionWithoutId>) {
-      const newBudgetItem: budgetObject = { id: generateBudgetID(), trackDateFrom: "1970-01-01", ...action.payload };
+      // Initial date is this month's first date
+      const todayDate = new Date().toISOString().split('T')[0];
+      const date = new Date(todayDate);
+      date.setDate(1);
+      const firstDay = date.toISOString().split('T')[0];
+      const newBudgetItem: budgetObject = { id: generateBudgetID(), trackDateFrom: firstDay, ...action.payload };
       state.budgets.push(newBudgetItem);
     },
     editBudget(state, action: PayloadAction<budgetObject>) {

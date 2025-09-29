@@ -2,6 +2,7 @@ import express from "express";
 import cors from 'cors';
 import userRoutes from './routes/userRoutes.js'
 import budgetRoutes from './routes/budgetingRoutes.js'
+import transactionRoutes from './routes/transactionRoutes.js'
 import { initDB } from './config.js';
 const app = express();
 
@@ -10,6 +11,7 @@ app.use(express.json());
 
 app.use("/api",userRoutes);
 app.use("/api",budgetRoutes);
+app.use("/api",transactionRoutes);
 
 // init DB then start server
 (async () => {
