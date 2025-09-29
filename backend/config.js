@@ -34,7 +34,7 @@ const tableUsers = `
 
 const tableCard = `
   CREATE TABLE IF NOT EXISTS cards (
-    cardNo int NOT NULL UNIQUE, 
+    cardNo varchar(16) NOT NULL UNIQUE, 
     email varchar(50) NOT NULL,
     bankName varchar(50) NOT NULL,
     cardBalance DECIMAL(10,2) NOT NULL, 
@@ -66,7 +66,7 @@ const tableBudgetItem = `
 const tableTransaction = `
   CREATE TABLE IF NOT EXISTS transaction (
     transactionId INT NOT NULL UNIQUE,
-    cardNo INT NOT NULL UNIQUE,
+    cardNo varchar(16) NOT NULL,
     amountTransfered decimal(10,2) NOT NULL,
     typeOfTransfer varChar(50) NOT NULL,
     dateTransfer DATE NOT NULL, 
