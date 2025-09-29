@@ -1,12 +1,15 @@
 import express from "express";
 import cors from 'cors';
 import userRoutes from './routes/userRoutes.js'
+import budgetRoutes from './routes/budgetingRoutes.js'
 import { initDB } from './config.js';
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
 app.use("/api",userRoutes);
+app.use("/api",budgetRoutes);
 
 // init DB then start server
 (async () => {

@@ -135,7 +135,7 @@ const MyWallet = () => {
             </form>
           }
         </div>
-        <ShowCard></ShowCard>
+        <ShowCard />
       </div>
       </div>
     </>
