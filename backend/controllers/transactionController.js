@@ -4,13 +4,11 @@ import { config } from '../config.js';
 const pool = mysql.createPool(config.db);
 
 /*
-{
-  email: userEmail,
-}
+?email=userEmail
 */
 
 export const getAllTransactionData = async (req, res) => {
-  const {email} = req.body;
+  const {email} = req.query;
   if(!email) {
     return res.status(400).json({error: 'Controller: Email is required'});
   }
@@ -29,8 +27,8 @@ export const getAllTransactionData = async (req, res) => {
 }
 
 /*
+?email=userEmail
 {
-  email: userEmail,
   transaction: {
     amount: number,
     typeOfTransfer: string,
@@ -43,9 +41,10 @@ export const getAllTransactionData = async (req, res) => {
  */
 
 export const addTransactionEntry = async (req, res) => {
-  const {email, transaction} = req.body;
-  if(!email) {
-    return res.status(400).json({error: 'Controller: Email is required'});
+  const {email} = req.query;
+  const {transaction} = req.body;
+  if(!email || !transaction){
+    return res.status(400).json({error: 'Controller: Email and transaction data are required'});
   }
   try{
     const {amount, typeOfTransfer, category, comments, cardNo, date} = transaction;
@@ -55,7 +54,7 @@ export const addTransactionEntry = async (req, res) => {
       values (?,?,?,?,?,?);`,
       [cardNo, amount, category, typeOfTransfer, date, comments]
     )
-    const [updateCardBalance] = await pool.query(
+    await pool.query(
       `update cards set cardBalance = cardBalance + ? where cardNo = ? and email = ?;`,
       [typeOfTransfer === 'expense' ? -amount : amount, cardNo, email]
     );
