@@ -4,13 +4,11 @@ import { config } from '../config.js';
 const pool = mysql.createPool(config.db);
 
 /*
-{
-  email: userEmail,
-}
+?email=userEmail
 */
 
 export const getAllBudgetData = async (req, res) => {
-  const { email } = req.body;
+  const { email } = req.query;
   if (!email) {
     return res.status(400).json({ error: 'Controller: Email is required' });
   }
@@ -22,8 +20,8 @@ export const getAllBudgetData = async (req, res) => {
   }
 };
 /*
+?email=userEmail
 {
-  email: userEmail,
   title: budgetTitle
   items: [
     {category: category, limitAmount: initialValue}
@@ -32,7 +30,8 @@ export const getAllBudgetData = async (req, res) => {
 */
 
 export const addBudgetEntry = async (req, res) => {
-  const { email } = req.body;
+  const { email } = req.query;
+  const { title, items } = req.body;
   if (!email) {
     return res.status(400).json({ error: 'Controller: Email is required' });
   }
@@ -41,25 +40,26 @@ export const addBudgetEntry = async (req, res) => {
   date.setDate(1);
   const firstDay = date.toISOString().split('T')[0];
   try {
-    const { email, title } = req.body;
     const [result] = await pool.query('insert into budgeting (email, title, trackDateFrom) values (?,?,?)', 
       [email, title, firstDay]
     );
-    for(const item of req.body.items){
-      await pool.query('insert into budgetItem (budgetId, category, limitAmount) values (?,?,?)', 
-        [result.insertId, item.category, item.limitAmount]
-      );
+    if(Array.isArray(items) && items.length > 0){
+      for(const item of req.body.items){
+        await pool.query('insert into budgetItem (budgetId, category, limitAmount) values (?,?,?)', 
+          [result.insertId, item.category, item.limitAmount]
+        );
+      }
+      return res.status(201).json({ message: 'Budget entry added', id: result.insertId });
     }
-    return res.status(201).json({ message: 'Budget entry added', id: result.insertId });
+    throw new Error('No budget items provided');
   } catch (error) {
     return res.status(500).json({ error: `Controller: Database insertion error: ${error.message}` });
   }
 }
 
 /*
+?email=userEmail&id=budgetId
 {
-  id: budgetId,
-  email: userEmail,
   changes: {
     title?: newTitle,
     updatedBudgetItems: [
@@ -70,13 +70,13 @@ export const addBudgetEntry = async (req, res) => {
 */
 
 export const updateBudgetEntry = async (req, res) => {
-  const { email } = req.body;
+  const { email, id } = req.query;
   const updateQuery = 'update budgeting set ';
-  if (!email) {
-    return res.status(400).json({ error: 'Controller: Email is required' });
+  if (!email || !id) {
+    return res.status(400).json({ error: 'Controller: Email and ID are required' });
   }
   try {
-    const { id, changes } = req.body;
+    const { changes } = req.body;
     if (changes.title) {
       await pool.query(updateQuery + 'title=? where budgetId=? and email=?', [changes.title, id, email]);
     }
@@ -93,22 +93,22 @@ export const updateBudgetEntry = async (req, res) => {
           }
         }
       }
+      return res.status(200).json({ message: 'Controller: Budget entry updated' });
     }
-    return res.status(200).json({ message: 'Controller: Budget entry updated' });
+    throw new Error('No valid changes provided');
   } catch (error) {
     return res.status(500).json({ error: `Controller: Database update error: ${error.message}` });
   }
 }
 
-// {id: entryId, email: userEmail}
+// ?id=entryId&email=userEmail
 
 export const resetBudgetProgress = async (req, res) => {
-  const { email } = req.body;
+  const { id, email } = req.query;
   if (!email) {
     return res.status(400).json({ error: 'Controller: Email is required' });
   }
   try {
-    const { id } = req.body;
     const today = new Date().toISOString().split('T')[0];
     await pool.query('update budgeting set trackDateFrom=? where budgetId=? and email=?', [today, id, email]);
     return res.status(200).json({ message: 'Controller: Budget progress reset' });
@@ -117,10 +117,10 @@ export const resetBudgetProgress = async (req, res) => {
   }
 };
 
-// {id: entryId, email: userEmail}
+// ?id=entryId&email=userEmail
 
 export const deleteBudgetEntry = async (req, res) => {
-  const { id, email } = req.body;
+  const { id, email } = req.query;
   if (!email) {
     return res.status(400).json({ error: 'Controller: Email is required' });
   }

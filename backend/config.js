@@ -82,8 +82,9 @@ const tableAsli = `
     title varchar(50) NOT NULL, 
     value int NOT NULL,
     description varchar(50),
-    recentDate DATE, 
+    acquireDate DATE, 
     type Varchar(50) NOT NULL,
+    category Varchar(50) NOT NULL,
     CONSTRAINT fk_asli_email FOREIGN KEY (email) REFERENCES users(email) ON DELETE CASCADE
   );
 `
