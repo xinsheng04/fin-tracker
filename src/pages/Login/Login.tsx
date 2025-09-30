@@ -21,10 +21,10 @@ export default function Login({ }) {
   // to dispatch all the data from the post request 
   function dispatchUser(userData:Record<string,any>){ 
     dispatch(login({
-      fname:userData.fname,
-      lname:userData.lname,
-      email:userData.email,
-      role: userData.role?? "User"
+      fname:String(userData[0].fname),
+      lname:String(userData[0].lname),
+      email:String(userData[0].email),
+      role:"User"
     }))
   }
   async function handleLogin(data: any) {
@@ -36,6 +36,7 @@ export default function Login({ }) {
       const res = await axios.post('http://localhost:5000/api/loginUser', payload, {
         headers: { 'Content-Type': 'application/json' },
       });
+      console.log(res.data?.userDetails);
       dispatchUser(res.data?.userDetails);
       setModal({title:'Success Login', message : res.data?.message})
 

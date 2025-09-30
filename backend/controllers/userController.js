@@ -74,3 +74,21 @@ export async function regUser(req, res) {
   }
 
 }
+
+// need to make a get request in order to repopulate the redux store 
+export async function getUserDetails(req,res){
+  const {email} = req.query
+  if (!email){
+    return res.status(400).json({message:'user not identified'})
+  }
+  try{ 
+    const [row] = await pool.query(
+      'SELECT * FROM users WHERE email = ? ',
+      [email]
+    )
+    return res.status(200).json({message:'Details successfully fetched',userDetails:row})
+  }catch(err){
+    console.error(err);
+    return res.status(500).json({message:"server errors"})
+  }
+}
