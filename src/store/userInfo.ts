@@ -5,7 +5,6 @@ interface UserInfo {
   fname: String;
   lname: String;
   email: String;
-  profilePicUrl: String;
   role: String;
 }
 
@@ -13,22 +12,20 @@ const initialState: UserInfo = {
   fname: "",
   lname: "",
   email: "",
-  profilePicUrl: "",
   role: "User",
 }
 
 const userInfoSlice = createSlice({
   name: 'userInfo',
   initialState: initialState,
-  reducers : {
+  reducers: {
     login(state, action: PayloadAction<UserInfo>) {
-      return action.payload;
+      return {...state, ...action.payload};
     },
-    logout(){
+    logout() {
       return initialState;
     }
   }
 });
-
+export const { login, logout } = userInfoSlice.actions;
 export default userInfoSlice.reducer;
-export const userInfoActions = userInfoSlice.actions;

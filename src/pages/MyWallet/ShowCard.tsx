@@ -24,8 +24,10 @@ export default function ShowCard() {
   }
   return (
     <div className={styles.placement}>
-      {display.map((card: any) => {
-        return (
+      {display.length === 0 ? (
+        <p>No Cards created yet</p>
+      ) : (
+        display.map((card: any) => (
           <ul className={styles.cardList} key={card.cardNo}>
             <li>
               {bankCardImage[card.bankName] && (
@@ -36,7 +38,6 @@ export default function ShowCard() {
                 />
               )}
             </li>
-
             <li className={styles.cardLabel}>Bank Name:</li>
             <li className={styles.cardValue}>{card.bankName}</li>
             <li className={styles.cardLabel}>Card Number:</li>
@@ -53,10 +54,10 @@ export default function ShowCard() {
               </Button>
             </li>
           </ul>
-
-        )
-      })}
+        ))
+      )}
     </div>
   );
+
 
 }
