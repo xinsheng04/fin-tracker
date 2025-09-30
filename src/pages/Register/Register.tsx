@@ -3,12 +3,16 @@ import Form from "../../ui/form/Form";
 import Input from "../../ui/input/Input";
 import { Link } from "react-router-dom";
 import { useState } from 'react';
+import { useNavigate } from "react-router-dom"
 import bgImage from '../../assets/registerBackground.jpg'
 // using the Error modal (actually not an error) saying that the form was sucessful
 import Error from '../../ui/error/Error';
 import axios from 'axios';
 
 export default function Register() {
+  //to link to the login page 
+  const navi = useNavigate();
+
   const [errs, setErrs] = useState<Record<string, string>>({})
   const [modal, setModal] = useState<{ title: string; message: string } | null>(null);
   const [errModal, setErrModal] = useState<{ title: string; message: string } | null>(null);
@@ -90,7 +94,10 @@ export default function Register() {
           isError={false}
           isOpen={!!modal}
           title={modal.title}
-          onClose={() => setModal(null)}
+          onClose={() => {
+            setModal(null)
+            navi('/')
+          }}
         >
           {modal.message}
         </Error>

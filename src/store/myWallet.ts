@@ -29,7 +29,7 @@ const dummyState: Wallet = {
 // creating the slice 
 const myWalletSlice = createSlice({
   name:'myWalletDetails',
-  initialState: dummyState,
+  initialState: initialState,
   reducers: {
     // Adding a card to the store 
     addAmountToCard(state,action:PayloadAction<{cardNo:string; amount:number}>){ 

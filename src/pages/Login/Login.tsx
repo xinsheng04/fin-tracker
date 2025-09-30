@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { useState } from 'react';
+import { login } from "../../store/userInfo";
 import Error from "../../ui/error/Error";
 import { Link } from "react-router-dom";
 import Form from "../../ui/form/Form";
@@ -7,13 +8,25 @@ import Input from "../../ui/input/Input";
 import styles from './login.module.css';
 import bgImage from "../../assets/background.png";
 import axios from 'axios';
+import { useDispatch } from "react-redux";
 export default function Login({ }) {
   const [errModal, setErrModal] = useState<{ title: string; message: string } | null>(null);
   const [modal, setModal] = useState<{ title: string; message: string } | null>(null);
 
+  // use Dispatch for the userInfo
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
+  // to dispatch all the data from the post request 
+  function dispatchUser(userData:Record<string,any>){ 
+    dispatch(login({
+      fname:userData.fname,
+      lname:userData.lname,
+      email:userData.email,
+      role: userData.role?? "User"
+    }))
+  }
   async function handleLogin(data: any) {
     try {
       const payload = {
@@ -23,6 +36,7 @@ export default function Login({ }) {
       const res = await axios.post('http://localhost:5000/api/loginUser', payload, {
         headers: { 'Content-Type': 'application/json' },
       });
+      dispatchUser(res.data?.userDetails);
       setModal({title:'Success Login', message : res.data?.message})
 
 

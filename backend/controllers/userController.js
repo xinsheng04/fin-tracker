@@ -38,7 +38,8 @@ export async function login(req, res) {
     if (!passwordMatch){
       return res.status(401).json({message:'invalid password'})
     }
-    return res.status(200).json({message: 'login succesful!'})
+    console.log(row)
+    return res.status(200).json({message: 'login succesful!',userDetails:row})
   }
   catch (err) {
     console.err(err);
@@ -56,14 +57,14 @@ export async function regUser(req, res) {
     }
 
     if (password !== confirmPassword) {
-      return res.status(422).json({ message: "passwords do not match" })
+      return res.status(422).json({ message: "passwords do not match"})
     }
 
     await pool.query(
       'INSERT INTO users (fname, lname, email,password) VALUES (?,?,?,?)',
       [fname, lname, email, password]
     );
-    res.status(201).json({ message: "User registered successfully" })
+    res.status(201).json({ message: "User registered successfully"})
   } catch (err) {
     if (err.code === 'ER_DUP_ENTRY') {
       return res.status(409).json({ message: "Email already exists" })
