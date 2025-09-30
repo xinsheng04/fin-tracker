@@ -6,7 +6,7 @@ export const config = {
     host: "localhost",
     user: "root",
     password: process.env.DB_PASSWORD,
-    database: 'finTracker',
+    database: 'fintracker',
     port: 3306
   }
 }
@@ -21,7 +21,7 @@ const connectionConfig = {
 };
 
 // SQL: create database only 
-const schema = "CREATE DATABASE IF NOT EXISTS finTracker;"
+const schema = `CREATE DATABASE IF NOT EXISTS \`${config.db.database}\`;`;
 
 const tableUsers = `
   CREATE TABLE IF NOT EXISTS users (
@@ -106,7 +106,6 @@ export async function initDB() {
     console.error("Error initializing schema", err);
     throw err;
   }
+
+
 }
-
-
-

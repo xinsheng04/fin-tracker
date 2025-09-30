@@ -16,14 +16,17 @@ app.use("/api", assetLiabilityRoutes);
 
 (async () => {
   try {
-    // 1) Ensure DB and tables exist
+    // ensure DB + tables exist before loading controllers that create pools
     await initDB();
 
-    // 2) Import routes AFTER DB init so controllers can safely create pools
-    const { default: userRoutes } = await import("./routes/userRoutes.js");
-    const { default: walletRoutes } = await import("./routes/walletRoute.js");
+    // import routes AFTER DB init so controllers can create pools safely
+    const { default: budgetRoutes } = await import('./routes/budgetingRoutes.js');
+    const { default: transactionRoutes } = await import('./routes/transactionRoutes.js');
+    const { default: userRoutes } = await import('./routes/userRoutes.js');
+    const { default: walletRoutes } = await import('./routes/walletRoute.js');
 
-    // 3) Register routes and start server
+    app.use("/api", budgetRoutes);
+    app.use("/api", transactionRoutes);
     app.use("/api", userRoutes);
     app.use("/api", walletRoutes);
     app.use("/api", budgetRoutes);
