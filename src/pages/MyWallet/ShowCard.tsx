@@ -3,7 +3,12 @@ import { useDispatch } from "react-redux";
 import { deleteCard } from '../../store/myWallet';
 import Button from "../../ui/button/Button";
 import styles from './showCard.module.css';
+import { useQuery } from "@tanstack/react-query";
+import { getCards } from "../../api/walletApi";
 export default function ShowCard() {
+  // need the email from the useSelector from the store 
+  const email = useSelector((state: any) => state.userInfo.email);
+  console.log("This is from the wallet store ", email);
   // using dispatch 
   const dispatch = useDispatch();
   // only if the wallet has been created and in the store 
@@ -15,6 +20,14 @@ export default function ShowCard() {
     'RHB': 'src/assets/bankCards/Rhb.png',
     'Hong Leong': 'src/assets/bankCards/hongLeong.png'
   }
+  // writing a function to get the cards using tanStack querys
+  const { data: cards=[], isLoading, error } = useQuery({
+    queryKey: ['cards', email],
+    queryFn: () => getCards(email as string),
+    enabled: !!email
+  });
+  console.log(cards);
+
 
   // if user decides to delete a bankCard
   function onDeleteBankCard(cardNo: string) {
@@ -24,10 +37,8 @@ export default function ShowCard() {
   }
   return (
     <div className={styles.placement}>
-      {display.length === 0 ? (
-        <p>No Cards created yet</p>
-      ) : (
-        display.map((card: any) => (
+      {(
+        cards.map((card: any) => (
           <ul className={styles.cardList} key={card.cardNo}>
             <li>
               {bankCardImage[card.bankName] && (

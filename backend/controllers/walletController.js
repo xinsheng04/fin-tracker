@@ -19,8 +19,8 @@ export default async function registerCard(req, res) {
   if (!email || !bankName || !cardNo || !amount) {
     return res.status(400).json({ message: "credentials are not filled" })
   }
-  if(cardNo.length !== 16){
-    return res.status(400).json({message:"card entererd is invalid"})
+  if (cardNo.length !== 16) {
+    return res.status(400).json({ message: "card entererd is invalid" })
   }
   try {
     await pool.query(
@@ -49,7 +49,7 @@ export async function getCards(req, res) {
     )
 
     if (row.length === 0) {
-      return res.status(201).json({ message: 'no cards made yet' })
+      return res.status(201).json([])
     }
     console.log('the cards ', row);
     return res.status(200).json(row);
