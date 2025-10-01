@@ -9,12 +9,14 @@ import ShowCard from "./ShowCard";
 import { useSelector } from "react-redux";
 import Header from "../../components/header/Header";
 
+
 const MyWallet = () => {
   const dispatch = useDispatch();
   const [addCard, setAddCard] = useState<boolean>(false);
   const [errs, setErrs] = useState<Record<string, string>>({});
   // array of cardNo 
   const bankCardNumbers = useSelector((state: any) => state.myWallet.bankAccounts)
+  
   // two way binding for card number input 
   const [cardNoErr, setCardNoErr] = useState<string>();
 

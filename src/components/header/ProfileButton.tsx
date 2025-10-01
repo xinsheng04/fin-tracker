@@ -10,7 +10,7 @@ const ProfileButton = () => {
     <div className={`${styles['profile-button']}`}>
       <img src={`${profileExample}`} alt="Profile" />
       <div className={`${styles['profile-info']}`}>
-        <p><strong>{user.fname}</strong></p>
+        <p><strong>{user.fname +` ` +user?.lname}</strong></p>
         <p>{user.role}</p>
       </div>
     </div>

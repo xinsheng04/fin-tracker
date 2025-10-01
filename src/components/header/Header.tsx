@@ -25,7 +25,7 @@ export default function Header({ title }: HeaderProps) {
       {/* lower header */}
       {renderWelcome && 
       <div className={`${styles['header-lower']}`}>
-        <h1>Welcome, {user?.fname || "Sheng"} 🔥</h1>
+        <h1>Welcome, {user?.fname + " "+user?.lname|| "Sheng"} 🔥</h1>
         <button className={`${styles['date-display']}`}>
           <img src={calendarLogo} alt="Calendar Logo" />
           <p>March 1, 2024</p>
