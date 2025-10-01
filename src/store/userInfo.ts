@@ -2,10 +2,10 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 interface UserInfo {
-  fname: String;
-  lname: String;
-  email: String;
-  role: String;
+  fname: string;
+  lname: string;
+  email: string;
+  role: string;
 }
 
 const initialState: UserInfo = {

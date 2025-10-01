@@ -1,17 +1,17 @@
 import styles from './header.module.css'
-type ProfileButtonProps ={
-  username: String;
-  profilePicUrl: String;
-  role: String;
-}
+import profileExample from '../../assets/profileExample.png';
 
-const ProfileButton: React.FC<ProfileButtonProps> = (props) => {
+import { useSelector } from 'react-redux';
+
+
+const ProfileButton = () => {
+  const user = useSelector((state:any)=>state.userInfo)
   return(
     <div className={`${styles['profile-button']}`}>
-      <img src={`${props.profilePicUrl}`} alt="Profile" />
+      <img src={`${profileExample}`} alt="Profile" />
       <div className={`${styles['profile-info']}`}>
-        <p><strong>{props.username}</strong></p>
-        <p>{props.role}</p>
+        <p><strong>{user.fname}</strong></p>
+        <p>{user.role}</p>
       </div>
     </div>
   );
