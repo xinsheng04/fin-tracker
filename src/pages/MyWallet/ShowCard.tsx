@@ -26,7 +26,7 @@ export default function ShowCard() {
     queryFn: () => getCards(email as string),
     enabled: !!email
   });
-  console.log(cards);
+  console.log("These are the cards from the backend : ",cards);
 
 
   // if user decides to delete a bankCard
@@ -54,7 +54,7 @@ export default function ShowCard() {
             <li className={styles.cardLabel}>Card Number:</li>
             <li className={styles.cardValue}>{card.cardNo}</li>
             <li className={styles.cardLabel}>Balance:</li>
-            <li className={styles.cardValue}>{card.amount}</li>
+            <li className={styles.cardValue}>{card.cardBalance}</li>
             <li>
               <Button
                 type="button"
