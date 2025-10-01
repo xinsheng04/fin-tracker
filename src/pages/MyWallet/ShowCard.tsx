@@ -4,7 +4,12 @@ import { deleteCard } from '../../store/myWallet';
 import Button from "../../ui/button/Button";
 import styles from './showCard.module.css';
 import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
+import { delCard } from "../../api/walletApi";
 import { getCards } from "../../api/walletApi";
+import loaderStyles from '../../util/loader.module.css';
+
+
 export default function ShowCard() {
   // need the email from the useSelector from the store 
   const email = useSelector((state: any) => state.userInfo.email);
@@ -12,7 +17,7 @@ export default function ShowCard() {
   // using dispatch 
   const dispatch = useDispatch();
   // only if the wallet has been created and in the store 
-  const display = useSelector((state: any) => state.myWallet.bankAccounts)
+  // const display = useSelector((state: any) => state.myWallet.bankAccounts)
   const bankCardImage: Record<string, string> = {
     'Maybank': 'src/assets/bankCards/maybankCard.png',
     'CIMB': 'src/assets/bankCards/Cimb.png',
@@ -21,12 +26,12 @@ export default function ShowCard() {
     'Hong Leong': 'src/assets/bankCards/hongLeong.png'
   }
   // writing a function to get the cards using tanStack querys
-  const { data: cards=[], isLoading, error } = useQuery({
+  const { data: cards = [], isLoading, error } = useQuery({
     queryKey: ['cards', email],
     queryFn: () => getCards(email as string),
     enabled: !!email
   });
-  console.log("These are the cards from the backend : ",cards);
+  console.log("These are the cards from the backend : ", cards);
 
 
   // if user decides to delete a bankCard
@@ -34,6 +39,13 @@ export default function ShowCard() {
     dispatch(deleteCard({
       cardNo: String(cardNo)
     }))
+  }
+
+  if (isLoading) {
+    return 
+    <div className={loaderStyles.loader}>
+      <div className={loaderStyles['loader-inner']}></div>
+    </div>
   }
   return (
     <div className={styles.placement}>

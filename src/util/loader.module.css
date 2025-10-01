@@ -3,9 +3,6 @@ body, html {
     text-align: center;
 }
 
-body {
-  background-color: #242F3F;
-}
 
 .loader {
   display: inline-block;
