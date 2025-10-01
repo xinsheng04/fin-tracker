@@ -1,6 +1,5 @@
 import 'dotenv/config';
 import mysql from 'mysql2/promise';
-import { transform } from 'typescript';
 export const config = {
   db: {
     host: "localhost",
@@ -9,7 +8,7 @@ export const config = {
     database: 'fintracker',
     port: 3306
   }
-}
+};
 
 
 // connection config used to create DB (connect without database first)
