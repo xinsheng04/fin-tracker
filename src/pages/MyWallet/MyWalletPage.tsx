@@ -3,20 +3,27 @@ import Dropdown from "../../ui/dropdown/Dropdown";
 import { useState, useEffect } from 'react';
 import Input from "../../ui/input/Input";
 import styles from './myWallet.module.css';
-import { useDispatch } from "react-redux";
-import { addNewCard } from "../../store/myWallet";
 import ShowCard from "./ShowCard";
 import { useSelector } from "react-redux";
 import Header from "../../components/header/Header";
-
+import { useMutation } from "@tanstack/react-query";
+import { regCard } from "../../api/walletApi";
+import { queryClient } from "../../api/Api";
+import { getCards } from "../../api/walletApi";
+import { useQuery } from "@tanstack/react-query";
 
 const MyWallet = () => {
-  const dispatch = useDispatch();
   const [addCard, setAddCard] = useState<boolean>(false);
   const [errs, setErrs] = useState<Record<string, string>>({});
   // array of cardNo 
-  const bankCardNumbers = useSelector((state: any) => state.myWallet.bankAccounts)
-  
+  // const bankCardNumbers = useSelector((state: any) => state.myWallet.bankAccounts);
+  // getting the email from the userInfo Store 
+  const email = useSelector((state: any) => state.userInfo.email);
+  const { data: cards = [], error } = useQuery({
+    queryKey: ['cards', email],
+    queryFn: () => getCards(email as string),
+    enabled: !!email
+  });
   // two way binding for card number input 
   const [cardNoErr, setCardNoErr] = useState<string>();
 
@@ -60,7 +67,7 @@ const MyWallet = () => {
       newErrs.amountNeg = "Amount is negative";
     }
     // if cardNo is the same 
-    for (let x of bankCardNumbers) {
+    for (let x of cards) {
       if (x.cardNo === data.card) {
         newErrs.sameCard = "Card number is already taken";
       }
@@ -68,6 +75,13 @@ const MyWallet = () => {
 
     return newErrs;
   }
+
+  const registerCard = useMutation({
+    mutationFn: regCard,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['cards', email] })
+    }
+  })
 
   function handleFormSubmission(event: any) {
     event.preventDefault();
@@ -85,60 +99,68 @@ const MyWallet = () => {
     setErrs({});
     console.log('Form successfully filled');
     // post request 
-    dispatch(addNewCard({
-      bankName: String(rawData.bankName), cardNo: String(rawData.card), amount: Number(rawData.amount)
-    })
-    )
+    // dispatch(addNewCard({
+    //   bankName: String(rawData.bankName), cardNo: String(rawData.card), amount: Number(rawData.amount)
+    // }))
+    // Transform rawData to match backend payload structure
+    const payload = {
+      email,
+      cardNo: String(rawData.card),
+      amount: Number(rawData.amount),
+      bankName: String(rawData.bankName),
+    };
+    registerCard.mutate(payload);
+
   }
 
   return (
     <>
       <div className={styles.main}>
-      <Header title="My Wallets" />
-      <div className={styles.display}>
-        <div>
-          <Button onClick={handleClickAddCard}>Add Card</Button>
-        </div>
-        <div>
-          {addCard &&
-            <form className={styles.form} onSubmit={handleFormSubmission}>
-              <Input
-                label="Card Number"
-                name="card"
-                type="text"
-                value={cardNoErr}
-                onChange={(e) => setCardNoErr(String(e.target.value))}
-              />
-              {errs.card && <p>{errs.card}</p>}
-              {cardNoErr && cardNoErr.length === 16 && !errs.cardLen && !errs.sameCard && (
-                <p style={{ color: "green" }}>Valid card!</p>
-              )}
-              {errs.sameCard && <p style={{ color: "red" }}>{errs.sameCard}</p>}
-              {errs.cardLen && <p>{errs.cardLen}</p>}
-              <Dropdown
-                label="Bank Name"
-                name="bankName"
-                required
-                
-                options={[
-                  { value: "Maybank", label: "Maybank" },
-                  { value: "CIMB", label: "CIMB" },
-                  { value: "Public Bank", label: "Public Bank" },
-                  { value: "RHB", label: "RHB" },
-                  { value: "Hong Leong", label: "Hong Leong" },
-                ]}
-              />
-              {errs.bankName && <p>{errs.bankName}</p>}
-              <Input label="Card Amount" name="amount" type="number"></Input>
-              {errs.amount && <p>{errs.amount}</p>}
-              {errs.amountNeg && <p>{errs.amountNeg}</p>}
+        <Header title="My Wallets" />
+        <div className={styles.display}>
+          <div>
+            <Button onClick={handleClickAddCard}>Add Card</Button>
+          </div>
+          <div>
+            {addCard &&
+              <form className={styles.form} onSubmit={handleFormSubmission}>
+                <Input
+                  label="Card Number"
+                  name="card"
+                  type="text"
+                  value={cardNoErr}
+                  onChange={(e) => setCardNoErr(String(e.target.value))}
+                />
+                {errs.card && <p>{errs.card}</p>}
+                {cardNoErr && cardNoErr.length === 16 && !errs.cardLen && !errs.sameCard && (
+                  <p style={{ color: "green" }}>Valid card!</p>
+                )}
+                {errs.sameCard && <p style={{ color: "red" }}>{errs.sameCard}</p>}
+                {errs.cardLen && <p>{errs.cardLen}</p>}
+                <Dropdown
+                  label="Bank Name"
+                  name="bankName"
+                  required
 
-              <Button type="submit">Submit</Button>
-            </form>
-          }
+                  options={[
+                    { value: "Maybank", label: "Maybank" },
+                    { value: "CIMB", label: "CIMB" },
+                    { value: "Public Bank", label: "Public Bank" },
+                    { value: "RHB", label: "RHB" },
+                    { value: "Hong Leong", label: "Hong Leong" },
+                  ]}
+                />
+                {errs.bankName && <p>{errs.bankName}</p>}
+                <Input label="Card Amount" name="amount" type="number"></Input>
+                {errs.amount && <p>{errs.amount}</p>}
+                {errs.amountNeg && <p>{errs.amountNeg}</p>}
+
+                <Button type="submit">Submit</Button>
+              </form>
+            }
+          </div>
+          <ShowCard />
         </div>
-        <ShowCard />
-      </div>
       </div>
     </>
   )

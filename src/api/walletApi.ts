@@ -24,3 +24,4 @@ export const delCard = async(payload:{
   const res = await api.delete('/deleteCard',{data:payload})
   return res.data;
 }
+

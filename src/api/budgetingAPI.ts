@@ -3,13 +3,13 @@ import type { Category } from '../util/transactionCategories';
 
 interface budgetObject {
   title: string;
-  categoryAndAmount: { category: Category; amount: number }[] | null;
+  categoryAndAmount: { category: Category; limitAmount: number }[] | null;
 }
 
 export const addBudgetAPI = async (email: string, data: budgetObject) => {
   const body = { title: data.title, items: data.categoryAndAmount };
   try {
-    const response = await api.post(`/budgets/add?email=${email}`, body);
+    const response = await api.post('/budgeting/add',body,{params:{email}} );
     return response.data;
   } catch (error: any) {
     console.error('Failed to add budget: ' + error.response?.data?.error || error.message);
@@ -19,7 +19,7 @@ export const addBudgetAPI = async (email: string, data: budgetObject) => {
 
 export const getAllBudgetDataAPI = async (email: string) => {
   try{
-    const response = await api.get(`/budgeting/getAll?email=${email}`);
+    const response = await api.get('/budgeting/getAll',{params:{email}});
     return response.data;
   } catch (error: any) {
     console.error('Failed to get budgets: ' + error.response?.data?.error || error.message);

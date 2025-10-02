@@ -10,17 +10,32 @@ import Header from "../../components/header/Header";
 import styles from "./BudgetingPage.module.css";
 import Button from "../../ui/button/Button";
 import type React from "react";
+import { useQuery } from "@tanstack/react-query";
+
+import { getAllBudgetDataAPI } from "../../api/budgetingAPI";
 
 const BudgetingPage: React.FC = () => {
+  const email = useSelector((state: any) => state.userInfo.email);
   const dispatch = useDispatch();
   const budgets = useSelector((state: any) => state.budgeting.budgets);
   const expensesList = useSelector((state: any) => state.transaction.recentTransaction);
   const expenses = expensesList.filter((t: any) => t.typeOfTransfer === "expense");
   const [selectedBudgetId, setSelectedBudgetId] = useState<string | null>(budgets.length > 0 ? budgets[0].id : "");
   const [modalOpenType, setModalOpenType] = useState<"add" | "edit" | null>(null);
-  
+
   const selectedBudget = budgets.find((b: budgetObject) => b.id === selectedBudgetId) || null;
   let progressList: { spent: number; limit: number; title: string }[] = [];
+
+  // using tanStack query and not removing RTK so that i don't break the code base lmao
+  //migrating is hard ngl T_T
+  const { data: budgetsQ = [], error } = useQuery({
+    queryKey: ['budgetId', email],
+    queryFn: () => getAllBudgetDataAPI(email as string),
+    enabled: !!email
+  })
+  console.log("Budgeting from api", budgetsQ)
+
+
 
   if (selectedBudget?.categoryAndAmount) {
     // Populate progressList with categories and their limits
@@ -104,15 +119,15 @@ const BudgetingPage: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {progressList.map(({title, limit, spent}) => (
+                  {progressList.map(({ title, limit, spent }) => (
                     <tr className={styles.limitItem} key={title}>
                       <th>{title}</th>
-                      {title !== "Others" ? 
-                      <td>
-                        <span className={spent > limit ? styles.overLimit : styles.normal}>{spent}</span>/<span>{limit}</span>
-                      </td>
-                      : 
-                      <td><span>{spent}</span>/<span>{limit}</span></td>
+                      {title !== "Others" ?
+                        <td>
+                          <span className={spent > limit ? styles.overLimit : styles.normal}>{spent}</span>/<span>{limit}</span>
+                        </td>
+                        :
+                        <td><span>{spent}</span>/<span>{limit}</span></td>
                       }
                     </tr>
                   ))}
