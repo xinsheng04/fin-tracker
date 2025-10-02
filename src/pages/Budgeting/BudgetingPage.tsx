@@ -4,6 +4,7 @@ import type { budgetObject } from "../../store/budgeting";
 import { resetBudgetProgress } from "../../store/budgeting";
 import AddBudgetForm from "../../components/budget/addBudgetForm/AddBudgetForm";
 import Modal from "../../ui/modal/Modal";
+import type { budgetingObject } from "./interface/budgeting";
 // import BudgetDonut from "../../components/budget/budgetDonut/BudgetDonut";
 import ProgressChart from "../../components/budget/budgetDonut/ProgressChart";
 import Header from "../../components/header/Header";
@@ -35,7 +36,7 @@ const BudgetingPage: React.FC = () => {
     enabled:!!email
   });
   console.log(budgetQ)
-  console.log('budgetid for budget[0] ',budgetQ[0].budgetId)
+  console.log('budgetid for budget[0] ',budgetQ);
 
   const {data:transaction, isLoading,isError} = useGetAllTransactions(email);
   console.log('transaction ', transaction);
@@ -104,8 +105,8 @@ const BudgetingPage: React.FC = () => {
         <h3>My List of Budgets</h3>
         <div className={styles.budgets}>
           {budgetQ.length === 0 && <p>No budgets set. Set a<span onClick={() => setModalOpenType("add")}> new budget plan </span>now.</p>}
-          {budgetQ.length > 0 && budgetQ.map((budget: budgetObject) => (
-            <div key={budget.id} className={styles.budgetCard} onClick={() => handleSelectBudget(budget.id)}>
+          {budgetQ.length > 0 && budgetQ.map((budget: budgetingObject) => (
+            <div key={budget.budgetId} className={styles.budgetCard} onClick={() => handleSelectBudget(budget.budgetId)}>
               <h3>{budget.title}</h3>
             </div>
           ))}
