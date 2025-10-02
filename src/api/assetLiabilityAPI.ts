@@ -1,4 +1,7 @@
 import api from './Api';
+import { queryClient } from './Api';
+import { useQuery, useMutation } from "@tanstack/react-query";
+
 interface AssetLiabilityObject {
   title: string;
   value: number;
@@ -8,7 +11,41 @@ interface AssetLiabilityObject {
   category: "current" | "fixed";
 };
 
-export const addAssetLiabilityAPI = async (email: string, data: AssetLiabilityObject) => {
+export const useGetAllLiabilities = (email: string) => {
+  return useQuery({
+    queryKey: ['assetLiabilities', email],
+    queryFn: () => getAssetLiabilityAPI(email)
+  });
+};
+
+export const useAddAssetLiability = (email: string, data: AssetLiabilityObject) => {
+  return useMutation({
+    mutationFn: () => addAssetLiabilityAPI(email, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['assetLiabilities', email] });
+    }
+  })
+};
+
+export const useUpdateAssetLiability = (email: string, changes: { columns: string, value: string}[]) => {
+  return useMutation({
+    mutationFn: () => updateAssetLiabilityAPI(email, changes),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['assetLiabilities', email] });
+    }
+  })
+};
+
+export const useDeleteAssetLiability = (email: string, id: string) => {
+  return useMutation({
+    mutationFn: () => deleteAssetLiabilityAPI(email, id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['assetLiabilities', email] });
+    }
+  })
+}
+
+const addAssetLiabilityAPI = async (email: string, data: AssetLiabilityObject) => {
   const body = { assetLiability: data };
   try{
     const response = await api.post(`/assetLiabilities/add?email=${email}`, body);
@@ -19,7 +56,7 @@ export const addAssetLiabilityAPI = async (email: string, data: AssetLiabilityOb
   }
 }
 
-export const getAssetLiabilityAPI = async (email: string) => {
+const getAssetLiabilityAPI = async (email: string) => {
   try{
     const response = await api.get(`/assetLiabilities/getAll?email=${email}`);
     return response.data;
@@ -29,7 +66,7 @@ export const getAssetLiabilityAPI = async (email: string) => {
   }
 }
 
-export const updateAssetLiabilityAPI = async (email: string, changes: { columns: string, value: string}[]) => {
+const updateAssetLiabilityAPI = async (email: string, changes: { columns: string, value: string}[]) => {
   try{
     const response = await api.put(`/assetLiabilities/edit?email=${email}`, { changes });
     return response.data;
@@ -39,7 +76,7 @@ export const updateAssetLiabilityAPI = async (email: string, changes: { columns:
   }
 }
 
-export const deleteAssetLiabilityAPI = async (email: string, id: string) => {
+const deleteAssetLiabilityAPI = async (email: string, id: string) => {
   try{
     const response = await api.delete(`/assetLiabilities/delete?email=${email}&id=${id}`);
     return response.data;

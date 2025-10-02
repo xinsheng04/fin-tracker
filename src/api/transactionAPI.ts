@@ -1,5 +1,7 @@
 import api from './Api';
 import type { Category } from '../util/transactionCategories';
+import { queryClient } from './Api';
+import { useQuery, useMutation } from "@tanstack/react-query";
 
 interface TransactionsObject {
   amount: number;
@@ -9,7 +11,26 @@ interface TransactionsObject {
   cardNo: string;
 }
 
-export const addTransactionEntryAPI = async (email: string, transaction: TransactionsObject) => {
+export const useGetAllTransactions = (email: string) => {
+  return useQuery({
+    queryKey: ['transactions', email],
+    queryFn: () => getAllTransactionsAPI(email)
+  });
+}
+
+export const useAddTransaction = (email: string, transaction: TransactionsObject) => {
+  return useMutation({
+    mutationFn: () => addTransactionEntryAPI(email, transaction),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['transactions', email] });
+    },
+    onError: (error) => {
+      alert('Error adding transaction: ' + (error as Error).message);
+    }
+  });
+}
+
+const addTransactionEntryAPI = async (email: string, transaction: TransactionsObject) => {
   try{
     const response = await api.post(`/transactions/add?email=${email}`, { transaction });
     if(response.status !== 200){
@@ -21,7 +42,7 @@ export const addTransactionEntryAPI = async (email: string, transaction: Transac
   }
 }
 
-export const getAllTransactionsAPI = async (email: string) => {
+const getAllTransactionsAPI = async (email: string) => {
   try{
     const response = await api.get(`/transactions/getAll?email=${email}`);
     return response.data;

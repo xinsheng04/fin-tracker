@@ -2,7 +2,7 @@ import styles from './transactionCard.module.css';
 import { useSelector } from 'react-redux';
 
 interface TransactionCardProps {
-id: string;
+  id: string;
   viewDetailsOnClick: (openType: string, id: string) => void;
 }
 

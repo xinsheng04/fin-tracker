@@ -6,7 +6,7 @@ import router from './routes/routes';
 import { Provider } from 'react-redux';
 import store from './store';
 import { QueryClientProvider } from '@tanstack/react-query';
-import  queryClient  from "./util/queryClient";
+import { queryClient } from "./api/Api";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
