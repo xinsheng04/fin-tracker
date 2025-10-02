@@ -11,11 +11,12 @@ import styles from "./BudgetingPage.module.css";
 import Button from "../../ui/button/Button";
 import type React from "react";
 import { useQuery } from "@tanstack/react-query";
-
 import { getAllBudgetDataAPI } from "../../api/budgetingAPI";
+import { useGetAllTransactions } from "../../api/transactionAPI";
 
 const BudgetingPage: React.FC = () => {
-  const email = useSelector((state: any) => state.userInfo.email);
+  // getting email from the userInfo store;
+  const email = useSelector((state: {userInfo:{email:string}}) => state.userInfo.email);
   const dispatch = useDispatch();
   const budgets = useSelector((state: any) => state.budgeting.budgets);
   const expensesList = useSelector((state: any) => state.transaction.recentTransaction);
@@ -28,14 +29,18 @@ const BudgetingPage: React.FC = () => {
 
   // using tanStack query and not removing RTK so that i don't break the code base lmao
   //migrating is hard ngl T_T
-  const { data: budgetsQ = [], error } = useQuery({
-    queryKey: ['budgetId', email],
-    queryFn: () => getAllBudgetDataAPI(email as string),
-    enabled: !!email
-  })
-  console.log("Budgeting from api", budgetsQ)
+  const {data:budgetQ = []} = useQuery({
+    queryKey:['budgetId',email],
+    queryFn:()=>getAllBudgetDataAPI(email as string),
+    enabled:!!email
+  });
+  console.log(budgetQ)
+  console.log('budgetid for budget[0] ',budgetQ[0].budgetId)
 
+  const {data:transaction, isLoading,isError} = useGetAllTransactions(email);
+  console.log('transaction ', transaction);
 
+  
 
   if (selectedBudget?.categoryAndAmount) {
     // Populate progressList with categories and their limits
@@ -78,6 +83,7 @@ const BudgetingPage: React.FC = () => {
     }, progressList);
   }
 
+
   function handleSelectBudget(budgetId: string) {
     const budget = budgets.find((b: budgetObject) => b.id === budgetId);
     setSelectedBudgetId(budget.id);
@@ -97,8 +103,8 @@ const BudgetingPage: React.FC = () => {
       <div className={styles.budgetOverview}>
         <h3>My List of Budgets</h3>
         <div className={styles.budgets}>
-          {budgets.length === 0 && <p>No budgets set. Set a<span onClick={() => setModalOpenType("add")}> new budget plan </span>now.</p>}
-          {budgets.length > 0 && budgets.map((budget: budgetObject) => (
+          {budgetQ.length === 0 && <p>No budgets set. Set a<span onClick={() => setModalOpenType("add")}> new budget plan </span>now.</p>}
+          {budgetQ.length > 0 && budgetQ.map((budget: budgetObject) => (
             <div key={budget.id} className={styles.budgetCard} onClick={() => handleSelectBudget(budget.id)}>
               <h3>{budget.title}</h3>
             </div>

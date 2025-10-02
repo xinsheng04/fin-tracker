@@ -44,7 +44,7 @@ const addTransactionEntryAPI = async (email: string, transaction: TransactionsOb
 
 const getAllTransactionsAPI = async (email: string) => {
   try{
-    const response = await api.get(`/transactions/getAll?email=${email}`);
+    const response = await api.get('/transactions/getAll',{params:{email}});
     return response.data;
   } catch(error: any){
     console.error('Failed to get all transactions: ' + error.response?.data?.error || error.message);

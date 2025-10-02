@@ -14,6 +14,7 @@ const RecentTransactions: React.FC<RecentTransactionsProps> = ({ viewDetailsOnCl
   // going to output the recentTransaction arrays 
   const email = useSelector((state: any) => state.userInfo.email);
   const { data: recent, isLoading, isError, error } = useGetAllTransactions(email);
+  
 
   const incomeExists = recent?.some((rec: any) => rec.typeOfTransfer === "income");
   const expenseExists = recent?.some((rec: any) => rec.typeOfTransfer === "expense");

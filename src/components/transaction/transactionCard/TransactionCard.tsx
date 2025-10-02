@@ -5,7 +5,7 @@ interface TransactionCardProps {
   id: string;
   viewDetailsOnClick: (openType: string, id: string) => void;
 }
-
+// used in overview.tsx ONLy (for now)
 const TransactionCard: React.FC<TransactionCardProps> = ({ id, viewDetailsOnClick }) => {
   const { bank, cardNo, typeOfTransfer, amount, date } = useSelector((state: any) => state.transaction.recentTransaction)
   .find((tr: any) => tr.id === id);

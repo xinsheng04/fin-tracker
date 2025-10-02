@@ -17,7 +17,8 @@ export const getAllTransactionData = async (req, res) => {
       `select * from transaction t 
       join cards c on t.cardNo = c.cardNo 
       join users u on c.email = u.email
-      where u.email = ?;`, 
+      where u.email = ?
+      order by t.dateTransfer.desc;`, 
       [email]
     );
     return res.status(200).json(rows);
