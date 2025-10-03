@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { useAddTransaction } from "../../../api/transactionAPI";
 import { useGetCards } from "../../../api/walletApi";
 import styles from './TransactionForm.module.css';
+
 // import { deductFromRemaining } from "../../../store/budgeting";
 import Error from "../../../ui/error/Error";
 
@@ -56,6 +57,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
   function handleAddExpense(data: any) {
     const card = cards.find((acc: any) => acc.cardNo === data.bankCard);
     if (card) {
+      
       // checking if data.amount exceeds the card amount 
       const cardAmount = card.amount;
       if (Number(data.amount) > cardAmount) {
