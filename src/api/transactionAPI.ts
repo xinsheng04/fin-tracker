@@ -14,13 +14,14 @@ interface TransactionsObject {
 export const useGetAllTransactions = (email: string) => {
   return useQuery({
     queryKey: ['transactions', email],
-    queryFn: () => getAllTransactionsAPI(email)
+    queryFn: () => getAllTransactionsAPI(email),
+    staleTime: 60 * 1000, // 1 minute
   });
 }
 
-export const useAddTransaction = (email: string, transaction: TransactionsObject) => {
+export const useAddTransaction = (email: string) => {
   return useMutation({
-    mutationFn: () => addTransactionEntryAPI(email, transaction),
+    mutationFn: (transaction: TransactionsObject) => addTransactionEntryAPI(email, transaction),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['transactions', email] });
     },

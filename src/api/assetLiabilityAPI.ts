@@ -14,31 +14,32 @@ interface AssetLiabilityObject {
 export const useGetAllAssetLiabilities = (email: string) => {
   return useQuery({
     queryKey: ['assetLiabilities', email],
-    queryFn: () => getAssetLiabilityAPI(email)
+    queryFn: () => getAssetLiabilityAPI(email),
+    staleTime: 60 * 1000, // 1 minute
   });
 };
 
-export const useAddAssetLiability = (email: string, data: AssetLiabilityObject) => {
+export const useAddAssetLiability = (email: string) => {
   return useMutation({
-    mutationFn: () => addAssetLiabilityAPI(email, data),
+    mutationFn: (data: AssetLiabilityObject) => addAssetLiabilityAPI(email, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['assetLiabilities', email] });
     }
   })
 };
 
-export const useUpdateAssetLiability = (email: string, changes: { columns: string, value: string}[]) => {
+export const useUpdateAssetLiability = (email: string) => {
   return useMutation({
-    mutationFn: () => updateAssetLiabilityAPI(email, changes),
+    mutationFn: (changes: { columns: string, value: string}[]) => updateAssetLiabilityAPI(email, changes),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['assetLiabilities', email] });
     }
   })
 };
 
-export const useDeleteAssetLiability = (email: string, id: string) => {
+export const useDeleteAssetLiability = (email: string) => {
   return useMutation({
-    mutationFn: () => deleteAssetLiabilityAPI(email, id),
+    mutationFn: (id: string) => deleteAssetLiabilityAPI(email, id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['assetLiabilities', email] });
     }

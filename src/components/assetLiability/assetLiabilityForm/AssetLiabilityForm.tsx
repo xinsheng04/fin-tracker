@@ -2,11 +2,8 @@ import React from "react";
 import Form from "../../../ui/form/Form";
 import Input from "../../../ui/input/Input";
 import Dropdown from "../../../ui/dropdown/Dropdown";
-import { useSelector, useDispatch } from "react-redux";
-// import { addRecentTransaction } from "../../store/transaction";
-// import { removeAmountFromCard } from "../../store/myWallet";
-// import { deductFromRemaining } from "../../store/budgeting";
-import { addItem } from "../../../store/assetLiability";
+import { useSelector } from "react-redux";
+import { useAddAssetLiability } from "../../../api/assetLiabilityAPI";
 import styles from './assetLiability.module.css';
 
 interface AssetLiabilityFormProps {
@@ -14,22 +11,21 @@ interface AssetLiabilityFormProps {
 }
 
 const AssetLiabilityForm: React.FC<AssetLiabilityFormProps> = ({ closeForm }) => {
-  const dispatch = useDispatch();
-  const bankAccounts = useSelector((state: any) => state.myWallet.bankAccounts);
-  const cardNos = bankAccounts.map((card: any) => ({ label: `${card.bankName} : ${card.cardNo}`, value: card.cardNo }));
+  const email = useSelector((state: any) => state.userInfo.email);
+  const { mutate: addAssetLiability } = useAddAssetLiability(email);
 
   // adding date 
   let dateTime = new Date().toISOString().slice(0, 10);
 
   function submitHandler(data: any){
-    dispatch(addItem({
+    addAssetLiability({
       title: data.title,
       value: Number(data.value),
       description: data.description,
       date: String(dateTime),
       type: data.type,
       category: data.category
-    }));
+    });
     closeForm();
   }
 

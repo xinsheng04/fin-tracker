@@ -122,14 +122,16 @@ const BudgetingPage: React.FC = () => {
       <div className={styles.budgetOverview}>
         <h3>My List of Budgets</h3>
         <div className={styles.budgets}>
-          {budgetQ.length === 0 && <p>No budgets set. Set a<span onClick={() => setModalOpenType("add")}> new budget plan </span>now.</p>}
+          {budgetQ.length === 0 && <p className={styles.subtext}>No budgets set. Set a<span onClick={() => setModalOpenType("add")}> new budget plan </span>now.</p>}
           {budgetQ.length > 0 && budgetQ.map((budget: budgetingObject) => (
-            <div key={budget.budgetItemId} className={styles.budgetCard} onClick={() => handleSelectBudget(budget.budgetId)}>
-              <h3>{budget.title}</h3>
+            <div>
+              <div key={budget.budgetItemId} className={styles.budgetCard} onClick={() => handleSelectBudget(budget.budgetId)}>
+                <h3>{budget.title}</h3>
+              </div>
+              <p className={styles.subtext}>Or, you can <span onClick={() => setModalOpenType("add")}>create a new budget plan.</span></p>
             </div>
           ))}
         </div>
-        <p className={styles.subtext}>Or, you can <span onClick={() => setModalOpenType("add")}>create a new budget plan.</span></p>
       </div>
       {selectedBudget && (
         <div className={styles.budgetContent}>

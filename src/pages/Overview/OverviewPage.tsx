@@ -36,9 +36,7 @@ const Overview: React.FC = () => {
   }
 
   function isAssetLiabilityObject(data: any): data is AssetLiabilityObject {
-    console.log(data);
-    const isAsLi = (data as AssetLiabilityObject)?.AsLiId !== undefined;
-    return isAsLi;
+    return (data as AssetLiabilityObject)?.AsLiId !== undefined;
   }
 
   return (
