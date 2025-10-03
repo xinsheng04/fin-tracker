@@ -1,5 +1,5 @@
 import api from './Api';
-import type { Category } from '../util/transactionCategories';
+import type { Category } from '../util/transactionTypes';
 import { queryClient } from './Api';
 import { useQuery, useMutation } from "@tanstack/react-query";
 
@@ -31,22 +31,23 @@ export const useAddTransaction = (email: string, transaction: TransactionsObject
 }
 
 const addTransactionEntryAPI = async (email: string, transaction: TransactionsObject) => {
-  try{
-    const response = await api.post(`/transactions/add?email=${email}`, { transaction });
-    if(response.status !== 200){
+  try {
+    const response = await api.post('/transactions/add', { transaction }, { params: { email } });
+    if (response.status !== 200) {
       throw new Error('Failed to add transaction: ' + response.statusText);
     }
-  } catch(error: any){
+  } catch (error: any) {
     console.error('Failed to add transaction: ' + error.response?.data?.error || error.message);
     throw error;
   }
 }
 
 const getAllTransactionsAPI = async (email: string) => {
-  try{
-    const response = await api.get('/transactions/getAll',{params:{email}});
+  try {
+    const response = await api.get('/transactions/getAll', { params: { email } });
+    console.log('Response: ', response);
     return response.data;
-  } catch(error: any){
+  } catch (error: any) {
     console.error('Failed to get all transactions: ' + error.response?.data?.error || error.message);
     throw error;
   }

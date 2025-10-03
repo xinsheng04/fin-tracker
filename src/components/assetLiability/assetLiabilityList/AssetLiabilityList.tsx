@@ -1,22 +1,24 @@
-import { useSelector } from "react-redux";
 import { useState } from "react";
-import type { AssetLiabilityKeyValueType } from "../../../store/assetLiability";
+import { useSelector } from "react-redux";
+import { useGetAllAssetLiabilities } from "../../../api/assetLiabilityAPI";
+import type { AssetLiabilityObject } from "../../../util/assetLiabilityTypes";
 import AssetLiabilityCard from "../assetLiabilityCard/AssetLiabilityCard";
 import styles from "./AssetLiabilityList.module.css";
 
 interface AssetLiabilityListProps{
-  viewDetailsOnClick: (openType: string, id: string) => void;
+  viewDetailsOnClick: (assetLiabilityData: AssetLiabilityObject) => void;
 }
 
 const AssetLiabilityList: React.FC<AssetLiabilityListProps> = ({ viewDetailsOnClick }) => {
   const [assetOrLiability, setAssetOrLiability] = useState<"asset" | "liability" | "all">("all");
   const [category, setCategory] = useState<"fixed" | "current" | "all">("all");
 
-  const list = useSelector((state: any) => state.assetLiability.assetLiabilityItems);
-  const assetOrLiabilityExists = list.some((item: any) => item.type === assetOrLiability || assetOrLiability === "all");
-  const categoryExists = list.some((item: any) => item.category === category || category === "all");
+  const email = useSelector((state: any) => state.userInfo.email);
+  const { data, isLoading, isError } = useGetAllAssetLiabilities(email);
+  const assetOrLiabilityExists = data?.some((item: any) => item.type === assetOrLiability || assetOrLiability === "all");
+  const categoryExists = data?.some((item: any) => item.category === category || category === "all");
 
-  const shouldRender = assetOrLiabilityExists && categoryExists;
+  const shouldRender = assetOrLiabilityExists && categoryExists && !isLoading && !isError;
 
   return (
     <div className={styles.main}>
@@ -65,13 +67,12 @@ const AssetLiabilityList: React.FC<AssetLiabilityListProps> = ({ viewDetailsOnCl
       </div>
       <div className={styles.list}>
         {!shouldRender && <p className={styles.noItems}>No items to display</p>}
-        {shouldRender && list.map((item: AssetLiabilityKeyValueType) => {
+        {shouldRender && data.map((item: AssetLiabilityObject) => {
           if ((item.type === assetOrLiability || assetOrLiability === "all") &&
               (item.category === category || category === "all")) {
             return (
               <AssetLiabilityCard
-                key={item.id}
-                id={item.id}
+                assetLiabilityData={item}
                 viewDetailsOnClick={viewDetailsOnClick}
               />
             );

@@ -11,7 +11,7 @@ interface AssetLiabilityObject {
   category: "current" | "fixed";
 };
 
-export const useGetAllLiabilities = (email: string) => {
+export const useGetAllAssetLiabilities = (email: string) => {
   return useQuery({
     queryKey: ['assetLiabilities', email],
     queryFn: () => getAssetLiabilityAPI(email)
@@ -48,7 +48,7 @@ export const useDeleteAssetLiability = (email: string, id: string) => {
 const addAssetLiabilityAPI = async (email: string, data: AssetLiabilityObject) => {
   const body = { assetLiability: data };
   try{
-    const response = await api.post(`/assetLiabilities/add?email=${email}`, body);
+    const response = await api.post('/assetLiabilities/add', body, { params: { email } });
     return response.data;
   } catch (error: any) {
     console.error('Failed to add asset/liability: ' + error.response?.data?.error || error.message);
@@ -58,7 +58,7 @@ const addAssetLiabilityAPI = async (email: string, data: AssetLiabilityObject) =
 
 const getAssetLiabilityAPI = async (email: string) => {
   try{
-    const response = await api.get(`/assetLiabilities/getAll?email=${email}`);
+    const response = await api.get('/assetLiabilities/getAll', { params: { email } });
     return response.data;
   } catch (error: any) {
     console.error('Failed to get asset/liability: ' + error.response?.data?.error || error.message);
@@ -68,7 +68,7 @@ const getAssetLiabilityAPI = async (email: string) => {
 
 const updateAssetLiabilityAPI = async (email: string, changes: { columns: string, value: string}[]) => {
   try{
-    const response = await api.put(`/assetLiabilities/edit?email=${email}`, { changes });
+    const response = await api.put('/assetLiabilities/edit', { changes }, { params: { email } });
     return response.data;
   } catch (error: any) {
     console.error('Failed to update asset/liability: ' + error.response?.data?.error || error.message);
@@ -78,7 +78,7 @@ const updateAssetLiabilityAPI = async (email: string, changes: { columns: string
 
 const deleteAssetLiabilityAPI = async (email: string, id: string) => {
   try{
-    const response = await api.delete(`/assetLiabilities/delete?email=${email}&id=${id}`);
+    const response = await api.delete('/assetLiabilities/delete', { params: { email, id } });
     return response.data;
   } catch (error: any) {
     console.error('Failed to delete asset/liability: ' + error.response?.data?.error || error.message);

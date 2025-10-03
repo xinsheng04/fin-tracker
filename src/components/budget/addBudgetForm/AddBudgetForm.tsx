@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { useState, useRef } from "react";
-import { expenseCat } from "../../../util/transactionCategories";
-import type { Category } from "../../../util/transactionCategories";
+import { expenseCat } from "../../../util/transactionTypes";
+import type { Category } from "../../../util/transactionTypes";
 
 import styles from "./AddBudgetForm.module.css";
 import { queryClient } from "../../../api/Api";

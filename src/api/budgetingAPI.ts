@@ -1,7 +1,5 @@
 import api from './Api';
-import type { Category } from '../util/transactionCategories';
-import { useMutation } from "@tanstack/react-query";
-import {queryClient } from './Api'
+import type { Category } from '../util/transactionTypes';
 
 interface budgetObject {
   title: string;
@@ -32,7 +30,7 @@ export const getAllBudgetDataAPI = async (email: string) => {
 export const updateBudgetAPI = async (email: string, changes: { columns: string, value: string }[], title?: string) => {
   try {
     const body = { title, updatedBudgetItems: changes };
-    const response = await api.patch(`/budgeting/edit?email=${email}`, body);
+    const response = await api.patch('/budgeting/edit', body, { params: { email } });
     return response.data;
   } catch (error: any) {
     console.error('Failed to update budget: ' + error.response?.data?.error || error.message);
@@ -42,7 +40,7 @@ export const updateBudgetAPI = async (email: string, changes: { columns: string,
 
 export const resetBudgetProgressAPI = async (email: string, id: number) => {
   try {
-    const response = await api.patch(`/budgeting/reset?id=${id}&email=${email}`);
+    const response = await api.patch('/budgeting/reset', { params: { id, email } });
     return response.data;
   } catch (error: any) {
     console.error('Failed to reset budget progress: ' + error.response?.data?.error || error.message);
@@ -51,7 +49,7 @@ export const resetBudgetProgressAPI = async (email: string, id: number) => {
 }
 
 // delete api 
-const delBudget = async(email:string, id:string)=>{
+export const delBudget = async(email:string, id:string)=>{
   try{
     const response = await api.delete('/budgeting',{params:{email,id}});
     return response.data;
@@ -60,12 +58,4 @@ const delBudget = async(email:string, id:string)=>{
   }
 }
 
-// writing the delete function in tanStack query
-export const useDeleteBudget = (email: string) => {
-  return useMutation({
-    mutationFn: (budgetId:string) => delBudget(email, budgetId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['budgetId', email] });
-    }
-  });
-};
+

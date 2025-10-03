@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { generateBudgetID } from "../util/genID";
-import type { Category } from "../util/transactionCategories";
+import type { Category } from "../util/transactionTypes";
 
 // Defining the budget amounts
 interface budgetObject {

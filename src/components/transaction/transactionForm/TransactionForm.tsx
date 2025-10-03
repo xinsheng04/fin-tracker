@@ -4,7 +4,7 @@ import Input from "../../../ui/input/Input";
 import Dropdown from "../../../ui/dropdown/Dropdown";
 import { useState } from "react";
 import { RemainingAmountDisplay } from "../../remainingAmount/RemainingAmountDisplay";
-import { incomeCat, expenseCat } from "../../../util/transactionCategories";
+import { incomeCat, expenseCat } from "../../../util/transactionTypes";
 import { useSelector, useDispatch } from "react-redux";
 import { addAmountToCard, removeAmountFromCard } from "../../../store/myWallet";
 import { addRecentTransaction } from "../../../store/transaction";

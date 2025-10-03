@@ -15,7 +15,9 @@ import type React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getAllBudgetDataAPI } from "../../api/budgetingAPI";
 import { useGetAllTransactions } from "../../api/transactionAPI";
-import { useDeleteBudget } from "../../api/budgetingAPI";
+import { useMutation } from "@tanstack/react-query";
+import { queryClient } from "../../api/Api";
+import { delBudget } from "../../api/budgetingAPI";
 
 const BudgetingPage: React.FC = () => {
   // getting email from the userInfo store;
@@ -95,12 +97,15 @@ const BudgetingPage: React.FC = () => {
     setSelectedBudgetId(budget.budgetId);
   }
 
-  const { mutate: deleteBudget } = useDeleteBudget(email);
+  const {mutate:deleteBudget} = useMutation({
+    mutationFn:delBudget,
+    onSuccess:()=>{
+      queryClient.invalidateQueries({queryKey:['budgetId',email]})
+    }
+  })
   function handleDeleteBudget(budgetId: string | null) {
-    if (!email|| !budgetId)  return;
-
-    // trigger the mutation
-    deleteBudget(budgetId);
+    if (!email || !budgetId) return;
+    deleteBudget({email,id: budgetId})
   }
 
   function handleResetBudgetProgress() {
