@@ -27,13 +27,13 @@ const BudgetingPage: React.FC = () => {
   const [modalOpenType, setModalOpenType] = useState<"add" | "edit" | null>(null);
 
   // this is transaction data that we need to retrieve;
-  const expensesList = useSelector((state: any) => state.transaction.recentTransaction);
-  
+  // const expensesList = useSelector((state: any) => state.transaction.recentTransaction);
+
   // using the get api for all the transactions
   const { data: transactionExpenses, isLoading, isError } = useGetAllTransactions(email);
   console.log('transaction ', transactionExpenses);
-  const expenses = transactionExpenses.filter((t: transactionsObject) => t.typeOfTransfer === "expense");
-  console.log("these are the filtered expenses ",expenses);
+  const expenses = (transactionExpenses ?? []).filter((t: transactionsObject) => t.typeOfTransfer === "expense");
+  console.log("these are the filtered expenses ", expenses);
   // using tanStack query and not removing RTK so that i don't break the code base lmao
   //migrating is hard ngl T_T
   const { data: budgetQ = [] } = useQuery({
@@ -41,24 +41,27 @@ const BudgetingPage: React.FC = () => {
     queryFn: () => getAllBudgetDataAPI(email as string),
     enabled: !!email
   });
-  console.log(budgetQ)
-  console.log('budgetid for budget[0] ', budgetQ);
+  console.log("budgetQ displays ", budgetQ)
 
-  
 
   const selectedBudget = budgetQ.find((b: budgetingObject) => b.budgetId === selectedBudgetId) || null;
   let progressList: { spent: number; limit: number; title: string }[] = [];
+  console.log("selectedBudget, ", selectedBudget.categoryAndAmount)
 
-
-  if (selectedBudget?.categoryAndAmount) {
+  if (selectedBudget) {
     // Populate progressList with categories and their limits
-    progressList = selectedBudget.categoryAndAmount.map(
-      ({ category, amount }: { category: string; amount: number }) => ({
-        title: category,
-        limit: amount,
+    progressList = [
+      {
+        title: selectedBudget.category,
+        limit: parseFloat(selectedBudget.limitAmount),
+        spent: 0
+      },
+      {
+        title: "Others",
+        limit: 0,
         spent: 0,
-      })
-    );
+      },
+    ];
 
     // Add "Others" category
     progressList.push({

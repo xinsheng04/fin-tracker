@@ -6,6 +6,7 @@ import styles from './myWallet.module.css';
 import ShowCard from "./ShowCard";
 import { useSelector } from "react-redux";
 import Header from "../../components/header/Header";
+import Modal from "../../ui/modal/Modal";
 import { useMutation } from "@tanstack/react-query";
 import { regCard } from "../../api/walletApi";
 import { queryClient } from "../../api/Api";
