@@ -32,6 +32,18 @@ const expenseCat = [
   "Other"
 ];
 
+interface TransactionObject{
+  bankName: string;
+  cardNo: string;
+  typeOfTransfer: "income" | "expense";
+  amountTransfered: number;
+  dateTransfer: string;
+  transactionId: number;
+  category?: Category;
+  comment?: string;
+}
+
 export type Category = (typeof incomeCat[number]) | (typeof expenseCat[number]);
+export type { TransactionObject };
 
 export { incomeCat, expenseCat };

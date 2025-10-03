@@ -1,5 +1,5 @@
 import api from './Api';
-import type { Category } from '../util/transactionCategories';
+import type { Category } from '../util/transactionTypes';
 
 interface budgetObject {
   title: string;
@@ -9,7 +9,7 @@ interface budgetObject {
 export const addBudgetAPI = async (email: string, data: budgetObject) => {
   const body = { title: data.title, items: data.categoryAndAmount };
   try {
-    const response = await api.post('/budgeting/add',body,{params:{email}} );
+    const response = await api.post('/budgeting/add', body, { params: { email } });
     return response.data;
   } catch (error: any) {
     console.error('Failed to add budget: ' + error.response?.data?.error || error.message);
@@ -18,8 +18,8 @@ export const addBudgetAPI = async (email: string, data: budgetObject) => {
 }
 
 export const getAllBudgetDataAPI = async (email: string) => {
-  try{
-    const response = await api.get('/budgeting/getAll',{params:{email}});
+  try {
+    const response = await api.get('/budgeting/getAll', { params: { email } });
     return response.data;
   } catch (error: any) {
     console.error('Failed to get budgets: ' + error.response?.data?.error || error.message);
@@ -27,10 +27,10 @@ export const getAllBudgetDataAPI = async (email: string) => {
   }
 }
 
-export const updateBudgetAPI = async (email: string, changes: { columns: string, value: string}[], title?: string) => {
-  try{
+export const updateBudgetAPI = async (email: string, changes: { columns: string, value: string }[], title?: string) => {
+  try {
     const body = { title, updatedBudgetItems: changes };
-    const response = await api.patch(`/budgeting/edit?email=${email}`, body);
+    const response = await api.patch('/budgeting/edit', body, { params: { email } });
     return response.data;
   } catch (error: any) {
     console.error('Failed to update budget: ' + error.response?.data?.error || error.message);
@@ -39,8 +39,8 @@ export const updateBudgetAPI = async (email: string, changes: { columns: string,
 }
 
 export const resetBudgetProgressAPI = async (email: string, id: number) => {
-  try{
-    const response = await api.patch(`/budgeting/reset?id=${id}&email=${email}`);
+  try {
+    const response = await api.patch('/budgeting/reset', { params: { id, email } });
     return response.data;
   } catch (error: any) {
     console.error('Failed to reset budget progress: ' + error.response?.data?.error || error.message);

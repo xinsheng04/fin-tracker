@@ -12,7 +12,6 @@ type HeaderProps = {
 export default function Header({ title }: HeaderProps) {
   // calling from the userInfo Store 
   const user = useSelector((state: any) => state.userInfo);
-  console.log(user)
   const renderWelcome = title === "Overview";
   return (
     <div className={`${styles.header}`}>
