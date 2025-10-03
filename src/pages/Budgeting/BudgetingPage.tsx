@@ -97,16 +97,19 @@ const BudgetingPage: React.FC = () => {
     setSelectedBudgetId(budget.budgetId);
   }
 
-  const {mutate:deleteBudget} = useMutation({
-    mutationFn:delBudget,
-    onSuccess:()=>{
-      queryClient.invalidateQueries({queryKey:['budgetId',email]})
-    }
-  })
+  const { mutate: deleteBudget } = useMutation({
+    mutationFn: ({ email, id }: { email: string; id: string }) =>
+      delBudget(email, id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['budgetId', email] });
+    },
+  });
+
   function handleDeleteBudget(budgetId: string | null) {
     if (!email || !budgetId) return;
-    deleteBudget({email,id: budgetId})
+    deleteBudget({ email, id: budgetId }); // now works
   }
+
 
   function handleResetBudgetProgress() {
     if (selectedBudgetId) {

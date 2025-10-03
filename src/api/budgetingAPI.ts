@@ -51,10 +51,10 @@ export const resetBudgetProgressAPI = async (email: string, id: number) => {
 // delete api 
 export const delBudget = async(email:string, id:string)=>{
   try{
-    const response = await api.delete('/budgeting',{params:{email,id}});
+    const response = await api.delete('/budgeting/delete',{params:{id,email}});
     return response.data;
   }catch(error:any){
-    console.error('Failed to delete Budget ' + error.response?.data?.error|| error.message)
+    console.error('Failed to delete Budget ' + error)
   }
 }
 
