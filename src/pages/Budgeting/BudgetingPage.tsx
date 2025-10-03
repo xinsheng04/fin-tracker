@@ -1,6 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
-import type { budgetObject } from "../../store/budgeting";
 import { resetBudgetProgress } from "../../store/budgeting";
 import AddBudgetForm from "../../components/budget/addBudgetForm/AddBudgetForm";
 import Modal from "../../ui/modal/Modal";
@@ -16,6 +15,7 @@ import type React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getAllBudgetDataAPI } from "../../api/budgetingAPI";
 import { useGetAllTransactions } from "../../api/transactionAPI";
+import { useDeleteBudget } from "../../api/budgetingAPI";
 
 const BudgetingPage: React.FC = () => {
   // getting email from the userInfo store;
@@ -46,7 +46,7 @@ const BudgetingPage: React.FC = () => {
 
   const selectedBudget = budgetQ.find((b: budgetingObject) => b.budgetId === selectedBudgetId) || null;
   let progressList: { spent: number; limit: number; title: string }[] = [];
-  console.log("selectedBudget, ", selectedBudget.categoryAndAmount)
+  console.log("selectedBudget, ", selectedBudget)
 
   if (selectedBudget) {
     // Populate progressList with categories and their limits
@@ -55,11 +55,6 @@ const BudgetingPage: React.FC = () => {
         title: selectedBudget.category,
         limit: parseFloat(selectedBudget.limitAmount),
         spent: 0
-      },
-      {
-        title: "Others",
-        limit: 0,
-        spent: 0,
       },
     ];
 
@@ -98,6 +93,14 @@ const BudgetingPage: React.FC = () => {
   function handleSelectBudget(budgetId: string) {
     const budget = budgetQ.find((b: budgetingObject) => b.budgetId === budgetId);
     setSelectedBudgetId(budget.budgetId);
+  }
+
+  const { mutate: deleteBudget } = useDeleteBudget(email);
+  function handleDeleteBudget(budgetId: string | null) {
+    if (!email|| !budgetId)  return;
+
+    // trigger the mutation
+    deleteBudget(budgetId);
   }
 
   function handleResetBudgetProgress() {
@@ -153,7 +156,7 @@ const BudgetingPage: React.FC = () => {
               <div className={styles.budgetButtons}>
                 <Button onClick={handleResetBudgetProgress}>Reset Progress</Button>
                 <Button>Edit this budget</Button>
-                <Button>Delete this budget</Button>
+                <Button onClick={() => handleDeleteBudget(selectedBudgetId)}>Delete this budget</Button>
               </div>
             </div>
             <div className={styles.rightBox}>

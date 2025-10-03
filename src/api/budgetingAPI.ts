@@ -1,5 +1,7 @@
 import api from './Api';
 import type { Category } from '../util/transactionCategories';
+import { useMutation } from "@tanstack/react-query";
+import {queryClient } from './Api'
 
 interface budgetObject {
   title: string;
@@ -9,7 +11,7 @@ interface budgetObject {
 export const addBudgetAPI = async (email: string, data: budgetObject) => {
   const body = { title: data.title, items: data.categoryAndAmount };
   try {
-    const response = await api.post('/budgeting/add',body,{params:{email}} );
+    const response = await api.post('/budgeting/add', body, { params: { email } });
     return response.data;
   } catch (error: any) {
     console.error('Failed to add budget: ' + error.response?.data?.error || error.message);
@@ -18,8 +20,8 @@ export const addBudgetAPI = async (email: string, data: budgetObject) => {
 }
 
 export const getAllBudgetDataAPI = async (email: string) => {
-  try{
-    const response = await api.get('/budgeting/getAll',{params:{email}});
+  try {
+    const response = await api.get('/budgeting/getAll', { params: { email } });
     return response.data;
   } catch (error: any) {
     console.error('Failed to get budgets: ' + error.response?.data?.error || error.message);
@@ -27,8 +29,8 @@ export const getAllBudgetDataAPI = async (email: string) => {
   }
 }
 
-export const updateBudgetAPI = async (email: string, changes: { columns: string, value: string}[], title?: string) => {
-  try{
+export const updateBudgetAPI = async (email: string, changes: { columns: string, value: string }[], title?: string) => {
+  try {
     const body = { title, updatedBudgetItems: changes };
     const response = await api.patch(`/budgeting/edit?email=${email}`, body);
     return response.data;
@@ -39,7 +41,7 @@ export const updateBudgetAPI = async (email: string, changes: { columns: string,
 }
 
 export const resetBudgetProgressAPI = async (email: string, id: number) => {
-  try{
+  try {
     const response = await api.patch(`/budgeting/reset?id=${id}&email=${email}`);
     return response.data;
   } catch (error: any) {
@@ -47,3 +49,23 @@ export const resetBudgetProgressAPI = async (email: string, id: number) => {
     throw error;
   }
 }
+
+// delete api 
+const delBudget = async(email:string, id:string)=>{
+  try{
+    const response = await api.delete('/budgeting',{params:{email,id}});
+    return response.data;
+  }catch(error:any){
+    console.error('Failed to delete Budget ' + error.response?.data?.error|| error.message)
+  }
+}
+
+// writing the delete function in tanStack query
+export const useDeleteBudget = (email: string) => {
+  return useMutation({
+    mutationFn: (budgetId:string) => delBudget(email, budgetId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['budgetId', email] });
+    }
+  });
+};
