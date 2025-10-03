@@ -7,23 +7,37 @@ import TransactionDetails from "../../components/transaction/transactionDetails/
 import AssetLiabilityForm from "../../components/assetLiability/assetLiabilityForm/AssetLiabilityForm";
 import AssetLiabilityList from "../../components/assetLiability/assetLiabilityList/AssetLiabilityList";
 import AssetLiabilityDetail from "../../components/assetLiability/assetLiabilityDetail/AssetLiabilityDetail";
+
+import type { TransactionObject } from "../../util/transactionTypes";
+import type { AssetLiabilityObject } from "../../util/assetLiabilityTypes";
 import Button from "../../ui/button/Button";
 import Modal from "../../ui/modal/Modal";
 import styles from "./OverviewPage.module.css";
 
 const Overview: React.FC = () => {
   const [modalOpenType, setModalOpenType] = useState<"income" | "expense" | "asset-liability" | "details-transactions" | "details-assets-liabilities" | null>(null);
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selected, setSelected] = useState<TransactionObject | AssetLiabilityObject | null>(null);
   function closeModal() {
     setModalOpenType(null);
   }
 
-  function openDetailsModal(openType: string, id: string){
-    setModalOpenType(openType as "details-transactions" | "details-assets-liabilities");
-    setSelected(id);
+  function openTransactionDetailsModal(transactionData: TransactionObject) {
+    setModalOpenType("details-transactions");
+    setSelected(transactionData);
   }
-  // checking if the user has millions or billions 
-  
+
+  function openAssetLiabilityDetailsModal(assetLiabilityData: AssetLiabilityObject) {
+    setModalOpenType("details-assets-liabilities");
+    setSelected(assetLiabilityData);
+  }
+
+  function isTransactionObject(data: any): data is TransactionObject {
+    return (data as TransactionObject)?.transactionId !== undefined;
+  }
+
+  function isAssetLiabilityObject(data: any): data is AssetLiabilityObject {
+    return (data as AssetLiabilityObject)?.AsLiId !== undefined;
+  }
 
   return (
     <div className={styles.container}>
@@ -49,10 +63,10 @@ const Overview: React.FC = () => {
       </div>
       <div className={styles.contentBox}>
         <div className={styles.leftBox}>
-          <RecentTransactions viewDetailsOnClick={openDetailsModal} />
+          <RecentTransactions viewDetailsOnClick={openTransactionDetailsModal} />
         </div>
         <div className={styles.rightBox}>
-          <AssetLiabilityList viewDetailsOnClick={openDetailsModal} />
+          <AssetLiabilityList viewDetailsOnClick={openAssetLiabilityDetailsModal} />
         </div>
       </div>
       <Modal isOpen={modalOpenType !== null} onClose={closeModal}>
@@ -60,14 +74,13 @@ const Overview: React.FC = () => {
         <TransactionForm type={modalOpenType} closeForm={closeModal} />}
         {modalOpenType==="asset-liability" && 
         <AssetLiabilityForm closeForm={closeModal} />}
-        {modalOpenType==="details-transactions" && selected &&
-          <TransactionDetails
-            id={selected}
-          />
+
+        {isTransactionObject(selected) && selected !== null &&
+          <TransactionDetails transactionData={selected} />
         }
-        {modalOpenType==="details-assets-liabilities" && selected &&
+        {isAssetLiabilityObject(selected) && selected !== null &&
           <AssetLiabilityDetail
-            id={selected}
+            assetLiabilityData={selected}
             onClose={closeModal}
           />
         }

@@ -18,6 +18,7 @@ app.use("/api", assetLiabilityRoutes);
   try {
     // ensure DB + tables exist before loading controllers that create pools
     await initDB();
+    // const pool = await createPool();
 
     // import routes AFTER DB init so controllers can create pools safely
     const { default: budgetRoutes } = await import('./routes/budgetingRoutes.js');

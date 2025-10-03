@@ -3,6 +3,7 @@ import StatsSidebar from '../../components/statsSidebar/StatsSidebar';
 import Header from '../../components/header/Header';
 import DonutChart from '../../ui/graph/DonutChart';
 import { useSelector } from 'react-redux';
+import { useGetAllTransactions } from '../../api/transactionAPI';
 import type React from 'react';
 
 const EmptyChartText: React.FC<{ item: string }> = ({ item }) => {
@@ -12,12 +13,23 @@ const EmptyChartText: React.FC<{ item: string }> = ({ item }) => {
 }
 
 const StatsPage: React.FC = () => {
-  const transactions = useSelector((state: any) => state.transaction.recentTransaction);
+  // const transactions = useSelector((state: any) => state.transaction.recentTransaction);
+  const email = useSelector((state: any) => state.userInfo.email);
+  const { data: transactions, isLoading, isError, error } = useGetAllTransactions(email);
+
+  if (isLoading) {
+    return <p>Loading...</p>
+  }
+
+  if (isError) {
+    console.error('Error fetching transactions: ', error);
+    return <p>Error loading transactions. Please try again later.</p>
+  }
 
   function groupByCategory(data: any[]): { label: string; value: number }[] {
     const aggregatedData = data.reduce((acc: Record<string, number>, curr: any) => {
       const { category, amount } = curr;
-      if (!acc[category]){
+      if (!acc[category]) {
         acc[category] = 0;
       }
       acc[category] += Number(amount);

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { Category } from '../util/transactionCategories';
+import type { Category } from '../util/transactionTypes';
 import { generateTransactionID } from '../util/genID';
 
 // Define Recent Transactions

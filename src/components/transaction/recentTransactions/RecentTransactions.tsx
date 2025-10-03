@@ -1,24 +1,37 @@
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import { useGetAllTransactions } from "../../../api/transactionAPI";
+
 import TransactionCard from "../transactionCard/TransactionCard";
+import type { TransactionObject } from "../../../util/transactionTypes";
 import styles from "./RecentTransactions.module.css"
 
 type RecentTransactionsProps = {
-  viewDetailsOnClick: (openType: string, id: string) => void;
+  viewDetailsOnClick: (transactionData: TransactionObject) => void;
 }
 
 const RecentTransactions: React.FC<RecentTransactionsProps> = ({ viewDetailsOnClick }) => {
   const [transactionDisplayType, setTransactionDisplayType] = useState<"all" | "income" | "expense">("all");
   // going to output the recentTransaction arrays 
-  const recent = useSelector((state: any) => state.transaction.recentTransaction)
-  const incomeExists = recent.some((rec: any) => rec.typeOfTransfer === "income");
-  const expenseExists = recent.some((rec: any) => rec.typeOfTransfer === "expense");
+  const email = useSelector((state: any) => state.userInfo.email);
+  const { data, isLoading, isError, error } = useGetAllTransactions(email);
 
-  let shouldRender = recent.length > 0 &&
+  const incomeExists = data?.some((rec: any) => rec.typeOfTransfer === "income");
+  const expenseExists = data?.some((rec: any) => rec.typeOfTransfer === "expense");
+
+  let shouldRender = !isLoading && !isError && data?.length > 0 &&
     (transactionDisplayType === "all" ||
       (transactionDisplayType === "income" && incomeExists) ||
       (transactionDisplayType === "expense" && expenseExists));
 
+  if (isError) {
+    return (
+      <div className={styles.recentTransactions}>
+        <h3>Recent transactions</h3>
+        <p className={styles.error}>{(error as Error).message}</p>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.recentTransactions}>
@@ -40,6 +53,7 @@ const RecentTransactions: React.FC<RecentTransactionsProps> = ({ viewDetailsOnCl
           <p>Expenses</p>
         </li>
       </ul>
+      {isLoading && <p className={styles.loading}>Loading...</p>}
       {!shouldRender && transactionDisplayType === "all" && <p className={styles.noRecents}>No recent transactions</p>}
       {!shouldRender && transactionDisplayType === "income" && <p className={styles.noRecents}>No income transactions</p>}
       {!shouldRender && transactionDisplayType === "expense" && <p className={styles.noRecents}>No expense transactions</p>}
@@ -47,15 +61,15 @@ const RecentTransactions: React.FC<RecentTransactionsProps> = ({ viewDetailsOnCl
       <div className={styles.transactionList}>
         {
           shouldRender &&
-          recent.map((rec: any, index: number) => {
+          data.map((rec: any) => {
             if (transactionDisplayType === "all" || transactionDisplayType === rec.typeOfTransfer) {
               return (
                 <TransactionCard
                   viewDetailsOnClick={viewDetailsOnClick}
-                  key={rec.id}
-                  id={rec.id}
+                  transactionData={rec}
+                  key={rec.transactionId}
                 />
-              )
+              );
             } else
               return null;
           })}

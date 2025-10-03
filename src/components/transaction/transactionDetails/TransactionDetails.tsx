@@ -1,14 +1,18 @@
 import type React from 'react';
 import styles from './TransactionDetails.module.css';
-import { useSelector } from 'react-redux';
+import type { TransactionObject } from '../../../util/transactionTypes';
 
-const TransactionDetails: React.FC<{id: string}> = (
+interface TransactionDetailsProps {
+  transactionData: TransactionObject;
+  
+}
+
+const TransactionDetails: React.FC<TransactionDetailsProps> = (
   {
-    id
+    transactionData
   }
 ) => {
-  const { bank, amount, typeOfTransfer, category, date, cardNo, comments } = useSelector((state: any) => state.transaction.recentTransaction)
-  .find((tr: any) => tr.id === id);
+  const { bankName, cardNo, typeOfTransfer, transactionId, amountTransfered, dateTransfer, category, comment } = transactionData;
   return (
     <div className={styles.transactionDetails}>
       <h1 className={styles.transactionHeader}>Transaction Details</h1>
@@ -16,11 +20,11 @@ const TransactionDetails: React.FC<{id: string}> = (
         <tbody>
           <tr>
             <th>Transaction ID</th>
-            <td>{id}</td>
+            <td>{transactionId}</td>
           </tr>
           <tr>
             <th>Bank</th>
-            <td>{bank}</td>
+            <td>{bankName}</td>
           </tr>
           <tr>
             <th>Card Number</th>
@@ -28,11 +32,11 @@ const TransactionDetails: React.FC<{id: string}> = (
           </tr>
           <tr>
             <th>Amount</th>
-            <td className={typeOfTransfer==="income" ? styles.income : styles.expense}>{amount}</td>
+            <td className={typeOfTransfer === "income" ? styles.income : styles.expense}>{amountTransfered}</td>
           </tr>
           <tr>
             <th>Date of Transaction</th>
-            <td>{date}</td>
+            <td>{dateTransfer}</td>
           </tr>
           <tr>
             <th>Category</th>
@@ -40,7 +44,7 @@ const TransactionDetails: React.FC<{id: string}> = (
           </tr>
           <tr>
             <th>Comments</th>
-            <td>{comments}</td>
+            <td>{comment}</td>
           </tr>
         </tbody>
       </table>

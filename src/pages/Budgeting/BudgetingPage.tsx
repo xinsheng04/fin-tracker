@@ -1,36 +1,64 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
-import type { budgetObject } from "../../store/budgeting";
 import { resetBudgetProgress } from "../../store/budgeting";
 import AddBudgetForm from "../../components/budget/addBudgetForm/AddBudgetForm";
 import Modal from "../../ui/modal/Modal";
+import type { budgetingObject } from "../../api/interface/budgeting";
+import type { transactionsObject } from "../../api/interface/transactions";
+
 // import BudgetDonut from "../../components/budget/budgetDonut/BudgetDonut";
 import ProgressChart from "../../components/budget/budgetDonut/ProgressChart";
 import Header from "../../components/header/Header";
 import styles from "./BudgetingPage.module.css";
 import Button from "../../ui/button/Button";
 import type React from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getAllBudgetDataAPI } from "../../api/budgetingAPI";
+import { useGetAllTransactions } from "../../api/transactionAPI";
+import { useMutation } from "@tanstack/react-query";
+import { queryClient } from "../../api/Api";
+import { delBudget } from "../../api/budgetingAPI";
 
 const BudgetingPage: React.FC = () => {
+  // getting email from the userInfo store;
+  const email = useSelector((state: { userInfo: { email: string } }) => state.userInfo.email);
   const dispatch = useDispatch();
   const budgets = useSelector((state: any) => state.budgeting.budgets);
-  const expensesList = useSelector((state: any) => state.transaction.recentTransaction);
-  const expenses = expensesList.filter((t: any) => t.typeOfTransfer === "expense");
+
   const [selectedBudgetId, setSelectedBudgetId] = useState<string | null>(budgets.length > 0 ? budgets[0].id : "");
   const [modalOpenType, setModalOpenType] = useState<"add" | "edit" | null>(null);
-  
-  const selectedBudget = budgets.find((b: budgetObject) => b.id === selectedBudgetId) || null;
-  let progressList: { spent: number; limit: number; title: string }[] = [];
 
-  if (selectedBudget?.categoryAndAmount) {
+  // this is transaction data that we need to retrieve;
+  // const expensesList = useSelector((state: any) => state.transaction.recentTransaction);
+
+  // using the get api for all the transactions
+  const { data: transactionExpenses, isLoading, isError } = useGetAllTransactions(email);
+  console.log('transaction ', transactionExpenses);
+  const expenses = (transactionExpenses ?? []).filter((t: transactionsObject) => t.typeOfTransfer === "expense");
+  console.log("these are the filtered expenses ", expenses);
+  // using tanStack query and not removing RTK so that i don't break the code base lmao
+  //migrating is hard ngl T_T
+  const { data: budgetQ = [] } = useQuery({
+    queryKey: ['budgetId', email],
+    queryFn: () => getAllBudgetDataAPI(email as string),
+    enabled: !!email
+  });
+  console.log("budgetQ displays ", budgetQ)
+
+
+  const selectedBudget = budgetQ.find((b: budgetingObject) => b.budgetId === selectedBudgetId) || null;
+  let progressList: { spent: number; limit: number; title: string }[] = [];
+  console.log("selectedBudget, ", selectedBudget)
+
+  if (selectedBudget) {
     // Populate progressList with categories and their limits
-    progressList = selectedBudget.categoryAndAmount.map(
-      ({ category, amount }: { category: string; amount: number }) => ({
-        title: category,
-        limit: amount,
-        spent: 0,
-      })
-    );
+    progressList = [
+      {
+        title: selectedBudget.category,
+        limit: parseFloat(selectedBudget.limitAmount),
+        spent: 0
+      },
+    ];
 
     // Add "Others" category
     progressList.push({
@@ -63,10 +91,25 @@ const BudgetingPage: React.FC = () => {
     }, progressList);
   }
 
+  // when user presses the title of the budget
   function handleSelectBudget(budgetId: string) {
-    const budget = budgets.find((b: budgetObject) => b.id === budgetId);
-    setSelectedBudgetId(budget.id);
+    const budget = budgetQ.find((b: budgetingObject) => b.budgetId === budgetId);
+    setSelectedBudgetId(budget.budgetId);
   }
+
+  const { mutate: deleteBudget } = useMutation({
+    mutationFn: ({ email, id }: { email: string; id: string }) =>
+      delBudget(email, id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['budgetId', email] });
+    },
+  });
+
+  function handleDeleteBudget(budgetId: string | null) {
+    if (!email || !budgetId) return;
+    deleteBudget({ email, id: budgetId }); // now works
+  }
+
 
   function handleResetBudgetProgress() {
     if (selectedBudgetId) {
@@ -82,14 +125,16 @@ const BudgetingPage: React.FC = () => {
       <div className={styles.budgetOverview}>
         <h3>My List of Budgets</h3>
         <div className={styles.budgets}>
-          {budgets.length === 0 && <p>No budgets set. Set a<span onClick={() => setModalOpenType("add")}> new budget plan </span>now.</p>}
-          {budgets.length > 0 && budgets.map((budget: budgetObject) => (
-            <div key={budget.id} className={styles.budgetCard} onClick={() => handleSelectBudget(budget.id)}>
-              <h3>{budget.title}</h3>
+          {budgetQ.length === 0 && <p className={styles.subtext}>No budgets set. Set a<span onClick={() => setModalOpenType("add")}> new budget plan </span>now.</p>}
+          {budgetQ.length > 0 && budgetQ.map((budget: budgetingObject) => (
+            <div>
+              <div key={budget.budgetItemId} className={styles.budgetCard} onClick={() => handleSelectBudget(budget.budgetId)}>
+                <h3>{budget.title}</h3>
+              </div>
+              <p className={styles.subtext}>Or, you can <span onClick={() => setModalOpenType("add")}>create a new budget plan.</span></p>
             </div>
           ))}
         </div>
-        <p className={styles.subtext}>Or, you can <span onClick={() => setModalOpenType("add")}>create a new budget plan.</span></p>
       </div>
       {selectedBudget && (
         <div className={styles.budgetContent}>
@@ -104,15 +149,15 @@ const BudgetingPage: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {progressList.map(({title, limit, spent}) => (
+                  {progressList.map(({ title, limit, spent }) => (
                     <tr className={styles.limitItem} key={title}>
                       <th>{title}</th>
-                      {title !== "Others" ? 
-                      <td>
-                        <span className={spent > limit ? styles.overLimit : styles.normal}>{spent}</span>/<span>{limit}</span>
-                      </td>
-                      : 
-                      <td><span>{spent}</span>/<span>{limit}</span></td>
+                      {title !== "Others" ?
+                        <td>
+                          <span className={spent > limit ? styles.overLimit : styles.normal}>{spent}</span>/<span>{limit}</span>
+                        </td>
+                        :
+                        <td><span>{spent}</span>/<span>{limit}</span></td>
                       }
                     </tr>
                   ))}
@@ -121,7 +166,7 @@ const BudgetingPage: React.FC = () => {
               <div className={styles.budgetButtons}>
                 <Button onClick={handleResetBudgetProgress}>Reset Progress</Button>
                 <Button>Edit this budget</Button>
-                <Button>Delete this budget</Button>
+                <Button onClick={() => handleDeleteBudget(selectedBudgetId)}>Delete this budget</Button>
               </div>
             </div>
             <div className={styles.rightBox}>

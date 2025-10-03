@@ -1,23 +1,23 @@
 import styles from './transactionCard.module.css';
-import { useSelector } from 'react-redux';
+import type { TransactionObject } from '../../../util/transactionTypes';
 
 interface TransactionCardProps {
-id: string;
-  viewDetailsOnClick: (openType: string, id: string) => void;
+  transactionData: TransactionObject;
+  viewDetailsOnClick: (transactionData: TransactionObject) => void;
 }
 
-const TransactionCard: React.FC<TransactionCardProps> = ({ id, viewDetailsOnClick }) => {
-  const { bank, cardNo, typeOfTransfer, amount, date } = useSelector((state: any) => state.transaction.recentTransaction)
-  .find((tr: any) => tr.id === id);
+// used in overview.tsx ONLY (for now)
+const TransactionCard: React.FC<TransactionCardProps> = ({ transactionData, viewDetailsOnClick }) => {
+  const { bankName, cardNo, typeOfTransfer, amountTransfered, dateTransfer } = transactionData;
   return (
     <div className={styles.main}>
-      <div key={cardNo} className={styles.transactionItem} onClick={() => viewDetailsOnClick("details-transactions", id)}>
+      <div key={cardNo} className={styles.transactionItem} onClick={() => viewDetailsOnClick(transactionData)}>
         <div className={styles.origin}>
-          <strong>{bank}</strong>
+          <strong>{bankName}</strong>
           <p className={styles.cardNumber}>{cardNo}</p>
         </div>
-        <p className={styles.date}>{date}</p>
-        <div className={typeOfTransfer==="income" ? `${styles.income}` : `${styles.expense}`}>{typeOfTransfer==="income" ? `+${amount}` : `-${amount}`}</div>
+        <p className={styles.date}>{dateTransfer.split("T")[0]}</p>
+        <div className={typeOfTransfer === "income" ? `${styles.income}` : `${styles.expense}`}>{typeOfTransfer === "income" ? `+${amountTransfered}` : `-${amountTransfered}`}</div>
       </div>
     </div>
   )

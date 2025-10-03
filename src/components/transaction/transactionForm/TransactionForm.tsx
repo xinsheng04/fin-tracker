@@ -4,11 +4,12 @@ import Input from "../../../ui/input/Input";
 import Dropdown from "../../../ui/dropdown/Dropdown";
 import { useState } from "react";
 import { RemainingAmountDisplay } from "../../remainingAmount/RemainingAmountDisplay";
-import { incomeCat, expenseCat } from "../../../util/transactionCategories";
-import { useSelector, useDispatch } from "react-redux";
-import { addAmountToCard, removeAmountFromCard } from "../../../store/myWallet";
-import { addRecentTransaction } from "../../../store/transaction";
+import { incomeCat, expenseCat } from "../../../util/transactionTypes";
+import { useSelector } from "react-redux";
+import { useAddTransaction } from "../../../api/transactionAPI";
+import { useGetCards } from "../../../api/walletApi";
 import styles from './TransactionForm.module.css';
+
 // import { deductFromRemaining } from "../../../store/budgeting";
 import Error from "../../../ui/error/Error";
 
@@ -18,32 +19,33 @@ type TransactionFormProps = {
 }
 
 const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) => {
-  const dispatch = useDispatch();
-  const bankAccounts = useSelector((state: any) => state.myWallet.bankAccounts);
-  const cardNos = bankAccounts.map((card: any) => ({ label: `${card.bankName} : ${card.cardNo}`, value: card.cardNo }));
+  // const dispatch = useDispatch();
+  const email = useSelector((state: any) => state.userInfo.email);
+  const {data: cards, isLoading, isError, error: getCardsError} = useGetCards(email);
+  const {mutate: addTransaction} = useAddTransaction(email);
   const [error, setError] = useState<{ title: string; message: string } | null>(null);
-  // adding date 
-  let dateTime = new Date().toISOString().slice(0, 10);
-  if (bankAccounts.length === 0) {
+  if(isLoading){
+    return <p>Loading...</p>
+  }
+  if(isError){
+    console.error('Error fetching cards: ', getCardsError);
+    return <p>Error loading cards. Please try again later.</p>
+  }
+  if (!Array.isArray(cards) || cards.length === 0) {
     return <p>Please add a bank account first.</p>
   }
-
-
-
+  const cardDisplayTags = cards ? cards.map((card: any) => ({ label: `${card.bankName} : ${card.cardNo}`, value: card.cardNo })) : [];
+  
   function handleAddIncome(data: any) {
-    const card = bankAccounts.find((acc: any) => acc.cardNo === data.bankCard);
+    const card = cards.find((acc: any) => acc.cardNo === data.bankCard);
     if (card) {
-      dispatch(addAmountToCard({ cardNo: card.cardNo, amount: Number(data.amount) }));
-      // this is to also dispatch the recentTransaction
-      dispatch(addRecentTransaction({
-        bank: card.bankName,
-        typeOfTransfer: "income",
-        cardNo: card.cardNo,
+      addTransaction({
         amount: Number(data.amount),
-        date: String(dateTime),
+        typeOfTransfer: "income",
         category: data.category,
-        comments: data.comments
-      }));
+        comments: data.comments,
+        cardNo: card.cardNo
+      })
     } else {
       console.error("Income registration error: Card not found");
     }
@@ -53,8 +55,9 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
 
 
   function handleAddExpense(data: any) {
-    const card = bankAccounts.find((acc: any) => acc.cardNo === data.bankCard);
+    const card = cards.find((acc: any) => acc.cardNo === data.bankCard);
     if (card) {
+      
       // checking if data.amount exceeds the card amount 
       const cardAmount = card.amount;
       if (Number(data.amount) > cardAmount) {
@@ -64,17 +67,13 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
         })
         return;
       }
-      dispatch(removeAmountFromCard({ cardNo: card.cardNo, amount: Number(data.amount) }));
-      // adding the expense part for the recentTransaction
-      dispatch(addRecentTransaction({
-        bank: card.bankName,
-        typeOfTransfer: "expense",
-        cardNo: card.cardNo,
+      addTransaction({
         amount: Number(data.amount),
-        date: String(dateTime),
+        typeOfTransfer: "expense",
         category: data.category,
-        comments: data.comments
-      }));
+        comments: data.comments,
+        cardNo: card.cardNo
+      });
 
       // // Tells the budget store to update the remaining amount immediately
       // dispatch(deductFromRemaining(Number(data.amount)))
@@ -104,7 +103,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
           {/* extra spaces because I'm not updating the CSS for dropdown */}
           <div>
             <p>1. Account involved</p>
-            <Dropdown label="Bank Card    " name="bankCard" options={cardNos} />
+            <Dropdown label="Bank Card    " name="bankCard" options={cardDisplayTags} />
           </div>
           <div>
             <p>2. Transaction amount</p>

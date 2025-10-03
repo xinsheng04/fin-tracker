@@ -1,20 +1,19 @@
 import type React from 'react';
+import { useDeleteAssetLiability } from '../../../api/assetLiabilityAPI';
 import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { removeItem } from '../../../store/assetLiability';
+import type { AssetLiabilityObject } from '../../../util/assetLiabilityTypes';
 import Button from '../../../ui/button/Button';
 import styles from './AssetLiabilityDetail.module.css';
 
-const AssetLiabilityDetail: React.FC<{ id: string, onClose: () => void }> = ({
-  id, onClose
+const AssetLiabilityDetail: React.FC<{ assetLiabilityData: AssetLiabilityObject, onClose: () => void }> = ({
+  assetLiabilityData, onClose
 }) => {
-  const dispatch = useDispatch();
-  const { title, value, description, date, type, category } = useSelector((state: any) => state.assetLiability.assetLiabilityItems)
-  .find((al: any) => al.id === id);
+  const { AsLiId, title, value, description, acquireDate, type, category } = assetLiabilityData;
+  const { mutate: deleteAssetLiability } = useDeleteAssetLiability(useSelector((state: any) => state.userInfo.email));
   const assetOrLiability = type === "asset" ? "Asset" : "Liability";
   function deleteItem() {
     onClose();
-    dispatch(removeItem({ id }));
+    deleteAssetLiability(AsLiId);
   }
   return(
     <div className={styles.details}>
@@ -27,7 +26,7 @@ const AssetLiabilityDetail: React.FC<{ id: string, onClose: () => void }> = ({
           </tr>
           <tr>
             <th>ID: </th>
-            <td>{id}</td>
+            <td>{AsLiId}</td>
           </tr>
           <tr>
             <th>Monetary Value: </th>
@@ -39,7 +38,7 @@ const AssetLiabilityDetail: React.FC<{ id: string, onClose: () => void }> = ({
           </tr>
           <tr>
             <th>Date: </th>
-            <td>{date}</td>
+            <td>{acquireDate}</td>
           </tr>
           <tr>
             <th>Category: </th>

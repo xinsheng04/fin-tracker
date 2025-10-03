@@ -1,8 +1,8 @@
-import type { TransactionsType } from "../store/transaction";
-const calcIncomeOrExpense = (transactions: TransactionsType[], type: "income" | "expense") => {
-  const total = transactions.reduce((acc: number, transaction: TransactionsType) => {
+import type { TransactionObject } from "./transactionTypes";
+const calcIncomeOrExpense = (transactions: TransactionObject[], type: "income" | "expense") => {
+  const total = transactions.reduce((acc: number, transaction: TransactionObject) => {
     if (transaction.typeOfTransfer === type) {
-      return acc + transaction.amount;
+      return acc + Number(transaction.amountTransfered);
     }
     return acc;
   }, 0);
