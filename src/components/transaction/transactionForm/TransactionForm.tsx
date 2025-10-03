@@ -36,7 +36,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
   const cardDisplayTags = cards ? cards.map((card: any) => ({ label: `${card.bankName} : ${card.cardNo}`, value: card.cardNo })) : [];
   
   function handleAddIncome(data: any) {
-    const card = cards.find((acc: any) => acc.value === data.bankCard);
+    const card = cards.find((acc: any) => acc.cardNo === data.bankCard);
     if (card) {
       addTransaction({
         amount: Number(data.amount),

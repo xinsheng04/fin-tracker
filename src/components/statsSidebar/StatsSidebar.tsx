@@ -2,12 +2,17 @@ import { useSelector } from "react-redux";
 import styles from './StatsSidebar.module.css';
 import calcIncomeOrExpense from "../../util/calcIncomeOrExpense";
 import formatCurrency from "../../util/currencyFormatter";
+import { useGetAllAssetLiabilities } from "../../api/assetLiabilityAPI";
+import { useGetAllTransactions } from "../../api/transactionAPI";
+import { useGetCards } from "../../api/walletApi";
+
 const StatsSidebar: React.FC = () => {
-  const transactions = useSelector((state: any) => state.transaction.recentTransaction);
-  const assetLiabilities = useSelector((state: any) => state.assetLiability.assetLiabilityItems);
-  const bankAccount = useSelector((state: any) => state.myWallet.bankAccounts);
+  const email = useSelector((state: any) => state.userInfo.email);
+  const { data: transactions } = useGetAllTransactions(email);
+  const { data: cards } = useGetCards(email);
+  const { data: assetLiabilities } = useGetAllAssetLiabilities(email);
   
-  const totalCashBalance = bankAccount.reduce((acc: number, item: any) => acc + item.amount, 0);
+  const totalCashBalance = cards.reduce((acc: number, item: any) => acc + item.cardBalance, 0);
   const assets = assetLiabilities.filter((item: any) => item.type === 'asset');
   const liabilities = assetLiabilities.filter((item: any) => item.type === 'liability');
   const assetSum = assets.reduce((acc: number, item: any) => acc + item.value, 0);

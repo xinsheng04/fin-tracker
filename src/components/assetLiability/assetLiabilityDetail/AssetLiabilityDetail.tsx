@@ -1,5 +1,6 @@
 import type React from 'react';
-import { removeItem } from '../../../store/assetLiability';
+import { useDeleteAssetLiability } from '../../../api/assetLiabilityAPI';
+import { useSelector } from 'react-redux';
 import type { AssetLiabilityObject } from '../../../util/assetLiabilityTypes';
 import Button from '../../../ui/button/Button';
 import styles from './AssetLiabilityDetail.module.css';
@@ -8,11 +9,11 @@ const AssetLiabilityDetail: React.FC<{ assetLiabilityData: AssetLiabilityObject,
   assetLiabilityData, onClose
 }) => {
   const { AsLiId, title, value, description, acquireDate, type, category } = assetLiabilityData;
+  const { mutate: deleteAssetLiability } = useDeleteAssetLiability(useSelector((state: any) => state.userInfo.email));
   const assetOrLiability = type === "asset" ? "Asset" : "Liability";
   function deleteItem() {
     onClose();
-    // // to be dealt with later
-    // dispatch(removeItem({ AsLiId }));
+    deleteAssetLiability(AsLiId);
   }
   return(
     <div className={styles.details}>

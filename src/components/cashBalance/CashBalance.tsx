@@ -4,6 +4,8 @@ import React from "react";
 import currencyFormatter from "../../util/currencyFormatter";
 import calcIncomeOrExpense from "../../util/calcIncomeOrExpense";
 import { useSelector } from "react-redux";
+import { useGetCards } from "../../api/walletApi";
+import { useGetAllTransactions } from "../../api/transactionAPI";
 
 
 interface CashBalanceProps {
@@ -18,15 +20,24 @@ interface CashBalanceProps {
 }
 
 const CashBalance: React.FC<CashBalanceProps> = ({ title, children,income,expense,balance, className='' }) => {
-  const bankAccount = useSelector((state: any) => state.myWallet.bankAccounts);
-  const transactions = useSelector((state: any) => state.transaction.recentTransaction);
+  const { data: cards, isLoading, isError, error } = useGetCards(useSelector((state: any) => state.userInfo.email));
+  const { data: transactions } = useGetAllTransactions(useSelector((state: any) => state.userInfo.email));
+
+  if (isLoading) {
+    return <p>Loading...</p>
+  }
+  if (isError) {
+    console.error('Error fetching cards: ', error);
+    return <p>Error loading cards. Please try again later.</p>
+  }
+
   // To be implemented in the future: get only transactions from last 30 days
-  const accIncome = calcIncomeOrExpense(transactions, "income");
-  const accExpense = calcIncomeOrExpense(transactions, "expense");
- 
+  const accIncome = transactions && income ? calcIncomeOrExpense(transactions, "income") : 0;
+  const accExpense = transactions && expense ? calcIncomeOrExpense(transactions, "expense") : 0;
+
   let totalAmount = 0;
-  for (let amount of bankAccount) {
-    totalAmount += amount.amount;
+  for (let card of cards) {
+    totalAmount += card.cardBalance;
   }
  
   

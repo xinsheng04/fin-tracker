@@ -24,6 +24,7 @@ export const useAddTransaction = (email: string) => {
     mutationFn: (transaction: TransactionsObject) => addTransactionEntryAPI(email, transaction),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['transactions', email] });
+      queryClient.invalidateQueries({ queryKey: ['cards', email] });
     },
     onError: (error) => {
       alert('Error adding transaction: ' + (error as Error).message);

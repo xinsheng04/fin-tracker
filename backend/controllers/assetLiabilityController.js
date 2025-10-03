@@ -1,7 +1,6 @@
-import mysql from 'mysql2/promise';
-import { config } from '../config.js';
+import { createPool } from '../config.js';
 
-const pool = mysql.createPool(config.db);
+const pool = await createPool();
 
 /*
 ?email=userEmail

@@ -10,6 +10,14 @@ export const config = {
   }
 };
 
+let pool;
+
+export async function createPool() {
+  if (!pool) {
+    pool = mysql.createPool(config.db);
+  }
+  return pool;
+}
 
 // connection config used to create DB (connect without database first)
 const connectionConfig = {
@@ -91,8 +99,8 @@ const tableAsli = `
 export async function initDB() {
   try {
     const connection = await mysql.createConnection(connectionConfig);
-    await connection.query(schema);
-    await connection.query(`USE \`${config.db.database}\`;`);
+    await connection.query(schema); // Create database if it doesn't exist
+    await connection.query(`USE \`${config.db.database}\`;`); // Switch to the database
     await connection.query(tableUsers);
     await connection.query(tableCard);
     await connection.query(tableBudgeting);
@@ -102,9 +110,7 @@ export async function initDB() {
     console.log("Database ensured:", config.db.database);
     await connection.end();
   } catch (err) {
-    console.error("Error initializing schema", err);
-    throw err;
+    console.error("Warning: Failed to initialize database schema. Please check your database configuration.", err);
+    // Optionally, you can retry or continue running the app without crashing
   }
-
-
 }

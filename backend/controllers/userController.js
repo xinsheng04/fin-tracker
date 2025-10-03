@@ -1,17 +1,15 @@
-import mysql from 'mysql2/promise';
-import { config } from '../config.js';
+import { createPool } from '../config.js';
 
-const pool = mysql.createPool(config.db);
+const pool = await createPool();
 
 // verifying connection ! 
-pool.getConnection((err, connection) => {
-  if (err) {
-    console.error('Error connecting to the database : ' + err.stack);
-    return;
-  }
-  console.log('Successfullly connected to the database');
-  connection.release();
-})
+try {
+  const conn = await pool.getConnection();
+  console.log('Successfully connected to the database');
+  conn.release();
+} catch (err) {
+  console.error('Error connecting to the database : ' + err.stack);
+}
 
 export default function test(req, res) {
   res.json({ "users": ["userOne", "userTwo"] });
