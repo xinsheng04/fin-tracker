@@ -4,7 +4,9 @@ import type { budgetObject } from "../../store/budgeting";
 import { resetBudgetProgress } from "../../store/budgeting";
 import AddBudgetForm from "../../components/budget/addBudgetForm/AddBudgetForm";
 import Modal from "../../ui/modal/Modal";
-import type { budgetingObject } from "./interface/budgeting";
+import type { budgetingObject } from "../../api/interface/budgeting";
+import type { transactionsObject } from "../../api/interface/transactions";
+
 // import BudgetDonut from "../../components/budget/budgetDonut/BudgetDonut";
 import ProgressChart from "../../components/budget/budgetDonut/ProgressChart";
 import Header from "../../components/header/Header";
@@ -20,13 +22,18 @@ const BudgetingPage: React.FC = () => {
   const email = useSelector((state: { userInfo: { email: string } }) => state.userInfo.email);
   const dispatch = useDispatch();
   const budgets = useSelector((state: any) => state.budgeting.budgets);
-  const expensesList = useSelector((state: any) => state.transaction.recentTransaction);
-  const expenses = expensesList.filter((t: any) => t.typeOfTransfer === "expense");
+
   const [selectedBudgetId, setSelectedBudgetId] = useState<string | null>(budgets.length > 0 ? budgets[0].id : "");
   const [modalOpenType, setModalOpenType] = useState<"add" | "edit" | null>(null);
 
-
-
+  // this is transaction data that we need to retrieve;
+  const expensesList = useSelector((state: any) => state.transaction.recentTransaction);
+  
+  // using the get api for all the transactions
+  const { data: transactionExpenses, isLoading, isError } = useGetAllTransactions(email);
+  console.log('transaction ', transactionExpenses);
+  const expenses = transactionExpenses.filter((t: transactionsObject) => t.typeOfTransfer === "expense");
+  console.log("these are the filtered expenses ",expenses);
   // using tanStack query and not removing RTK so that i don't break the code base lmao
   //migrating is hard ngl T_T
   const { data: budgetQ = [] } = useQuery({
@@ -37,8 +44,7 @@ const BudgetingPage: React.FC = () => {
   console.log(budgetQ)
   console.log('budgetid for budget[0] ', budgetQ);
 
-  const { data: transaction, isLoading, isError } = useGetAllTransactions(email);
-  console.log('transaction ', transaction);
+  
 
   const selectedBudget = budgetQ.find((b: budgetingObject) => b.budgetId === selectedBudgetId) || null;
   let progressList: { spent: number; limit: number; title: string }[] = [];
