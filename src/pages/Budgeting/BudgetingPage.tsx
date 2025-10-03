@@ -17,7 +17,7 @@ import { useGetAllTransactions } from "../../api/transactionAPI";
 
 const BudgetingPage: React.FC = () => {
   // getting email from the userInfo store;
-  const email = useSelector((state: {userInfo:{email:string}}) => state.userInfo.email);
+  const email = useSelector((state: { userInfo: { email: string } }) => state.userInfo.email);
   const dispatch = useDispatch();
   const budgets = useSelector((state: any) => state.budgeting.budgets);
   const expensesList = useSelector((state: any) => state.transaction.recentTransaction);
@@ -25,23 +25,24 @@ const BudgetingPage: React.FC = () => {
   const [selectedBudgetId, setSelectedBudgetId] = useState<string | null>(budgets.length > 0 ? budgets[0].id : "");
   const [modalOpenType, setModalOpenType] = useState<"add" | "edit" | null>(null);
 
-  const selectedBudget = budgets.find((b: budgetObject) => b.id === selectedBudgetId) || null;
-  let progressList: { spent: number; limit: number; title: string }[] = [];
+
 
   // using tanStack query and not removing RTK so that i don't break the code base lmao
   //migrating is hard ngl T_T
-  const {data:budgetQ = []} = useQuery({
-    queryKey:['budgetId',email],
-    queryFn:()=>getAllBudgetDataAPI(email as string),
-    enabled:!!email
+  const { data: budgetQ = [] } = useQuery({
+    queryKey: ['budgetId', email],
+    queryFn: () => getAllBudgetDataAPI(email as string),
+    enabled: !!email
   });
   console.log(budgetQ)
-  console.log('budgetid for budget[0] ',budgetQ);
+  console.log('budgetid for budget[0] ', budgetQ);
 
-  const {data:transaction, isLoading,isError} = useGetAllTransactions(email);
+  const { data: transaction, isLoading, isError } = useGetAllTransactions(email);
   console.log('transaction ', transaction);
 
-  
+  const selectedBudget = budgetQ.find((b: budgetingObject) => b.budgetId === selectedBudgetId) || null;
+  let progressList: { spent: number; limit: number; title: string }[] = [];
+
 
   if (selectedBudget?.categoryAndAmount) {
     // Populate progressList with categories and their limits
@@ -84,10 +85,10 @@ const BudgetingPage: React.FC = () => {
     }, progressList);
   }
 
-
+  // when user presses the title of the budget
   function handleSelectBudget(budgetId: string) {
-    const budget = budgets.find((b: budgetObject) => b.id === budgetId);
-    setSelectedBudgetId(budget.id);
+    const budget = budgetQ.find((b: budgetingObject) => b.budgetId === budgetId);
+    setSelectedBudgetId(budget.budgetId);
   }
 
   function handleResetBudgetProgress() {
