@@ -26,8 +26,8 @@ export const useAddTransaction = (email: string) => {
       queryClient.invalidateQueries({ queryKey: ['transactions', email] });
       queryClient.invalidateQueries({ queryKey: ['cards', email] });
     },
-    onError: (error) => {
-      alert('Error adding transaction: ' + (error as Error).message);
+    onError: (error: any) => {
+      alert(error.message || 'An error occurred while adding the transaction.');
     }
   });
 }
@@ -39,8 +39,8 @@ const addTransactionEntryAPI = async (email: string, transaction: TransactionsOb
       throw new Error('Failed to add transaction: ' + response.statusText);
     }
   } catch (error: any) {
-    console.error('Failed to add transaction: ' + error.response?.data?.error || error.message);
-    throw error;
+    const errorMsg = 'Failed to add transaction: ' + error.response?.data?.error || error.message;
+    throw new Error(errorMsg);
   }
 }
 
@@ -50,7 +50,7 @@ const getAllTransactionsAPI = async (email: string) => {
     console.log('Response: ', response);
     return response.data;
   } catch (error: any) {
-    console.error('Failed to get all transactions: ' + error.response?.data?.error || error.message);
-    throw error;
+    const errorMsg = 'Failed to get all transactions: ' + error.response?.data?.error || error.message;
+    throw new Error(errorMsg);
   }
 }

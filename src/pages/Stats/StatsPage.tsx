@@ -28,7 +28,7 @@ const StatsPage: React.FC = () => {
 
   function groupByCategory(data: any[]): { label: string; value: number }[] {
     const aggregatedData = data.reduce((acc: Record<string, number>, curr: any) => {
-      const { category, amount } = curr;
+      const { category, amountTransfered: amount } = curr;
       if (!acc[category]) {
         acc[category] = 0;
       }
@@ -43,7 +43,9 @@ const StatsPage: React.FC = () => {
   const income = transactions.filter((t: any) => t.typeOfTransfer === 'income');
   const incomeLabelData = groupByCategory(income);
   const expenses = transactions.filter((t: any) => t.typeOfTransfer === 'expense');
+  console.log('Expenses:', expenses);
   const expenseLabelData = groupByCategory(expenses);
+  console.log('Expense Label Data:', expenseLabelData);
 
   return (
     <div>
