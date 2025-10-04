@@ -2,7 +2,7 @@ import type React from "react";
 import Form from "../../../ui/form/Form";
 import Input from "../../../ui/input/Input";
 import Dropdown from "../../../ui/dropdown/Dropdown";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { RemainingAmountDisplay } from "../../remainingAmount/RemainingAmountDisplay";
 import { incomeCat, expenseCat } from "../../../util/transactionTypes";
 import { useSelector } from "react-redux";
@@ -20,13 +20,13 @@ type TransactionFormProps = {
 const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) => {
   // const dispatch = useDispatch();
   const email = useSelector((state: any) => state.userInfo.email);
-  const {data: cards, isLoading, isError, error: getCardsError} = useGetCards(email);
-  const {mutate: addTransaction} = useAddTransaction(email);
-  const [error, setError] = useState<{ title: string; message: string } | null>(null);
+  const {data: cards, isLoading, isError: isGetCardsError, error: getCardsError} = useGetCards(email);
+  const {mutate: addTransaction, isSuccess: isAddTransactionSuccess, isError: isAddTransactionError, error: addTransactionError} = useAddTransaction(email);
+  
   if(isLoading){
     return <p>Loading...</p>
   }
-  if(isError){
+  if(isGetCardsError){
     console.error('Error fetching cards: ', getCardsError);
     return <p>Error loading cards. Please try again later.</p>
   }
@@ -35,6 +35,12 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
   }
   const cardDisplayTags = cards ? cards.map((card: any) => ({ label: `${card.bankName} : ${card.cardNo}`, value: card.cardNo })) : [];
   
+  useEffect(()=>{
+    if(isAddTransactionSuccess){
+      closeForm();
+    }
+  }, [isAddTransactionSuccess]);
+
   function handleAddIncome(data: any) {
     const card = cards.find((acc: any) => acc.cardNo === data.bankCard);
     if (card) {
@@ -48,23 +54,12 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
     } else {
       console.error("Income registration error: Card not found");
     }
-
-    closeForm();
   }
 
 
   function handleAddExpense(data: any) {
     const card = cards.find((acc: any) => acc.cardNo === data.bankCard);
     if (card) {
-      // checking if data.amount exceeds the card amount 
-      const cardAmount = card.amount;
-      if (Number(data.amount) > cardAmount) {
-        setError({
-          title: "Insuffcient funds",
-          message: "You don't have enough money in your bank Account"
-        })
-        return;
-      }
       addTransaction({
         amount: Number(data.amount),
         typeOfTransfer: "expense",
@@ -72,27 +67,21 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
         comments: data.comments,
         cardNo: card.cardNo
       });
-
-      // // Tells the budget store to update the remaining amount immediately
-      // dispatch(deductFromRemaining(Number(data.amount)))
-
     } else {
       console.error("Expense registration error: Card not found");
     }
-
-    closeForm();
   }
 
   return (
     <>
-      {error && (
+      {isAddTransactionError && (
         <Error
           isError={true}
-          isOpen={!!error}
-          title={error.title}
-          onClose={() => setError(null)} // This function will close the modal
+          isOpen={addTransactionError}
+          title={"Transaction Error"}
+          onClose={closeForm}
         >
-          {error.message}
+          {addTransactionError.message}
         </Error>
       )}
       <Form submit={type === "income" ? handleAddIncome : handleAddExpense}>
