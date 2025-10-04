@@ -24,6 +24,9 @@ export const useAddAssetLiability = (email: string) => {
     mutationFn: (data: AssetLiabilityObject) => addAssetLiabilityAPI(email, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['assetLiabilities', email] });
+    },
+    onError: (error: any) => {
+      alert(error.message || 'An error occurred while adding the asset/liability.');
     }
   })
 };
@@ -33,6 +36,9 @@ export const useUpdateAssetLiability = (email: string) => {
     mutationFn: (changes: { columns: string, value: string}[]) => updateAssetLiabilityAPI(email, changes),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['assetLiabilities', email] });
+    },
+    onError: (error: any) => {
+      alert(error.message || 'An error occurred while updating the asset/liability.');
     }
   })
 };
@@ -52,8 +58,8 @@ const addAssetLiabilityAPI = async (email: string, data: AssetLiabilityObject) =
     const response = await api.post('/assetLiabilities/add', body, { params: { email } });
     return response.data;
   } catch (error: any) {
-    console.error('Failed to add asset/liability: ' + error.response?.data?.error || error.message);
-    throw error;
+    const errorMsg = 'Failed to add asset/liability: ' + error.response?.data?.error || error.message;
+    throw new Error(errorMsg);
   }
 }
 
@@ -62,8 +68,8 @@ const getAssetLiabilityAPI = async (email: string) => {
     const response = await api.get('/assetLiabilities/getAll', { params: { email } });
     return response.data;
   } catch (error: any) {
-    console.error('Failed to get asset/liability: ' + error.response?.data?.error || error.message);
-    throw error;
+    const errorMsg = 'Failed to get asset/liability: ' + error.response?.data?.error || error.message;
+    throw new Error(errorMsg);
   }
 }
 
@@ -72,8 +78,8 @@ const updateAssetLiabilityAPI = async (email: string, changes: { columns: string
     const response = await api.put('/assetLiabilities/edit', { changes }, { params: { email } });
     return response.data;
   } catch (error: any) {
-    console.error('Failed to update asset/liability: ' + error.response?.data?.error || error.message);
-    throw error;
+    const errorMsg = 'Failed to update asset/liability: ' + error.response?.data?.error || error.message;
+    throw new Error(errorMsg);
   }
 }
 
@@ -82,7 +88,7 @@ const deleteAssetLiabilityAPI = async (email: string, id: string) => {
     const response = await api.delete('/assetLiabilities/delete', { params: { email, id } });
     return response.data;
   } catch (error: any) {
-    console.error('Failed to delete asset/liability: ' + error.response?.data?.error || error.message);
-    throw error;
+    const errorMsg = 'Failed to delete asset/liability: ' + error.response?.data?.error || error.message;
+    throw new Error(errorMsg);
   }
 }
