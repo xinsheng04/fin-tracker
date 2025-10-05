@@ -27,7 +27,8 @@ export const useAddTransaction = (email: string) => {
       queryClient.invalidateQueries({ queryKey: ['cards', email] });
     },
     onError: (error: any) => {
-      alert(error.message || 'An error occurred while adding the transaction.');
+      // alert(error.message || 'An error occurred while adding the transaction.');
+      throw new Error(error.message || 'An error occurred while adding the transaction.');
     }
   });
 }
