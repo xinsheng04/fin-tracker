@@ -1,5 +1,5 @@
 interface budgetingObject{
-  budgetId: string;
+  budgetId: number;
   budgetItemId: number;
   category: string;
   email: string;

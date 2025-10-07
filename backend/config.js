@@ -96,6 +96,22 @@ const tableAsli = `
   );
 `
 
+const deleteValidTransactionTrigger = `
+  DROP TRIGGER IF EXISTS ValidTransaction;
+`;
+
+const validTransactionTrigger = `
+  CREATE TRIGGER ValidTransaction
+  BEFORE UPDATE ON cards
+  FOR EACH ROW
+  BEGIN
+    IF NEW.cardBalance < 0 THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'Trigger: Card balance cannot be negative.';
+    END IF;
+  END;
+`;
+
 export async function initDB() {
   try {
     const connection = await mysql.createConnection(connectionConfig);
@@ -107,6 +123,8 @@ export async function initDB() {
     await connection.query(tableBudgetItem);
     await connection.query(tableTransaction);
     await connection.query(tableAsli);
+    await connection.query(deleteValidTransactionTrigger);
+    await connection.query(validTransactionTrigger);
     console.log("Database ensured:", config.db.database);
     await connection.end();
   } catch (err) {

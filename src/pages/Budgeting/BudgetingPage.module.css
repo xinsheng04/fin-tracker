@@ -25,6 +25,12 @@
   gap: 1.5rem;
 }
 
+.budgetItems{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
 .budgetCard{
   /* max-width: 320px; */
   padding: 1.1rem 1rem;
@@ -46,7 +52,7 @@
 }
 
 .subtext {
-  margin: 0 0 0 1rem;
+  margin: 1rem 0 0 1rem;
   font-size: 0.9rem;
   color: #555;
 }

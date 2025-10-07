@@ -1,5 +1,5 @@
 export default function formatCurrency(amount: number, currency: string='USD', locale: string='en-US') {
-  
+  console.log(amount);
   const abs = Math.abs(amount); 
 
   if (abs>= 1e9){ 

@@ -37,7 +37,7 @@ const CashBalance: React.FC<CashBalanceProps> = ({ title, children,income,expens
 
   let totalAmount = 0;
   for (let card of cards) {
-    totalAmount += card.cardBalance;
+    totalAmount += Number(card.cardBalance);
   }
  
   
