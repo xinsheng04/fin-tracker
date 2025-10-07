@@ -77,7 +77,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
       {isAddTransactionError && (
         <Error
           isError={true}
-          isOpen={addTransactionError}
+          isOpen={isAddTransactionError}
           title={"Transaction Error"}
           onClose={closeForm}
         >
