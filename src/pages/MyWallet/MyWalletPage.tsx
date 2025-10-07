@@ -14,8 +14,10 @@ import { getCards } from "../../api/walletApi";
 import { useQuery } from "@tanstack/react-query";
 
 const MyWallet = () => {
-  const [addCard, setAddCard] = useState<boolean>(false);
+  // const [addCard, setAddCard] = useState<boolean>(false);
   const [errs, setErrs] = useState<Record<string, string>>({});
+  // use state for modal 
+  const [modal, setModal] = useState<"add" | null>(null);
   // array of cardNo 
   // const bankCardNumbers = useSelector((state: any) => state.myWallet.bankAccounts);
   // getting the email from the userInfo Store 
@@ -27,10 +29,6 @@ const MyWallet = () => {
   });
   // two way binding for card number input 
   const [cardNoErr, setCardNoErr] = useState<string>();
-
-  function handleClickAddCard() {
-    setAddCard(!addCard);
-  }
 
   // Real-time validation for card number length
   useEffect(() => {
@@ -120,10 +118,14 @@ const MyWallet = () => {
         <Header title="My Wallets" />
         <div className={styles.display}>
           <div>
-            <Button onClick={handleClickAddCard}>Add Card</Button>
+            <Button onClick={() => setModal("add")}>Add Card</Button>
           </div>
-          <div>
-            {addCard &&
+          <ShowCard />
+        </div>
+        <Modal isOpen={modal !== null} onClose={() => setModal(null)}>
+          {modal === "add" &&
+            <div>
+              <h3>Add your Card</h3>
               <form className={styles.form} onSubmit={handleFormSubmission}>
                 <Input
                   label="Card Number"
@@ -158,10 +160,10 @@ const MyWallet = () => {
 
                 <Button type="submit">Submit</Button>
               </form>
-            }
-          </div>
-          <ShowCard />
-        </div>
+            </div>
+          }
+
+        </Modal>
       </div>
     </>
   )
