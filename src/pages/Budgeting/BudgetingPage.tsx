@@ -1,8 +1,8 @@
-import { useSelector, useDispatch } from "react-redux";
-import { useState } from "react";
-import { resetBudgetProgress } from "../../store/budgeting";
+import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 import AddBudgetForm from "../../components/budget/addBudgetForm/AddBudgetForm";
 import Modal from "../../ui/modal/Modal";
+import type { Category } from "../../util/transactionTypes";
 import type { budgetingObject } from "../../api/interface/budgeting";
 import type { transactionsObject } from "../../api/interface/transactions";
 
@@ -12,53 +12,78 @@ import Header from "../../components/header/Header";
 import styles from "./BudgetingPage.module.css";
 import Button from "../../ui/button/Button";
 import type React from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getAllBudgetDataAPI } from "../../api/budgetingAPI";
 import { useGetAllTransactions } from "../../api/transactionAPI";
-import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "../../api/Api";
-import { delBudget } from "../../api/budgetingAPI";
+import { useGetAllBudgets } from "../../api/budgetingAPI";
+import { useResetBudgetProgress } from "../../api/budgetingAPI";
+import { useDeleteBudget } from "../../api/budgetingAPI";
+
+interface Budget {
+  budgetId: number;
+  title: string;
+  trackDateFrom?: string;
+  budgetItems: { budgetItemId: number, category: Category; limitAmount: string }[] | null;
+}
 
 const BudgetingPage: React.FC = () => {
   // getting email from the userInfo store;
   const email = useSelector((state: { userInfo: { email: string } }) => state.userInfo.email);
-  const dispatch = useDispatch();
-  const budgets = useSelector((state: any) => state.budgeting.budgets);
-
-  const [selectedBudgetId, setSelectedBudgetId] = useState<string | null>(budgets.length > 0 ? budgets[0].id : "");
+  const { data: budgetItems = [], isLoading, isSuccess: budgetsFetched } = useGetAllBudgets(email);
+  const { data: transactionExpenses } = useGetAllTransactions(email);
+  const { mutate: resetBudgetProgress } = useResetBudgetProgress(email);
+  const { mutate: deleteBudgetMutation } = useDeleteBudget(email);
+  
+  const [selectedBudgetId, setSelectedBudgetId] = useState<number | null>(null);
   const [modalOpenType, setModalOpenType] = useState<"add" | "edit" | null>(null);
+  
+  useEffect(() => {
+    if (budgetsFetched && selectedBudgetId === null && budgetItems.length > 0) {
+      setSelectedBudgetId(budgets[0].budgetId);
+    }
+  }, [budgetsFetched, selectedBudgetId, budgetItems]);
+  
+  if (isLoading) {
+    return <div>Loading budgets...</div>;
+  }
 
-  // this is transaction data that we need to retrieve;
-  // const expensesList = useSelector((state: any) => state.transaction.recentTransaction);
+  const budgets: Budget[] = budgetItems.reduce((acc: Budget[], budget: budgetingObject) => {
+    const existingBudgetId = acc.findIndex(b => b.budgetId === budget.budgetId);
+    if (existingBudgetId === -1) {
+      acc.push({
+        budgetId: budget.budgetId,
+        title: budget.title,
+        trackDateFrom: budget.trackDateFrom,
+        budgetItems: [
+          {
+            budgetItemId: budget.budgetItemId,
+            category: budget.category,
+            limitAmount: budget.limitAmount
+          }
+        ]
+      })
+    }
+    else {
+      acc[existingBudgetId].budgetItems?.push({
+        budgetItemId: budget.budgetItemId,
+        category: budget.category,
+        limitAmount: budget.limitAmount
+      });
+    }
+    return acc;
+  }, []);
+  
 
   // using the get api for all the transactions
-  const { data: transactionExpenses, isLoading, isError } = useGetAllTransactions(email);
-  console.log('transaction ', transactionExpenses);
   const expenses = (transactionExpenses ?? []).filter((t: transactionsObject) => t.typeOfTransfer === "expense");
-  console.log("these are the filtered expenses ", expenses);
-  // using tanStack query and not removing RTK so that i don't break the code base lmao
-  //migrating is hard ngl T_T
-  const { data: budgetQ = [] } = useQuery({
-    queryKey: ['budgetId', email],
-    queryFn: () => getAllBudgetDataAPI(email as string),
-    enabled: !!email
-  });
-  console.log("budgetQ displays ", budgetQ)
-
-
-  const selectedBudget = budgetQ.find((b: budgetingObject) => b.budgetId === selectedBudgetId) || null;
+  const selectedBudget = budgets.find((b: Budget) => b.budgetId === selectedBudgetId) || null;
   let progressList: { spent: number; limit: number; title: string }[] = [];
-  console.log("selectedBudget, ", selectedBudget)
 
   if (selectedBudget) {
     // Populate progressList with categories and their limits
-    progressList = [
-      {
-        title: selectedBudget.category,
-        limit: parseFloat(selectedBudget.limitAmount),
-        spent: 0
-      },
-    ];
+    progressList = selectedBudget.budgetItems?.map(item => ({
+      title: item.category,
+      limit: parseFloat(item.limitAmount),
+      spent: 0,
+    })) || [];
 
     // Add "Others" category
     progressList.push({
@@ -67,55 +92,46 @@ const BudgetingPage: React.FC = () => {
       spent: 0,
     });
 
-    const dateFrom = new Date(selectedBudget.trackDateFrom);
+    const dateFrom = new Date(selectedBudget?.trackDateFrom ?? 0); // Default to epoch if no date provided
 
     // Filter expenses based on the budget's trackDateFrom
+    // improvement proposal:
+    // make the database return transactions in decreasing order of date and use slice to get relevant dates
     const startFrom = expenses.findIndex((expense: any) => {
       const expenseDate = new Date(expense.date);
       return expenseDate >= dateFrom;
     });
-    const expensesToConsider = startFrom !== -1 ? expenses.slice(startFrom) : [];
+    const expensesToConsider = startFrom !== -1 ? expenses.slice(startFrom) : expenses;
 
     // Update spent values
     progressList = expensesToConsider.reduce((
       acc: { title: string; limit: number; spent: number }[],
-      { category, amount }: { category: string; amount: number }
+      { category, amountTransfered }: { category: string; amountTransfered: string }
     ) => {
       const index = acc.findIndex(item => item.title === category);
       if (index !== -1) {
-        acc[index].spent += amount;
+        acc[index].spent += parseFloat(amountTransfered);
       } else {
-        acc[acc.length - 1].spent += amount; // Add to "Others" if category not found
+        acc[acc.length - 1].spent += parseFloat(amountTransfered); // Add to "Others" if category not found
       }
       return acc;
     }, progressList);
   }
 
   // when user presses the title of the budget
-  function handleSelectBudget(budgetId: string) {
-    const budget = budgetQ.find((b: budgetingObject) => b.budgetId === budgetId);
+  function handleSelectBudget(budgetId: number) {
+    const budget = budgetItems.find((b: budgetingObject) => b.budgetId === budgetId);
     setSelectedBudgetId(budget.budgetId);
   }
 
-  const { mutate: deleteBudget } = useMutation({
-    mutationFn: ({ email, id }: { email: string; id: string }) =>
-      delBudget(email, id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['budgetId', email] });
-    },
-  });
-
-  function handleDeleteBudget(budgetId: string | null) {
+  function handleDeleteBudget(budgetId: number | null) {
     if (!email || !budgetId) return;
-    deleteBudget({ email, id: budgetId }); // now works
+    deleteBudgetMutation(budgetId); // now works
   }
-
 
   function handleResetBudgetProgress() {
     if (selectedBudgetId) {
-      const todayDate = new Date().toISOString().split('T')[0]; // Format as 'YYYY-MM-DD'
-      dispatch(resetBudgetProgress({ budgetId: selectedBudgetId, newTrackDateFrom: todayDate }));
-
+      resetBudgetProgress(Number(selectedBudgetId));
     }
   }
 
@@ -123,18 +139,20 @@ const BudgetingPage: React.FC = () => {
     <div className={styles.main}>
       <Header title="Budget" />
       <div className={styles.budgetOverview}>
-        <h3>My List of Budgets</h3>
-        <div className={styles.budgets}>
-          {budgetQ.length === 0 && <p className={styles.subtext}>No budgets set. Set a<span onClick={() => setModalOpenType("add")}> new budget plan </span>now.</p>}
-          {budgetQ.length > 0 && budgetQ.map((budget: budgetingObject) => (
-            <div>
-              <div key={budget.budgetItemId} className={styles.budgetCard} onClick={() => handleSelectBudget(budget.budgetId)}>
-                <h3>{budget.title}</h3>
-              </div>
-              <p className={styles.subtext}>Or, you can <span onClick={() => setModalOpenType("add")}>create a new budget plan.</span></p>
+        <h3>My List of budgetItems</h3>
+        {budgets.length === 0 && <p className={styles.subtext}>No budgets set. Set a<span onClick={() => setModalOpenType("add")}> new budget plan </span>now.</p>}
+        <div className={styles.budgetItems}>
+          {budgets.length > 0 && budgets.map((budget: Budget) => (
+            <div
+              key={budget.budgetId}
+              className={styles.budgetCard}
+              onClick={() => handleSelectBudget(budget.budgetId)}
+            >
+              <h3>{budget.title}</h3>
             </div>
           ))}
         </div>
+        {budgets.length > 0 && <p className={styles.subtext}>Or, you can <span onClick={() => setModalOpenType("add")}>create a new budget plan.</span></p>}
       </div>
       {selectedBudget && (
         <div className={styles.budgetContent}>

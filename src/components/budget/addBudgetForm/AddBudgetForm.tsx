@@ -47,7 +47,6 @@ interface BudgetFormProps {
 }
 
 const AddBudgetForm: React.FC<BudgetFormProps> = ({ onClose }) => {
-  const dispatch = useDispatch();
   const email = useSelector((state: { userInfo: { email: string } }) => state.userInfo.email); // Added useSelector here to get email from Redux store
   const [expenses, setExpenses] = useState<{ id: number; category: Category; amount: number }[]>([
     { id: 0, category: "", amount: 0 },
