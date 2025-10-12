@@ -61,3 +61,17 @@ export const delCard = async (payload: {
   return res.data;
 }
 
+// adding money to the card 
+export const  updateAmount = async (payload:{
+  email:string;
+  cardNo:string;
+  action:string;
+  amount:string;
+})=>{
+  try{
+  const res = await api.patch('/changeAmount',{data:payload})
+  return res.data
+}catch(error){
+    console.error(error);
+  }
+}
