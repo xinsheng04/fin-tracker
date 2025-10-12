@@ -3,6 +3,7 @@ import { createPool } from '../config.js';
 const pool = await createPool();
 
 /*
+query:
 ?email=userEmail
 */
 
@@ -27,7 +28,9 @@ export const getAllTransactionData = async (req, res) => {
 }
 
 /*
+query:
 ?email=userEmail
+body:
 {
   transaction: {
     amount: number,

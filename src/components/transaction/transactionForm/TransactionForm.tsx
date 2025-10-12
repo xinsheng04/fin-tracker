@@ -2,14 +2,14 @@ import type React from "react";
 import Form from "../../../ui/form/Form";
 import Input from "../../../ui/input/Input";
 import Dropdown from "../../../ui/dropdown/Dropdown";
-import { useState, useEffect } from "react";
-import { RemainingAmountDisplay } from "../../remainingAmount/RemainingAmountDisplay";
+import { useEffect } from "react";
 import { incomeCat, expenseCat } from "../../../util/transactionTypes";
 import { useSelector } from "react-redux";
 import { useAddTransaction } from "../../../api/transactionAPI";
 import { useGetCards } from "../../../api/walletApi";
 import styles from './TransactionForm.module.css';
 
+// import { RemainingAmountDisplay } from "../../remainingAmount/RemainingAmountDisplay";
 // import { deductFromRemaining } from "../../../store/budgeting";
 import Error from "../../../ui/error/Error";
 
@@ -22,7 +22,12 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
   // const dispatch = useDispatch();
   const email = useSelector((state: any) => state.userInfo.email);
   const {data: cards, isLoading, isError: isGetCardsError, error: getCardsError} = useGetCards(email);
-  const {mutate: addTransaction, isSuccess: isAddTransactionSuccess, isError: isAddTransactionError, error: addTransactionError} = useAddTransaction(email);
+  const {
+    mutate: addTransaction, 
+    isSuccess: isAddTransactionSuccess, 
+    isError: isAddTransactionError, 
+    error: addTransactionError
+  } = useAddTransaction(email);
   
   if(isLoading){
     return <p>Loading...</p>
@@ -88,7 +93,6 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
       <Form submit={type === "income" ? handleAddIncome : handleAddExpense}>
         <h1>{type === "income" ? "Add Income" : "Add Expense"}</h1>
         <div className={styles.formGroup}>
-          {/* extra spaces because I'm not updating the CSS for dropdown */}
           <div>
             <p>1. Account involved</p>
             <Dropdown label="Bank Card    " name="bankCard" options={cardDisplayTags} />
@@ -96,7 +100,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ type, closeForm }) =>
           <div>
             <p>2. Transaction amount</p>
             <Input label="Amount" name="amount" type="number" />
-            {type == 'expense' && <p>Amount remaining : <RemainingAmountDisplay /> </p>}
+            {/* {type == 'expense' && <p>Amount remaining : <RemainingAmountDisplay /> </p>} */}
 
           </div>
           <div>
