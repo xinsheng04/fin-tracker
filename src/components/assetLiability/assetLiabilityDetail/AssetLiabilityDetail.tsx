@@ -2,6 +2,7 @@ import type React from 'react';
 import { useDeleteAssetLiability } from '../../../api/assetLiabilityAPI';
 import { useSelector } from 'react-redux';
 import type { AssetLiabilityObject } from '../../../util/assetLiabilityTypes';
+import currencyFormatter from '../../../util/currencyFormatter';
 import Button from '../../../ui/button/Button';
 import styles from './AssetLiabilityDetail.module.css';
 
@@ -30,7 +31,7 @@ const AssetLiabilityDetail: React.FC<{ assetLiabilityData: AssetLiabilityObject,
           </tr>
           <tr>
             <th>Monetary Value: </th>
-            <td className={type === "asset" ? styles.asset : styles.liability}>{value}</td>
+            <td className={type === "asset" ? styles.asset : styles.liability}>{currencyFormatter(value)}</td>
           </tr>
           <tr>
             <th>Description: </th>
