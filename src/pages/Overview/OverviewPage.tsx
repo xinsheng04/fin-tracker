@@ -3,7 +3,7 @@ import Header from "../../components/header/Header"
 import CashBalance from "../../components/cashBalance/CashBalance";
 import TransactionForm from "../../components/transaction/transactionForm/TransactionForm";
 import RecentTransactions from "../../components/transaction/recentTransactions/RecentTransactions";
-import TransactionDetails from "../../components/transaction/transactionDetails/TransactionDetails";
+import TransactionDetails from "../../components/transaction/transactionDetails/transactionDetails";
 import AssetLiabilityForm from "../../components/assetLiability/assetLiabilityForm/AssetLiabilityForm";
 import AssetLiabilityList from "../../components/assetLiability/assetLiabilityList/AssetLiabilityList";
 import AssetLiabilityDetail from "../../components/assetLiability/assetLiabilityDetail/AssetLiabilityDetail";
@@ -19,6 +19,7 @@ const Overview: React.FC = () => {
   const [selected, setSelected] = useState<TransactionObject | AssetLiabilityObject | null>(null);
   function closeModal() {
     setModalOpenType(null);
+    setSelected(null);
   }
 
   function openTransactionDetailsModal(transactionData: TransactionObject) {

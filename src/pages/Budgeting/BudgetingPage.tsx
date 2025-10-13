@@ -72,7 +72,7 @@ const BudgetingPage: React.FC = () => {
   }, []);
   
 
-  // using the get api for all the transactions
+  // using the get api for all the expenses
   const expenses = (transactionExpenses ?? []).filter((t: transactionsObject) => t.typeOfTransfer === "expense");
   const selectedBudget = budgets.find((b: Budget) => b.budgetId === selectedBudgetId) || null;
   let progressList: { spent: number; limit: number; title: string }[] = [];
