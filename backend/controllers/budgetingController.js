@@ -3,6 +3,7 @@ import { createPool } from '../config.js';
 const pool = await createPool();
 
 /*
+query:
 ?email=userEmail
 */
 
@@ -19,7 +20,9 @@ export const getAllBudgetData = async (req, res) => {
   }
 };
 /*
+query:
 ?email=userEmail
+body:
 {
   title: budgetTitle
   items: [
@@ -57,7 +60,9 @@ export const addBudgetEntry = async (req, res) => {
 }
 
 /*
+query:
 ?email=userEmail&id=budgetId
+body:
 {
   changes: {
     title?: newTitle,
@@ -100,6 +105,7 @@ export const updateBudgetEntry = async (req, res) => {
   }
 }
 
+//query:
 // ?id=entryId&email=userEmail
 
 export const resetBudgetProgress = async (req, res) => {
@@ -116,6 +122,7 @@ export const resetBudgetProgress = async (req, res) => {
   }
 };
 
+//query:
 // ?id=entryId&email=userEmail
 
 export const deleteBudgetEntry = async (req, res) => {

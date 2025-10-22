@@ -1,26 +1,26 @@
 /* Container for the transaction details */
-.transaction-details {
-  display: flex;
+.transactionDetails {
+  /* display: flex;
   flex-direction: column;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 16px;
-  max-width: 400px;
-  margin: 0 auto;
+  margin: 0 auto; */
+  max-width: 90%;
 }
 
 /* Header styling */
-.transaction-header {
-  font-size: 1.5rem;
+.transactionHeader {
+  /* font-size: 1.5rem;
   font-weight: bold;
   color: #333;
   margin-bottom: 16px;
-  text-align: center;
+  text-align: center; */
 }
 
 /* Detail rows */
-.transaction-header tr {
+.transactionHeader tr {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -28,18 +28,18 @@
   border-bottom: 1px solid #f0f0f0;
 }
 
-.transaction-header tr:last-child {
+.transactionHeader tr:last-child {
   border-bottom: none;
 }
 
 /* Labels for details */
-.transaction-header th {
+.transactionHeader th {
   font-size: 1rem;
   color: #555;
 }
 
 /* Values for details */
-.transaction-header td {
+.transactionHeader td {
   font-size: 1rem;
   font-weight: bold;
   color: #007bff;

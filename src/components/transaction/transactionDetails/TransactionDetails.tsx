@@ -1,5 +1,6 @@
 import type React from 'react';
 import styles from './TransactionDetails.module.css';
+import formatCurrency from '../../../util/currencyFormatter';
 import type { TransactionObject } from '../../../util/transactionTypes';
 
 interface TransactionDetailsProps {
@@ -32,7 +33,7 @@ const TransactionDetails: React.FC<TransactionDetailsProps> = (
           </tr>
           <tr>
             <th>Amount</th>
-            <td className={typeOfTransfer === "income" ? styles.income : styles.expense}>{amountTransfered}</td>
+            <td className={typeOfTransfer === "income" ? styles.income : styles.expense}>{formatCurrency(amountTransfered)}</td>
           </tr>
           <tr>
             <th>Date of Transaction</th>

@@ -57,7 +57,6 @@ const RecentTransactions: React.FC<RecentTransactionsProps> = ({ viewDetailsOnCl
       {!shouldRender && transactionDisplayType === "all" && <p className={styles.noRecents}>No recent transactions</p>}
       {!shouldRender && transactionDisplayType === "income" && <p className={styles.noRecents}>No income transactions</p>}
       {!shouldRender && transactionDisplayType === "expense" && <p className={styles.noRecents}>No expense transactions</p>}
-      {/* honestly could consider refactoring this into a table */}
       <div className={styles.transactionList}>
         {
           shouldRender &&

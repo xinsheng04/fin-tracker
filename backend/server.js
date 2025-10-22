@@ -9,11 +9,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api", userRoutes);
-app.use("/api", budgetRoutes);
-app.use("/api", transactionRoutes);
-app.use("/api", assetLiabilityRoutes);
-
 (async () => {
   try {
     // ensure DB + tables exist before loading controllers that create pools
@@ -30,8 +25,6 @@ app.use("/api", assetLiabilityRoutes);
     app.use("/api", transactionRoutes);
     app.use("/api", userRoutes);
     app.use("/api", walletRoutes);
-    app.use("/api", budgetRoutes);
-    app.use("/api", transactionRoutes);
     app.use("/api", assetLiabilityRoutes);
 
     app.listen(5000, () => console.log("server started on port 5000"));

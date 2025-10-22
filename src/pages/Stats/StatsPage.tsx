@@ -3,12 +3,19 @@ import StatsSidebar from '../../components/statsSidebar/StatsSidebar';
 import Header from '../../components/header/Header';
 import DonutChart from '../../ui/graph/DonutChart';
 import { useSelector } from 'react-redux';
+import { useGetAllAssetLiabilities } from '../../api/assetLiabilityAPI';
 import { useGetAllTransactions } from '../../api/transactionAPI';
 import type React from 'react';
 
 const EmptyChartText: React.FC<{ item: string }> = ({ item }) => {
   return(
-    <p className={styles.emptyChartText}>There are no {item} transactions to display.</p>
+    <>
+     {item === "income" || item==="expense" ? 
+      <p className={styles.emptyChartText}>There are no {item} transactions to display.</p>
+      : 
+      <p className={styles.emptyChartText}>There are no {item}s to display.</p>
+     }
+    </>
   )
 }
 
@@ -16,6 +23,7 @@ const StatsPage: React.FC = () => {
   // const transactions = useSelector((state: any) => state.transaction.recentTransaction);
   const email = useSelector((state: any) => state.userInfo.email);
   const { data: transactions, isLoading, isError, error } = useGetAllTransactions(email);
+  const { data: assetLiabilities } = useGetAllAssetLiabilities(email);
 
   if (isLoading) {
     return <p>Loading...</p>
@@ -26,7 +34,7 @@ const StatsPage: React.FC = () => {
     return <p>Error loading transactions. Please try again later.</p>
   }
 
-  function groupByCategory(data: any[]): { label: string; value: number }[] {
+  function groupByCategoryTransactions(data: any[]): { label: string; value: number }[] {
     const aggregatedData = data.reduce((acc: Record<string, number>, curr: any) => {
       const { category, amountTransfered: amount } = curr;
       if (!acc[category]) {
@@ -40,12 +48,28 @@ const StatsPage: React.FC = () => {
     return ans;
   }
 
+  function groupByCategoryAsLi(data: any[]): { label: string; value: number }[] {
+    const aggregatedData = data.reduce((acc: Record<string, number>, curr: any) => {
+      const { title, value: amount } = curr;
+      if (!acc[title]) {
+        acc[title] = 0;
+      }
+      acc[title] += Number(amount);
+      return acc;
+    }, {} as Record<string, number>);
+
+    const ans = Object.entries(aggregatedData).map(([category, amount]) => ({ label: category, value: Number(amount) }));
+    return ans;
+  }
+
   const income = transactions.filter((t: any) => t.typeOfTransfer === 'income');
-  const incomeLabelData = groupByCategory(income);
+  const incomeLabelData = groupByCategoryTransactions(income);
   const expenses = transactions.filter((t: any) => t.typeOfTransfer === 'expense');
-  console.log('Expenses:', expenses);
-  const expenseLabelData = groupByCategory(expenses);
-  console.log('Expense Label Data:', expenseLabelData);
+  const expenseLabelData = groupByCategoryTransactions(expenses);
+  const assets = assetLiabilities.filter((al: any) => al.type === 'asset');
+  const liabilities = assetLiabilities.filter((al: any) => al.type === 'liability');
+  const assetLabelData = groupByCategoryAsLi(assets);
+  const liabilityLabelData = groupByCategoryAsLi(liabilities);
 
   return (
     <div>
@@ -78,8 +102,31 @@ const StatsPage: React.FC = () => {
                 }
               </div>
             </div>
+            <div>
+              <p>Assets</p>
+              <div className={styles.donutChart}>
+                {assets.length === 0 && <EmptyChartText item="asset" />}
+                {assets.length > 0 &&
+                <DonutChart
+                  className={styles.chart}
+                  labelData={assetLabelData}
+                  />
+                }
+              </div>
+            </div>
+            <div>
+              <p>Liabilities</p>
+              <div className={styles.donutChart}>
+                {liabilities.length === 0 && <EmptyChartText item="liability" />}
+                {liabilities.length > 0 &&
+                <DonutChart
+                  className={styles.chart}
+                  labelData={liabilityLabelData}
+                />
+                }
+              </div>
+            </div>
           </div>
-          <div className={styles.graphSection}></div>
         </div>
       </div>
     </div>    

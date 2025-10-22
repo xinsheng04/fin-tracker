@@ -1,6 +1,7 @@
 import React from "react";
 import { useMemo } from "react";
 import { Doughnut } from "react-chartjs-2";
+import formatCurrency from "../../../util/currencyFormatter";
 import "./ProgressChart.module.css";
 
 interface ProgressChartProps {
@@ -67,7 +68,7 @@ const ProgressChart: React.FC<ProgressChartProps> = ({ progressList }) => {
         callbacks: {
           label: function (tooltipItem: any) {
             const value = tooltipItem.raw;
-            return `RM ${value}`;
+            return formatCurrency(value);
           },
         },
       },

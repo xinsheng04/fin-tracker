@@ -13,15 +13,11 @@
   overflow-x: hidden;
 }
 
-.visuals > div{
-  width: 100%;
-}
-
 .pieChartSection{
   display: grid;
   max-height: 30rem;
   grid-template-columns: 1fr 1fr;
-  column-gap: 3rem;
+  gap: 1rem;
   align-items: center;
 }
 
@@ -41,7 +37,7 @@
 }
 
 .donutChart{
-  height: 18rem;
+  height: 15rem;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -129,6 +129,5 @@ export async function initDB() {
     await connection.end();
   } catch (err) {
     console.error("Warning: Failed to initialize database schema. Please check your database configuration.", err);
-    // Optionally, you can retry or continue running the app without crashing
   }
 }

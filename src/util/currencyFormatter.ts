@@ -1,4 +1,4 @@
-export default function formatCurrency(amount: number, currency: string='USD', locale: string='en-US') {
+export default function formatCurrency(amount: number, currency: string='MYR', locale: string='en-US') {
   console.log(amount);
   const abs = Math.abs(amount); 
 

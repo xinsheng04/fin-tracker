@@ -3,6 +3,7 @@ import { createPool } from '../config.js';
 const pool = await createPool();
 
 /*
+query:
 ?email=userEmail
  */
 export const getAllAssetsLiabilities = async (req, res) => {
@@ -19,7 +20,9 @@ export const getAllAssetsLiabilities = async (req, res) => {
 }
 
 /*
+query:
 ?email=userEmail
+body:
 {
   assetLiability: {
     title: string,
@@ -52,7 +55,9 @@ export const addAssetLiability = async (req, res) => {
 }
 
 /*
+query:
 ?email=userEmail&id=AsLiId
+body:
 {
   changes: [
     { column: columnName, value: newValue },
@@ -79,7 +84,10 @@ export const updateAssetLiabilityEntry = async (req, res) => {
   }
 }
 
-/*?email=userEmail&id=AsLiId*/
+/*
+query:
+?email=userEmail&id=AsLiId
+*/
 export const deleteAssetLiabilityEntry = async (req, res) => {
   const {email, id} = req.query;
   if(!email || !id){
